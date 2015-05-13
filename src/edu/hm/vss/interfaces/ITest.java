@@ -1,5 +1,6 @@
 package edu.hm.vss.interfaces;
 
+import java.io.Serializable;
 import java.rmi.Remote;
 
 /**

@@ -2,13 +2,20 @@ package edu.hm.vss.model;
 
 import edu.hm.vss.interfaces.ITest;
 
+import java.io.Serializable;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  * Created by Joncn on 13.05.2015.
  */
-public class Test implements ITest
+public class Test extends UnicastRemoteObject implements ITest, Serializable
 {
+
+    protected Test() throws RemoteException
+    {
+    }
 
     @Override
     public double doSomethingExpensive()
