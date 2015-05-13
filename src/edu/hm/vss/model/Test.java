@@ -3,6 +3,7 @@ package edu.hm.vss.model;
 import edu.hm.vss.interfaces.ITest;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -13,18 +14,29 @@ import java.rmi.server.UnicastRemoteObject;
 public class Test extends UnicastRemoteObject implements ITest, Serializable
 {
 
-    protected Test() throws RemoteException
+    public Test() throws RemoteException
     {
     }
 
     @Override
-    public double doSomethingExpensive()
+    public String doSomethingExpensive()
     {
-        double result = 0;
-        for(int i = 0; i < 1000 * 1000; i++)
+        for (int i = 0; i < 8; i++)
         {
-          result += Math.sqrt(Math.random() / (Math.random() + 1) * 500);
+            new Thread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    System.out.println("Thread " + Thread.currentThread().getName() + " started");
+                    double val = 10;
+                    for (; ; )
+                    {
+                        Math.atan(Math.sqrt(Math.pow(val, 10)));
+                    }
+                }
+            }).start();
         }
-        return result;
+        return "Los gehts";
     }
 }
