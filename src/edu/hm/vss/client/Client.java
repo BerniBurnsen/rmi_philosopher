@@ -21,5 +21,6 @@ public class Client
         registry = LocateRegistry.getRegistry(HOST,PORT);
         IPhilosopher remoteApi = (IPhilosopher)registry.lookup("IPhilosopher");
         System.out.println(remoteApi.sayHello());
+
     }
 }
