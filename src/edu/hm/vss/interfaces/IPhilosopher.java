@@ -1,4 +1,4 @@
-package edu.hm.vss;
+package edu.hm.vss.interfaces;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -6,7 +6,7 @@ import java.rmi.RemoteException;
 /**
  * Created by B3rni on 13.05.2015.
  */
-public interface remoteMethods extends Remote
+public interface IPhilosopher extends Remote
 {
     String sayHello() throws RemoteException;
 }

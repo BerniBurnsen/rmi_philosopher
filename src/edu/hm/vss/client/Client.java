@@ -1,8 +1,7 @@
 package edu.hm.vss.client;
 
-import edu.hm.vss.remoteMethods;
+import edu.hm.vss.interfaces.IPhilosopher;
 
-import java.math.BigDecimal;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -13,15 +12,14 @@ import java.rmi.registry.Registry;
  */
 public class Client
 {
-    private static final String HOST = "localhost";
+    private static final String HOST = "192.168.13.2";
     private static final int PORT = 1099;
 
     private static Registry registry;
     public static void main(String args[]) throws RemoteException, NotBoundException
     {
         registry = LocateRegistry.getRegistry(HOST,PORT);
-        remoteMethods remoteApi = (remoteMethods)registry.lookup("remoteMethods");
+        IPhilosopher remoteApi = (IPhilosopher)registry.lookup("IPhilosopher");
         System.out.println(remoteApi.sayHello());
-
     }
 }

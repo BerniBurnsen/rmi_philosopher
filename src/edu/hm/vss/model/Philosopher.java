@@ -1,17 +1,15 @@
-package edu.hm.vss.client;
+package edu.hm.vss.model;
 
-import edu.hm.vss.remoteMethods;
+import edu.hm.vss.interfaces.IPhilosopher;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
  * Created by B3rni on 13.05.2015.
  */
-public class remoteMethodImpl extends UnicastRemoteObject implements remoteMethods, Serializable
+public class Philosopher extends UnicastRemoteObject implements IPhilosopher, Serializable, Runnable
 {
     private static final long serialVersionUID = 1L;
     @Override
@@ -20,10 +18,15 @@ public class remoteMethodImpl extends UnicastRemoteObject implements remoteMetho
         return "HUHU";
     }
 
-    public remoteMethodImpl() throws RemoteException
+    public Philosopher() throws RemoteException
     {
         super();
     }
 
 
+    @Override
+    public void run()
+    {
+
+    }
 }
