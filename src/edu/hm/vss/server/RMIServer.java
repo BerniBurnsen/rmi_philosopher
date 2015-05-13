@@ -1,8 +1,7 @@
 package edu.hm.vss.server;
 
-import edu.hm.vss.model.remoteMethodImpl;
-import edu.hm.vss.interfaces.IPhilosopher;
-import edu.hm.vss.interfaces.ITable;
+import edu.hm.vss.model.*;
+import edu.hm.vss.interfaces.*;
 
 import java.rmi.AlreadyBoundException;
 import java.rmi.Remote;
@@ -19,12 +18,11 @@ import java.util.TimerTask;
  */
 public class RMIServer
 {
-    private static final int PORT = 1099;
     private static Registry registry;
 
     public static void startRegistry() throws RemoteException
     {
-        registry = LocateRegistry.createRegistry(PORT);
+        registry = LocateRegistry.createRegistry(Settings.PORT);
     }
 
     public static void registerObject(String name, Remote remoteObject) throws RemoteException, AlreadyBoundException
@@ -33,24 +31,28 @@ public class RMIServer
         System.out.println(name + " registered " + remoteObject.getClass().getName());
     }
 
-    public static void initDiningPhilosophers()
+    /*public static void initDiningPhilosophers() throws Exception
     {
         int numberOfPhilosophers = 10;
         int numberOfHungryPhilosophers = 0;
         int numberOfPlaces = 10;
+        int numberOfClients = 2;
         Thread mainThread = Thread.currentThread();
 
         //System.out.println("Starting parallel philosophers with " + numberOfPhilosophers + " philosophers and " + numberOfPlaces + " places.");
         //System.out.println(numberOfHungryPhilosophers + " of them are very Hungry");
 
         //Generate the table
-        ITable table = new Table(numberOfPlaces);
+        ITable table = new Table(numberOfPlaces, numberOfClients);
+        registerObject(Settings.TABLE, table);
 
         //Generate the philosophers
         List<IPhilosopher> philosophers = new ArrayList<>();
         for(int i = 0; i < numberOfPhilosophers; i++)
         {
-            philosophers.add(new Philosopher(table, i, i >= numberOfPhilosophers - numberOfHungryPhilosophers ? true : false));
+            IPhilosopher p = new Philosopher(table, i, i >= numberOfPhilosophers - numberOfHungryPhilosophers ? true : false);
+            philosophers.add(p);
+            registerObject(Settings.PHILOSOPHER + p.getIndex(), p);
         }
 
         //Generate the overseer
@@ -131,13 +133,13 @@ public class RMIServer
         philosophers.forEach((p) -> System.out.println(p + " eats " + p.getEatcounter() + " times ::: STATE: " + p.getStateOfPhilosopher() ));
 
         System.exit(0);
-    }
+    }*/
 
     public static void main(String[] args) throws Exception
     {
         startRegistry();
-        registerObject("IPhilosopher", new remoteMethodImpl());
-        initDiningPhilosophers();
+        registerObject("Test", new Test());
+        //initDiningPhilosophers();
         Thread.sleep(5 * 60 * 1000);
     }
 }

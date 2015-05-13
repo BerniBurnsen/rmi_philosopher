@@ -8,5 +8,6 @@ import java.rmi.RemoteException;
  */
 public interface IPhilosopher extends Remote
 {
-    String sayHello() throws RemoteException;
+    int getIndex();
+    int getEatCounter();
 }

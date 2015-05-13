@@ -10,4 +10,8 @@ import java.io.Serializable;
 public class Table implements ITable, Serializable
 {
 
+    public Table(int numberOfPlaces, int numberOfClients)
+    {
+
+    }
 }
