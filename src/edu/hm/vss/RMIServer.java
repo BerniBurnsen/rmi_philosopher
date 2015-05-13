@@ -3,6 +3,7 @@ package edu.hm.vss;
 import edu.hm.vss.client.remoteMethodImpl;
 
 import java.rmi.AlreadyBoundException;
+import java.rmi.RMISecurityManager;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -29,8 +30,9 @@ public class RMIServer
 
     public static void main(String[] args) throws Exception
     {
+
         startRegistry();
         registerObject("remoteMethods", new remoteMethodImpl());
-        Thread.sleep(5 * 60 * 1000);
+
     }
 }
