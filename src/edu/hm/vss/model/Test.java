@@ -13,7 +13,7 @@ import java.rmi.server.UnicastRemoteObject;
 public class Test extends UnicastRemoteObject implements ITest, Serializable
 {
 
-    protected Test() throws RemoteException
+    public Test() throws RemoteException
     {
     }
 
