@@ -5,6 +5,7 @@ import java.rmi.Remote;
 /**
  * Created by Joncn on 13.05.2015.
  */
-public interface ITablePiece extends Remote
+public interface ITest extends Remote
 {
+    double doSomethingExpensive();
 }
