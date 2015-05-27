@@ -74,23 +74,23 @@ public class Philosopher extends UnicastRemoteObject implements Serializable, Ru
                     state = "got place";
                     leftFork = plate.getLeftFork();
                     rightFork = plate.getRightFork();
-                    logger.printLog(Philosopher.class.getSimpleName(), "leftForkindex: " + leftFork.getIndex() + " and " + rightFork.getIndex());
+                    logger.printLog(Philosopher.class.getSimpleName(), index + " leftForkindex: " + leftFork.getIndex() + " and " + rightFork.getIndex());
                     //Main.writeInDebugmode(this + " waiting for forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
                     state = "waiting for Forks";
                     plate.waitForForks(this);
                     state = "got forks";
-                    logger.printLog(Philosopher.class.getSimpleName(),"got Forks "+ leftFork.getIndex() + " and " + rightFork.getIndex());
+                    logger.printLog(Philosopher.class.getSimpleName(),index + " got Forks "+ leftFork.getIndex() + " and " + rightFork.getIndex());
                     //Main.writeInDebugmode(this + " got forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
                     state = "start eating";
                     eat();
                     state = "releasing forks";
                     plate.releaseForks();
                     state = "releasing plate";
-                    logger.printLog(Philosopher.class.getSimpleName(), "release forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
+                    logger.printLog(Philosopher.class.getSimpleName(),index + " release forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
                             //Main.writeInDebugmode(this + " releases forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
                     tablePiece.releasePlate(plate, this);
                     state = "plate released";
-                    logger.printLog(Philosopher.class.getSimpleName(),"released place " + plate.getIndex());
+                    logger.printLog(Philosopher.class.getSimpleName(),index + " released place " + plate.getIndex());
                     //Main.writeInDebugmode(this + " releases place " + plate.getIndex());
                     state = "meditating";
                     meditate();
@@ -132,14 +132,14 @@ public class Philosopher extends UnicastRemoteObject implements Serializable, Ru
         {
             meditationTime = MEDITATIONTIME;
         }
-        logger.printLog(Philosopher.class.getSimpleName(),this + (isVeryHungry ? " meditate short" : " meditate") + " (" + meditationTime + ")");
+        logger.printLog(Philosopher.class.getSimpleName(),index + " " + this + (isVeryHungry ? " meditate short" : " meditate") + " (" + meditationTime + ")");
         //Main.writeInDebugmode(this + (isVeryHungry ? " meditate short" : " meditate") + " (" + meditationTime + ")");
         Thread. sleep(meditationTime);
     }
 
     private void eat() throws InterruptedException
     {
-        logger.printLog(Philosopher.class.getSimpleName(),"eating");
+        logger.printLog(Philosopher.class.getSimpleName(),index + "eating");
         //Main.writeInDebugmode(this + " eating");
         Thread.sleep(EATTIME);
         synchronized (this)
@@ -154,7 +154,7 @@ public class Philosopher extends UnicastRemoteObject implements Serializable, Ru
 
     private void goSleeping() throws InterruptedException
     {
-        logger.printLog(Philosopher.class.getSimpleName(),"sleeping");
+        logger.printLog(Philosopher.class.getSimpleName(),index + " sleeping");
         //Main.writeInDebugmode(this + " sleeping");
         Thread.sleep(SLEEPTIME);
     }
