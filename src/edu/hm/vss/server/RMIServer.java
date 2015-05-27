@@ -1,7 +1,8 @@
 package edu.hm.vss.server;
 
-import edu.hm.vss.model.*;
 import edu.hm.vss.interfaces.*;
+import edu.hm.vss.model.Plate;
+import edu.hm.vss.model.TablePiece;
 
 import java.rmi.AlreadyBoundException;
 import java.rmi.Remote;
@@ -10,19 +11,26 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by B3rni on 13.05.2015.
  */
 public class RMIServer
 {
-    private static Registry registry;
+    public static Registry registry;
+    public static int instanceNumber;
 
-    public static void startRegistry() throws RemoteException
+    public static IServerToClient clientAPI;
+    public static IServerToServer leftServerAPI;
+    public static IServerToServer rightServerAPI;
+
+    public static TablePiece tablePiece;
+
+    public static List<Plate> plates = new ArrayList<>();
+
+    public static void startRegistry(int instanceNumber) throws RemoteException
     {
-        registry = LocateRegistry.createRegistry(Settings.PORT);
+        registry = LocateRegistry.createRegistry(Settings.PORT_SERVER_BASE +instanceNumber);
     }
 
     public static void registerObject(String name, Remote remoteObject) throws RemoteException, AlreadyBoundException
@@ -31,115 +39,19 @@ public class RMIServer
         System.out.println(name + " registered " + remoteObject.getClass().getName());
     }
 
-    /*public static void initDiningPhilosophers() throws Exception
-    {
-        int numberOfPhilosophers = 10;
-        int numberOfHungryPhilosophers = 0;
-        int numberOfPlaces = 10;
-        int numberOfClients = 2;
-        Thread mainThread = Thread.currentThread();
-
-        //System.out.println("Starting parallel philosophers with " + numberOfPhilosophers + " philosophers and " + numberOfPlaces + " places.");
-        //System.out.println(numberOfHungryPhilosophers + " of them are very Hungry");
-
-        //Generate the table
-        ITable table = new Table(numberOfPlaces, numberOfClients);
-        registerObject(Settings.TABLE, table);
-
-        //Generate the philosophers
-        List<IPhilosopher> philosophers = new ArrayList<>();
-        for(int i = 0; i < numberOfPhilosophers; i++)
-        {
-            IPhilosopher p = new Philosopher(table, i, i >= numberOfPhilosophers - numberOfHungryPhilosophers ? true : false);
-            philosophers.add(p);
-            registerObject(Settings.PHILOSOPHER + p.getIndex(), p);
-        }
-
-        //Generate the overseer
-        Overseer overseer = new Overseer(philosophers, 10);
-
-        //Start overseer and philosophers
-        overseer.start();
-        philosophers.forEach((philosopher) -> philosopher.start());
-
-        //SekundCound
-        Timer counter = new Timer();
-        if(!DEBUG)
-        {
-            final long time = System.currentTimeMillis();
-            counter.scheduleAtFixedRate(new TimerTask()
-            {
-                @Override
-                public void run()
-                {
-                    long elapsed = (System.currentTimeMillis() - time) /1000;
-                    System.out.print("\r" + ((elapsed < 10) ? " " + elapsed : elapsed) + " / " + DURATION + " seconds");
-                    System.out.flush();
-                }
-            }, 0, 100);
-        }
-
-        //Stop philosophers and overseer
-        new Timer().schedule(new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                if(!DEBUG)
-                {
-                    counter.cancel();
-                    System.out.println("");
-                }
-                System.out.println("timer run out");
-                for (Philosopher p : philosophers)
-                {
-
-                    p.interrupt();
-                }
-                overseer.interrupt();
-            }
-        }, DURATION * 1000);
-
-        //Stop joining, if something went wrong
-        new Timer().schedule(new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                System.out.println("timer run out");
-                mainThread.interrupt();
-            }
-        }, (DURATION+2) * 1000);
-
-        //Try to join termination of philosophers and overseer
-        try
-        {
-            for(Philosopher p : philosophers)
-            {
-                p.join();
-            }
-            overseer.join();
-        } catch (InterruptedException e)
-        {
-
-        }
-
-
-        //Print out the final state
-        System.out.println("================== TABLE ==================");
-        System.out.println(table);
-
-        System.out.println("================== STATS ==================");
-        philosophers.forEach((p) -> System.out.println(p + " eats " + p.getEatcounter() + " times ::: STATE: " + p.getStateOfPhilosopher() ));
-
-        System.exit(0);
-    }*/
-
     public static void main(String[] args) throws Exception
     {
-        startRegistry();
-        registerObject("Test", new Test());
-        //initDiningPhilosophers();
-        Thread.sleep(5 * 60 * 1000);
+        if(args.length == 1)
+        {
+            instanceNumber = Integer.parseInt(args[0]);
+            startRegistry(instanceNumber );
+            registerObject(Settings.CLIENT_TO_SERVER, new ClientToServer());
+            registerObject(Settings.SERVER_TO_SERVER, new ServerToServer());
+
+            //registerObject("Test", new Test());
+            //initDiningPhilosophers();
+            Thread.sleep(5 * 60 * 1000);
+        }
+
     }
 }
