@@ -1,5 +1,6 @@
 package edu.hm.vss.server;
 
+import edu.hm.vss.helper.Logger;
 import edu.hm.vss.interfaces.*;
 import edu.hm.vss.model.Plate;
 import edu.hm.vss.model.TablePiece;
@@ -28,6 +29,8 @@ public class RMIServer
 
     public static List<Plate> plates = new ArrayList<>();
 
+    private final static Logger logger = Logger.getInstance();
+
     public static void startRegistry(int instanceNumber) throws RemoteException
     {
         registry = LocateRegistry.createRegistry(Settings.PORT_SERVER_BASE +instanceNumber);
@@ -44,7 +47,8 @@ public class RMIServer
         if(args.length == 1)
         {
             instanceNumber = Integer.parseInt(args[0]);
-            startRegistry(instanceNumber );
+            logger.printLog(RMIServer.class.getName(),"Server start " + instanceNumber);
+            startRegistry(instanceNumber);
             registerObject(Settings.CLIENT_TO_SERVER, new ClientToServer());
             registerObject(Settings.SERVER_TO_SERVER, new ServerToServer());
 

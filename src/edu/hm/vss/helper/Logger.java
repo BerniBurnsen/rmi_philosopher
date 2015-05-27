@@ -2,6 +2,7 @@ package edu.hm.vss.helper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by B3rni on 27.05.2015.
@@ -19,7 +20,7 @@ public class Logger
     public void printLog(String from, String message)
     {
         DateFormat df = new SimpleDateFormat("mm:ss.SSSXXX");
-        String timeString = df.format(DateFormat.getInstance());
+        String timeString = df.format(new Date());
         System.out.println(timeString + " - " +from+" - " + message);
     }
 
