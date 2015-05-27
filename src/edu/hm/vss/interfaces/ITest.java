@@ -1,8 +1,7 @@
 package edu.hm.vss.interfaces;
 
-import org.omg.stub.java.rmi._Remote_Stub;
-
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -11,5 +10,5 @@ import java.rmi.RemoteException;
  */
 public interface ITest extends Remote
 {
-    double doSomethingExpensive() throws RemoteException;
+    String doSomethingExpensive() throws RemoteException;
 }
