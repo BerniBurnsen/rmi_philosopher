@@ -47,12 +47,12 @@ public class Client
         int numberOfHungryPhilosophers = Integer.parseInt(args[1]);
         int numberOfPlaces = Integer.parseInt(args[2]);
 
-        logger.printLog(Client.class.getSimpleName(), "main #phil" + numberOfPhilosophers + " #hungry " + numberOfHungryPhilosophers + " #places " + numberOfPlaces);
+        logger.printLog(Client.class.getSimpleName(), "main - #phil" + numberOfPhilosophers + " #hungry " + numberOfHungryPhilosophers + " #places " + numberOfPlaces);
 
         startRegistry();
         registerObject(Settings.SERVER_TO_CLIENT, new ServerToClient());
 
-        logger.printLog(Client.class.getSimpleName(), "build up connections");
+        logger.printLog(Client.class.getSimpleName(), "main - build up connections");
         //build up connections
         for(int i = 0 ; i < instanceCount; i++)
         {
@@ -69,8 +69,8 @@ public class Client
             int leftPort = (i-1) < 0 ? Settings.PORT_SERVER_BASE + (instanceCount-1) : Settings.PORT_SERVER_BASE  + i - 1;
 
 
-            logger.printLog(Client.class.getSimpleName(), "Instancenumber " + i + " leftNeighbour: " + leftNeighbour + " leftPort: " + leftPort);
-            logger.printLog(Client.class.getSimpleName(), "Instancenumber " + i + " rightNeighbour: " + rightNeighbour + " rightPort " + rightPort);
+            logger.printLog(Client.class.getSimpleName(), "main - Instancenumber " + i + " leftNeighbour: " + leftNeighbour + " leftPort: " + leftPort);
+            logger.printLog(Client.class.getSimpleName(), "main - Instancenumber " + i + " rightNeighbour: " + rightNeighbour + " rightPort " + rightPort);
 
             serverAPI.initConnections(Settings.CLIENT_IP,Settings.PORT_CLIENT,rightNeighbour,rightPort,leftNeighbour,leftPort);
         }
@@ -91,8 +91,10 @@ public class Client
         //spawn philosophers
         for(int i = 0 ; i < numberOfPhilosophers ; i++)
         {
+
             int nextServerIndex = i % instanceCount;
-            servers.get(nextServerIndex).createNewPhilosopher(i,i >= numberOfPhilosophers - numberOfHungryPhilosophers ? true : false);
+            logger.printLog(Client.class.getSimpleName(),"main - spawning Phil - " + i);
+            servers.get(nextServerIndex).createNewPhilosopher(i, i >= numberOfPhilosophers - numberOfHungryPhilosophers ? true : false);
         }
 
         Thread.sleep(5 * 60 * 1000);
