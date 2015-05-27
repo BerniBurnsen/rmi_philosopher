@@ -64,8 +64,12 @@ public class Client
 
             String leftNeighbour = (i-1) < 0 ? Settings.SERVERS[instanceCount % Settings.SERVERS.length] : Settings.SERVERS[(i-1) % Settings.SERVERS.length];
             String rightNeighbour = (i+1) < instanceCount ? Settings.SERVERS[(i+1) %Settings.SERVERS.length] :Settings.SERVERS[instanceCount -1] ;
+
             int rightPort = (i+1) < instanceCount ? Settings.PORT_SERVER_BASE + i + 1 : Settings.PORT_SERVER_BASE;
             int leftPort = (i-1) < 0 ? Settings.PORT_SERVER_BASE + (instanceCount-1) : Settings.PORT_SERVER_BASE  + i - 1;
+
+            logger.printLog(Client.class.getSimpleName(), "leftNeighbour: " + leftNeighbour + " leftPort: " + leftPort);
+            logger.printLog(Client.class.getSimpleName(), "rightNeighbour: " + rightNeighbour + " rightPort" + rightNeighbour);
 
             serverAPI.initConnections(Settings.CLIENT_IP,Settings.PORT_CLIENT,rightNeighbour,rightPort,leftNeighbour,leftPort);
         }
