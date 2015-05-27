@@ -1,5 +1,6 @@
 package edu.hm.vss.model;
 
+import edu.hm.vss.helper.Logger;
 import edu.hm.vss.server.RMIServer;
 
 import java.io.Serializable;
@@ -27,6 +28,8 @@ public class Philosopher extends UnicastRemoteObject implements Serializable, Ru
     private String state;
     private int startIndex = -1;
     private boolean isFirstRound = true;
+
+    private static final Logger logger = Logger.getInstance();
 
     public Philosopher(TablePiece tablePiece, int index, boolean hungry) throws RemoteException
     {
@@ -71,6 +74,7 @@ public class Philosopher extends UnicastRemoteObject implements Serializable, Ru
                     state = "got place";
                     leftFork = plate.getLeftFork();
                     rightFork = plate.getRightFork();
+                    logger.printLog(Philosopher.class.getSimpleName(), "asdf");
                     //Main.writeInDebugmode(this + " waiting for forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
                     state = "waiting for Forks";
                     plate.waitForForks(this);

@@ -38,8 +38,9 @@ public class RMIServer
 
     public static void registerObject(String name, Remote remoteObject) throws RemoteException, AlreadyBoundException
     {
-        registry.bind(name,remoteObject);
-        System.out.println(name + " registered " + remoteObject.getClass().getName());
+        registry.bind(name, remoteObject);
+        logger.printLog(RMIServer.class.getSimpleName(), "registerObject - registered " + name + " " + remoteObject.getClass().getName());
+
     }
 
     public static void main(String[] args) throws Exception
@@ -57,6 +58,7 @@ public class RMIServer
             while(true)
             {
                 Thread.sleep(60*5*1000);
+                logger.printLog(RMIServer.class.getName(),"sleeping again!");
             }
         }
 
