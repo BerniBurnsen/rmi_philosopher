@@ -66,13 +66,13 @@ public class Plate implements Serializable, Remote
             {
                 while (firstFork.isReserved())
                 {
-                    firstFork.wait(1);
+                    firstFork.getForkToken().wait(1);
                 }
                 synchronized (secondFork.getForkToken())
                 {
                     if (secondFork.isReserved())
                     {
-                        secondFork.wait(1);
+                        secondFork.getForkToken().wait(1);
                     }
                     else
                     {
@@ -94,19 +94,19 @@ public class Plate implements Serializable, Remote
 
     private void releaseRightFork()
     {
-        synchronized (rightFork)
+        synchronized (rightFork.getForkToken())
         {
             rightFork.setIsReserved(false);
-            rightFork.notify();
+            rightFork.getForkToken().notify();
         }
     }
 
     private void releaseLeftFork()
     {
-        synchronized (leftFork)
+        synchronized (leftFork.getForkToken())
         {
             leftFork.setIsReserved(false);
-            leftFork.notify();
+            leftFork.getForkToken().notify();
         }
     }
 
