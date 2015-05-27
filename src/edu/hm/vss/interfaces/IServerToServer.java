@@ -14,7 +14,7 @@ public interface IServerToServer extends Remote
      * @param isHungry
      * @param eatCount
      */
-    void pushPhilosopher(int index, boolean isHungry, int eatCount) throws RemoteException;
+    void pushPhilosopher(int index, boolean isHungry, int eatCount, int startIndex, boolean isFirstRound) throws RemoteException;
 
     /**
      * requests a fork (token) on a neighbour server

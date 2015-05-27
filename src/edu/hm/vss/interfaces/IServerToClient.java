@@ -25,5 +25,5 @@ public interface IServerToClient extends Remote
      * tells the client which philosopher is there
      * @param index
      */
-    void registerPhilosopher(int index) throws RemoteException;
+    void registerPhilosopher(int index, int server) throws RemoteException;
 }

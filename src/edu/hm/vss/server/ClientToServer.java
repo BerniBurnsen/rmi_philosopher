@@ -61,23 +61,26 @@ public class ClientToServer implements IClientToServer
             Fork rightFork = new LocalFork(startIndex+i);
 
             Fork leftFork = startIndex+i == startIndex ? new RemoteFork(startIndex+i-1) : RMIServer.plates.get(startIndex+i-1).getRightFork();
-            RMIServer.plates.add(new Plate(startIndex+i));
+            RMIServer.plates.add(new Plate(leftFork, rightFork, startIndex+i));
         }
         RMIServer.tablePiece = new TablePiece(RMIServer.plates);
         return true;
     }
 
     @Override
-    public boolean createNewPhilosopher(int index, boolean hungry)
+    public boolean createNewPhilosopher(int index, boolean hungry) throws RemoteException
     {
-
-        return false;
+        new Thread(new Philosopher(RMIServer.tablePiece, index, hungry)).start();
+        RMIServer.clientAPI.registerPhilosopher(index, RMIServer.instanceNumber);
+        return true;
     }
 
     @Override
-    public boolean respawnPhilosopher(int index, boolean hungry, int eatCount)
+    public boolean respawnPhilosopher(int index, boolean hungry, int eatCount) throws RemoteException
     {
-        return false;
+        new Thread(new Philosopher(RMIServer.tablePiece, index, hungry, eatCount)).start();
+        RMIServer.clientAPI.registerPhilosopher(index, RMIServer.instanceNumber);
+        return true;
     }
 
     @Override
