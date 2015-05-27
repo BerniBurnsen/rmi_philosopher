@@ -70,6 +70,7 @@ public class ClientToServer implements IClientToServer
     @Override
     public boolean createNewPhilosopher(int index, boolean hungry)
     {
+
         return false;
     }
 
