@@ -1,6 +1,7 @@
 package edu.hm.vss.server;
 
 import edu.hm.vss.interfaces.IServerToServer;
+import edu.hm.vss.model.ForkToken;
 import edu.hm.vss.model.Philosopher;
 
 import java.rmi.RemoteException;
@@ -18,8 +19,20 @@ public class ServerToServer implements IServerToServer
     }
 
     @Override
-    public boolean requestForkToken(int index)
+    public ForkToken requestForkToken(int index)
     {
-        return false;
+        return RMIServer.plates.get(index).getRightFork().getForkToken();
+    }
+
+    @Override
+    public boolean requestIsForkReserved(int index)
+    {
+        return RMIServer.plates.get(index).getRightFork().isReserved();
+    }
+
+    @Override
+    public void setIsForkReserved(int index, boolean isReserved)
+    {
+        RMIServer.plates.get(index).getRightFork().setIsReserved(isReserved);
     }
 }

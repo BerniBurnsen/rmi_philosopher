@@ -69,7 +69,7 @@ public class Client
             int leftPort = (i-1) < 0 ? Settings.PORT_SERVER_BASE + (instanceCount-1) : Settings.PORT_SERVER_BASE  + i - 1;
 
             logger.printLog(Client.class.getSimpleName(), "leftNeighbour: " + leftNeighbour + " leftPort: " + leftPort);
-            logger.printLog(Client.class.getSimpleName(), "rightNeighbour: " + rightNeighbour + " rightPort" + rightNeighbour);
+            logger.printLog(Client.class.getSimpleName(), "rightNeighbour: " + rightNeighbour + " rightPort" + rightPort);
 
             serverAPI.initConnections(Settings.CLIENT_IP,Settings.PORT_CLIENT,rightNeighbour,rightPort,leftNeighbour,leftPort);
         }

@@ -62,13 +62,13 @@ public class Plate implements Serializable, Remote
         boolean obtained = false;
         while(!obtained)
         {
-            synchronized (firstFork)
+            synchronized (firstFork.getForkToken())
             {
                 while (firstFork.isReserved())
                 {
                     firstFork.wait(1);
                 }
-                synchronized (secondFork)
+                synchronized (secondFork.getForkToken())
                 {
                     if (secondFork.isReserved())
                     {

@@ -1,5 +1,7 @@
 package edu.hm.vss.interfaces;
 
+import edu.hm.vss.model.ForkToken;
+
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -21,6 +23,9 @@ public interface IServerToServer extends Remote, Serializable
      * requests a fork (token) on a neighbour server
      * @return
      */
-    boolean requestForkToken(int index) throws RemoteException;
+    ForkToken requestForkToken(int index) throws RemoteException;
 
+    boolean requestIsForkReserved(int index);
+
+    void setIsForkReserved(int index, boolean isReserved);
 }
