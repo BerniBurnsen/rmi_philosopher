@@ -139,7 +139,7 @@ public class Philosopher extends UnicastRemoteObject implements Serializable, Ru
 
     private void eat() throws InterruptedException
     {
-        logger.printLog(Philosopher.class.getSimpleName(),index + "eating");
+        logger.printLog(Philosopher.class.getSimpleName(),index + " eating");
         //Main.writeInDebugmode(this + " eating");
         Thread.sleep(EATTIME);
         synchronized (this)
