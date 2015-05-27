@@ -2,6 +2,7 @@ package edu.hm.vss.interfaces;
 
 import edu.hm.vss.model.TablePiece;
 
+import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -9,7 +10,7 @@ import java.rmi.RemoteException;
 /**
  * Created by B3rni on 20.05.2015.
  */
-public interface IClientToServer extends Remote
+public interface IClientToServer extends Remote, Serializable
 {
     /**
      * Initialites all necessary connection from client to server and backwars additionally from server to the server neighbours.

@@ -1,12 +1,13 @@
 package edu.hm.vss.interfaces;
 
+import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
  * Created by B3rni on 20.05.2015.
  */
-public interface IServerToServer extends Remote
+public interface IServerToServer extends Remote, Serializable
 {
     /**
      * there are no empty seats, push to next server to look for seats
