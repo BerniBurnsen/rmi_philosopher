@@ -50,7 +50,10 @@ public class RMIServer
 
             //registerObject("Test", new Test());
             //initDiningPhilosophers();
-            Thread.sleep(5 * 60 * 1000);
+            while(true)
+            {
+                Thread.sleep(60*5*1000);
+            }
         }
 
     }
