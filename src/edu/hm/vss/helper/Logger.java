@@ -19,7 +19,7 @@ public class Logger
 
     public void printLog(String from, String message)
     {
-        DateFormat df = new SimpleDateFormat("mm:ss.SSSXXX");
+        DateFormat df = new SimpleDateFormat("mm:ss.SSS");
         String timeString = df.format(new Date());
         System.out.println(timeString + " - " +from+" - " + message);
     }
