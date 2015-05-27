@@ -2,7 +2,9 @@ package edu.hm.vss.interfaces;
 
 import edu.hm.vss.model.TablePiece;
 
+import java.rmi.NotBoundException;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  * Created by B3rni on 20.05.2015.
@@ -19,7 +21,7 @@ public interface IClientToServer extends Remote
      * @param leftNeighbourPort
      * @return
      */
-    boolean initConnections(String ClientIP, int ClientPort, String rightNeighbourIP, int rightNeighbourPort, String leftNeighbourIP, int leftNeighbourPort);
+    boolean initConnections(String ClientIP, int ClientPort, String rightNeighbourIP, int rightNeighbourPort, String leftNeighbourIP, int leftNeighbourPort) throws RemoteException, NotBoundException;
 
     /**
      * initializes the Table, plates and forks on a server
@@ -28,7 +30,7 @@ public interface IClientToServer extends Remote
      * @param startIndex
      * @return
      */
-    boolean initServer(int seats, int maxSeats, int startIndex);
+    boolean initServer(int seats, int maxSeats, int startIndex) throws RemoteException;
 
     /**
      * Client spawns new philosophers on server
@@ -36,7 +38,7 @@ public interface IClientToServer extends Remote
      * @param hungry
      * @return
      */
-    boolean createNewPhilosopher(int index, boolean hungry);
+    boolean createNewPhilosopher(int index, boolean hungry) throws RemoteException;
 
     /**
      * Client respawns a philospher on server
@@ -45,11 +47,21 @@ public interface IClientToServer extends Remote
      * @param eatCount
      * @return
      */
-    boolean respawnPhilosopher(int index, boolean hungry, int eatCount);
+    boolean respawnPhilosopher(int index, boolean hungry, int eatCount) throws RemoteException;
+
+    /**
+     * stops the server and every philosopher on it
+     */
+    void stopServer() throws RemoteException;
+
+    /**
+     * punish philosopher
+     */
+    void punishPhilosopher(int index) throws RemoteException;
 
     /**
      * check if server is reachable
      * @return
      */
-    boolean isReachable();
+    boolean isReachable() throws RemoteException;
 }
