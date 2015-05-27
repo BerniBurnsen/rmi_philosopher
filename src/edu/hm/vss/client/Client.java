@@ -21,7 +21,7 @@ public class Client
 {
     private static Registry registry;
     private static List<IClientToServer> servers = new ArrayList<>();
-    private static final int instanceCount = 2;
+    public static final int instanceCount = 2;
     private static final Logger logger = Logger.getInstance();
 
     public static final Map<Integer, Integer> allEatCounts = new ConcurrentHashMap<>();

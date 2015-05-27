@@ -31,13 +31,13 @@ public class ClientToServer implements IClientToServer
         RMIServer.clientAPI = (IServerToClient)registry.lookup(Settings.SERVER_TO_CLIENT);
 
         //only one instance
-        if(Settings.PORT_SERVER_BASE +RMIServer.instanceNumber == leftNeighbourPort && Settings.PORT_SERVER_BASE +RMIServer.instanceNumber == rightNeighbourPort)
+        if(RMIServer.clientAPI.getNumberOfInstances() == 1)
         {
             logger.printLog(ClientToServer.class.getSimpleName(), "initConnections - " + " only one instance");
             RMIServer.rightServerAPI = RMIServer.leftServerAPI = null;
         }
         // only two instances
-        else if(rightNeighbourPort == leftNeighbourPort)
+        else if(RMIServer.clientAPI.getNumberOfInstances() == 2)
         {
             logger.printLog(ClientToServer.class.getSimpleName(), "initConnections - " + "two instances");
             registry = LocateRegistry.getRegistry(rightNeighbourIP, rightNeighbourPort);

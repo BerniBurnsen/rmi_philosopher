@@ -27,4 +27,6 @@ public interface IServerToClient extends Remote, Serializable
      * @param index
      */
     void registerPhilosopher(int index, int server) throws RemoteException;
+
+    int getNumberOfInstances() throws RemoteException;
 }

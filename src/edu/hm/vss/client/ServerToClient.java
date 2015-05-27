@@ -5,6 +5,8 @@ import edu.hm.vss.helper.Logger;
 import edu.hm.vss.interfaces.IServerToClient;
 import edu.hm.vss.interfaces.IServerToServer;
 
+import java.rmi.RemoteException;
+
 /**
  * Created by B3rni on 20.05.2015.
  */
@@ -29,5 +31,11 @@ public class ServerToClient implements IServerToClient
     {
         logger.printLog(ServerToClient.class.getSimpleName(),"regPhil - " + index + " server: " + server);
         Client.locationMap.put(index, server);
+    }
+
+    @Override
+    public int getNumberOfInstances() throws RemoteException
+    {
+        return Client.instanceCount;
     }
 }
