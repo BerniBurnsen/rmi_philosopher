@@ -73,7 +73,7 @@ public class ClientToServer implements IClientToServer
             {
                 leftFork = new RemoteFork(maxSeats-1);
             }
-            logger.printLog(ClientToServer.class.getSimpleName()," initServer - leftFork isRemote: " + ((leftFork instanceof RemoteFork) ? "yes" : "no") + " index: " + leftFork.getIndex());
+            logger.printLog(ClientToServer.class.getSimpleName()," initServer - plate " + (startIndex + i) + " rightFork index " + rightFork.getIndex() + " leftFork isRemote: " + ((leftFork instanceof RemoteFork) ? "yes" : "no") + " index: " + leftFork.getIndex());
             RMIServer.plates.add(new Plate(leftFork, rightFork, startIndex + i));
         }
         RMIServer.tablePiece = new TablePiece(RMIServer.plates);

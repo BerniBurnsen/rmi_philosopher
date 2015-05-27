@@ -1,5 +1,6 @@
 package edu.hm.vss.model;
 
+import edu.hm.vss.helper.Logger;
 import edu.hm.vss.server.RMIServer;
 
 import java.rmi.RemoteException;
@@ -9,6 +10,8 @@ import java.rmi.RemoteException;
  */
 public class RemoteFork extends Fork
 {
+    private static final Logger logger = Logger.getInstance();
+
     public RemoteFork(int index)
     {
         super(index);
@@ -54,7 +57,7 @@ public class RemoteFork extends Fork
             return RMIServer.rightServerAPI.requestForkToken(index);
         } catch (RemoteException e)
         {
-            e.printStackTrace();
+            logger.printLog(RemoteFork.class.getSimpleName(), index + "Error: " + e.getMessage());
         }
         return null;
     }
