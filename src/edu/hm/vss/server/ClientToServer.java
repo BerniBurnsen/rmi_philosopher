@@ -31,7 +31,7 @@ public class ClientToServer implements IClientToServer
         RMIServer.clientAPI = (IServerToClient)registry.lookup(Settings.SERVER_TO_CLIENT);
 
         //only one instance
-        if(Settings.PORT_SERVER_BASE +RMIServer.instanceNumber == leftNeighbourPort)
+        if(Settings.PORT_SERVER_BASE +RMIServer.instanceNumber == leftNeighbourPort && Settings.PORT_SERVER_BASE +RMIServer.instanceNumber == rightNeighbourPort)
         {
             logger.printLog(ClientToServer.class.getSimpleName(), "initConnections - " + " only one instance");
             RMIServer.rightServerAPI = RMIServer.leftServerAPI = null;
