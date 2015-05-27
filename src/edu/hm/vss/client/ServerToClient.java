@@ -12,7 +12,7 @@ public class ServerToClient implements IServerToClient
     @Override
     public void updateEatCount(int philosopherIndex, int eatCount)
     {
-
+        Client.allEatCounts.put(philosopherIndex, eatCount);
     }
 
     @Override
@@ -22,8 +22,8 @@ public class ServerToClient implements IServerToClient
     }
 
     @Override
-    public void registerPhilosopher(int index)
+    public void registerPhilosopher(int index, int server)
     {
-
+        Client.locationMap.put(index, server);
     }
 }

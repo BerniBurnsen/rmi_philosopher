@@ -11,6 +11,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by B3rni on 13.05.2015.
@@ -21,6 +23,9 @@ public class Client
     private static List<IClientToServer> servers = new ArrayList<>();
     private static final int instanceCount = 2;
     private static final Logger logger = Logger.getInstance();
+
+    public static final Map<Integer, Integer> allEatCounts = new ConcurrentHashMap<>();
+    public static final Map<Integer, Integer> locationMap = new ConcurrentHashMap<>();
 
     public static void startRegistry() throws RemoteException
     {
@@ -82,7 +87,7 @@ public class Client
         for(int i = 0 ; i < numberOfPhilosophers ; i++)
         {
             int nextServerIndex = i % instanceCount;
-            servers.get(nextServerIndex).createNewPhilosopher(i,false);
+            servers.get(nextServerIndex).createNewPhilosopher(i,i >= numberOfPhilosophers - numberOfHungryPhilosophers ? true : false);
         }
 
         Thread.sleep(5 * 60 * 1000);
