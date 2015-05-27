@@ -62,7 +62,7 @@ public class Client
             IClientToServer serverAPI = (IClientToServer)registry.lookup(Settings.CLIENT_TO_SERVER);
             servers.add(serverAPI);
 
-            String leftNeighbour = (i-1) < 0 ? Settings.SERVERS[instanceCount % Settings.SERVERS.length] : Settings.SERVERS[(i-1) % Settings.SERVERS.length];
+            String leftNeighbour = (i-1) < 0 ? Settings.SERVERS[Settings.SERVERS.length -1] : Settings.SERVERS[(i-1) % Settings.SERVERS.length];
             String rightNeighbour = (i+1) < instanceCount ? Settings.SERVERS[(i+1) %Settings.SERVERS.length] :Settings.SERVERS[instanceCount -1] ;
 
             int rightPort = (i+1) < instanceCount ? Settings.PORT_SERVER_BASE + i + 1 : Settings.PORT_SERVER_BASE;
