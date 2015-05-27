@@ -56,8 +56,6 @@ public class Client
         //build up connections
         for(int i = 0 ; i < instanceCount; i++)
         {
-
-
             registry = LocateRegistry.getRegistry(Settings.SERVERS[i %Settings.SERVERS.length], Settings.PORT_SERVER_BASE +i);
             IClientToServer serverAPI = (IClientToServer)registry.lookup(Settings.CLIENT_TO_SERVER);
             servers.add(serverAPI);
@@ -67,7 +65,6 @@ public class Client
 
             int rightPort = (i+1) < instanceCount ? Settings.PORT_SERVER_BASE + i + 1 : Settings.PORT_SERVER_BASE;
             int leftPort = (i-1) < 0 ? Settings.PORT_SERVER_BASE + (instanceCount-1) : Settings.PORT_SERVER_BASE  + i - 1;
-
 
             logger.printLog(Client.class.getSimpleName(), "main - Instancenumber " + i + " leftNeighbour: " + leftNeighbour + " leftPort: " + leftPort);
             logger.printLog(Client.class.getSimpleName(), "main - Instancenumber " + i + " rightNeighbour: " + rightNeighbour + " rightPort " + rightPort);
