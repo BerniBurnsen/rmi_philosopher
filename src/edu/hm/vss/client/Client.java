@@ -1,9 +1,7 @@
 package edu.hm.vss.client;
 
-import edu.hm.vss.interfaces.IPhilosopher;
 import edu.hm.vss.interfaces.ITest;
 import edu.hm.vss.interfaces.Settings;
-import edu.hm.vss.model.Test;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -18,9 +16,9 @@ public class Client
     private static Registry registry;
     public static void main(String args[]) throws RemoteException, NotBoundException
     {
-        System.out.println(new Test().doSomethingExpensive());
-       /* registry = LocateRegistry.getRegistry(Settings.SERVER, Settings.PORT);
+        //System.out.println(new Test().doSomethingExpensive());
+        registry = LocateRegistry.getRegistry(Settings.SERVER, Settings.PORT);
         ITest remoteApi = (ITest)registry.lookup("Test");
-        System.out.println(remoteApi.doSomethingExpensive());*/
+        System.out.println(remoteApi.doSomethingExpensive());
     }
 }
