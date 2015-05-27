@@ -33,6 +33,7 @@ public class RMIServer
 
     public static void startRegistry(int instanceNumber) throws RemoteException
     {
+        logger.printLog(RMIServer.class.getName(),"startRegistry - " + (Settings.PORT_SERVER_BASE+instanceNumber));
         registry = LocateRegistry.createRegistry(Settings.PORT_SERVER_BASE +instanceNumber);
     }
 
@@ -57,7 +58,7 @@ public class RMIServer
             //initDiningPhilosophers();
             while(true)
             {
-                Thread.sleep(60*5*1000);
+                Thread.sleep(60 * 5 * 1000);
                 logger.printLog(RMIServer.class.getName(),"sleeping again!");
             }
         }
