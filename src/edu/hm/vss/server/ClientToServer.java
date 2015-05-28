@@ -75,7 +75,7 @@ public class ClientToServer implements IClientToServer
 
             Fork leftFork;
 
-            if(server.getPlates().get(startIndex -1).getRightFork() != null && server.getPlates().get(startIndex -1).getRightFork() instanceof LocalFork)
+            if(startIndex > 0 && server.getPlates().get(startIndex -1).getRightFork() != null && server.getPlates().get(startIndex -1).getRightFork() instanceof LocalFork)
             {
                 leftFork = server.getPlates().get(startIndex - 1).getRightFork();
             }
