@@ -14,6 +14,8 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by B3rni on 20.05.2015.
@@ -21,6 +23,8 @@ import java.rmi.registry.Registry;
 public class ClientToServer implements IClientToServer
 {
     private final RMIServer server;
+    private final List<Thread> philosophers = new ArrayList<>();
+
     public ClientToServer(RMIServer server)
     {
         this.server = server;
@@ -89,9 +93,18 @@ public class ClientToServer implements IClientToServer
     public boolean createNewPhilosopher(int index, boolean hungry) throws RemoteException
     {
         server.getClientAPI().log(ClientToServer.class.getSimpleName() + server.getInstanceNumber(), "createNewP - " + index);
-        new Thread(new Philosopher(server,server.getTablePiece(), index, hungry)).start();
+        philosophers.add(new Thread(new Philosopher(server, server.getTablePiece(), index, hungry)));
         server.getClientAPI().registerPhilosopher(index, server.getInstanceNumber());
         return true;
+    }
+
+    @Override
+    public void startPhilosophers() throws RemoteException
+    {
+        for(Thread p : philosophers)
+        {
+            p.start();
+        }
     }
 
     @Override

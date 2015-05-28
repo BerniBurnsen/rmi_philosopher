@@ -41,6 +41,8 @@ public interface IClientToServer extends Remote, Serializable
      */
     boolean createNewPhilosopher(int index, boolean hungry) throws RemoteException;
 
+    void startPhilosophers() throws RemoteException;
+
     /**
      * Client respawns a philospher on server
      * @param index

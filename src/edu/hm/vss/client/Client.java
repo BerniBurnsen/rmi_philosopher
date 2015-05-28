@@ -91,8 +91,16 @@ public class Client
         for(int i = 0 ; i < numberOfPhilosophers ; i++)
         {
             int nextServerIndex = i % instanceCount;
-            logger.printLog(Client.class.getSimpleName(),"main - spawning Phil - " + i);
+            logger.printLog(Client.class.getSimpleName(), "main - spawning Phil - " + i);
             servers.get(nextServerIndex).createNewPhilosopher(i, i >= numberOfPhilosophers - numberOfHungryPhilosophers ? true : false);
+        }
+
+        Thread.sleep(1* 1000);
+
+        //start philosophers
+        for(int i = 0 ; i < instanceCount ; i++)
+        {
+            servers.get(i).startPhilosophers();
         }
 
         Thread.sleep(5 * 60 * 1000);
