@@ -31,7 +31,7 @@ public class TablePiece implements Serializable, Remote
         if(p.getStartIndex() == -1)
         {
             p.setStartIndex(plates.get(startIndex).getIndex());
-            server.getClientAPI().log(TablePiece.class.getSimpleName(), " Phil " + p.getIndex() + " startIndex: " + p.getStartIndex());
+            server.getClientAPI().log(toString(), " Phil " + p.getIndex() + " startIndex: " + p.getStartIndex());
         }
         else if(!p.isFirstRound())
         {
@@ -89,5 +89,10 @@ public class TablePiece implements Serializable, Remote
     public int getIndex()
     {
         return index;
+    }
+
+    public String toString()
+    {
+        return "TablePiece " + index + " " + server.getInstanceNumber();
     }
 }
