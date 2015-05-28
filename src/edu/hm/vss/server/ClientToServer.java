@@ -36,7 +36,6 @@ public class ClientToServer implements IClientToServer
         // only two instances
         else if(RMIServer.clientAPI.getNumberOfInstances() == 2)
         {
-            System.out.println("TEST");
             RMIServer.clientAPI.log(ClientToServer.class.getSimpleName() + RMIServer.instanceNumber, "initConnections - " + "two instances");
             registry = LocateRegistry.getRegistry(rightNeighbourIP, rightNeighbourPort);
             RMIServer.rightServerAPI = RMIServer.leftServerAPI = (IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE));
@@ -52,7 +51,6 @@ public class ClientToServer implements IClientToServer
         }
         return true;
     }
-
 
     @Override
     public boolean initServer(int seats, int maxSeats, int startIndex)
