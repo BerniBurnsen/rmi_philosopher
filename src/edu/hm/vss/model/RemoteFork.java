@@ -10,22 +10,24 @@ import java.rmi.RemoteException;
  */
 public class RemoteFork extends Fork
 {
-    public RemoteFork(int index)
+    private final RMIServer server;
+    public RemoteFork(int index, RMIServer server)
     {
         super(index);
+        this.server = server;
     }
 
     @Override
     public boolean isReserved()
     {
-        return RMIServer.rightServerAPI.requestIsForkReserved(index);
+        return server.getLeftServerAPI().requestIsForkReserved(index);
     }
 
     @Override
     public void setIsReserved(boolean isReserved)
     {
         super.isReserved = isReserved;
-        RMIServer.rightServerAPI.setIsForkReserved(index, isReserved);
+        server.getLeftServerAPI().setIsForkReserved(index, isReserved);
         if(isReserved)
         {
             this.p = p;
@@ -52,8 +54,8 @@ public class RemoteFork extends Fork
     {
         try
         {
-            RMIServer.clientAPI.log(RemoteFork.class.getSimpleName(), "request ForkToken " + index);
-            return RMIServer.leftServerAPI.requestForkToken(index);
+            server.getClientAPI().log(RemoteFork.class.getSimpleName(), "request ForkToken " + index);
+            return server.getLeftServerAPI().requestForkToken(index);
         } catch (RemoteException e)
         {
             //RMIServer.clientAPI.log(RemoteFork.class.getSimpleName(), index + "Error: " + e.getMessage());

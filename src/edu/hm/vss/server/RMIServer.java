@@ -18,23 +18,35 @@ import java.util.List;
  */
 public class RMIServer
 {
-    public static Registry registry;
-    public static int instanceNumber;
+    private Registry registry;
+    private final int instanceNumber;
 
-    public static IServerToClient clientAPI;
-    public static IServerToServer leftServerAPI;
-    public static IServerToServer rightServerAPI;
+    private IServerToClient clientAPI;
+    private IServerToServer leftServerAPI;
+    private IServerToServer rightServerAPI;
 
-    public static TablePiece tablePiece;
+    private TablePiece tablePiece;
 
-    public static List<Plate> plates = new ArrayList<>();
 
-    public static void startRegistry(int instanceNumber) throws RemoteException
+
+    private List<Plate> plates = new ArrayList<>();
+
+    RMIServer(int instanceNumber) throws AlreadyBoundException, RemoteException
+    {
+        this.instanceNumber = instanceNumber;
+        startRegistry(instanceNumber);
+        registerObject(Settings.CLIENT_TO_SERVER + instanceNumber, new ClientToServer(this));
+        registerObject(Settings.SERVER_TO_SERVER + instanceNumber, new ServerToServer(this));
+    }
+
+
+
+    public void startRegistry(int instanceNumber) throws RemoteException
     {
         registry = LocateRegistry.createRegistry(Settings.PORT_SERVER_BASE +instanceNumber);
     }
 
-    public static void registerObject(String name, Remote remoteObject) throws RemoteException, AlreadyBoundException
+    public void registerObject(String name, Remote remoteObject) throws RemoteException, AlreadyBoundException
     {
         registry.bind(name, remoteObject);
         //logger.printLog(RMIServer.class.getSimpleName(), "registerObject - registered " + name + " " + remoteObject.getClass().getName());
@@ -45,14 +57,7 @@ public class RMIServer
     {
         if(args.length == 1)
         {
-            instanceNumber = Integer.parseInt(args[0]);
-            //logger.printLog(RMIServer.class.getName(),"Server start " + instanceNumber);
-            startRegistry(instanceNumber);
-            registerObject(Settings.CLIENT_TO_SERVER + instanceNumber, new ClientToServer());
-            registerObject(Settings.SERVER_TO_SERVER + instanceNumber, new ServerToServer());
-
-            //registerObject("Test", new Test());
-            //initDiningPhilosophers();
+            new RMIServer(Integer.parseInt(args[0]));
             while(true)
             {
                 Thread.sleep(60*5*1000);
@@ -60,5 +65,62 @@ public class RMIServer
             }
         }
 
+    }
+
+    public void setTablePiece(TablePiece tablePiece)
+    {
+        this.tablePiece = tablePiece;
+    }
+
+    public void setLeftServerAPI(IServerToServer leftServerAPI)
+    {
+        this.leftServerAPI = leftServerAPI;
+    }
+
+    public void setRightServerAPI(IServerToServer rightServerAPI)
+    {
+        this.rightServerAPI = rightServerAPI;
+    }
+
+    public void setClientAPI(IServerToClient clientAPI)
+    {
+        this.clientAPI = clientAPI;
+    }
+
+    public IServerToClient getClientAPI()
+    {
+
+        return clientAPI;
+    }
+
+    public IServerToServer getLeftServerAPI()
+    {
+        return leftServerAPI;
+    }
+
+    public IServerToServer getRightServerAPI()
+    {
+        return rightServerAPI;
+    }
+
+    public TablePiece getTablePiece()
+    {
+        return tablePiece;
+    }
+
+    public List<Plate> getPlates()
+    {
+        return plates;
+    }
+
+    public int getInstanceNumber()
+    {
+
+        return instanceNumber;
+    }
+
+    public void setPlates(List<Plate> plates)
+    {
+        this.plates = plates;
     }
 }

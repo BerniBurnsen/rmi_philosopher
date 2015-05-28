@@ -20,37 +20,46 @@ import java.rmi.registry.Registry;
  */
 public class ClientToServer implements IClientToServer
 {
+    private final RMIServer server;
+    public ClientToServer(RMIServer server)
+    {
+        this.server = server;
+    }
     @Override
     public boolean initConnections(String ClientIP, int ClientPort, String rightNeighbourIP, int rightNeighbourPort, String leftNeighbourIP, int leftNeighbourPort) throws RemoteException, NotBoundException
     {
         Registry registry;
         registry = LocateRegistry.getRegistry(ClientIP, ClientPort);
-        RMIServer.clientAPI = (IServerToClient)registry.lookup(Settings.SERVER_TO_CLIENT);
+        server.setClientAPI((IServerToClient)registry.lookup(Settings.SERVER_TO_CLIENT));
 
         //only one instance
-        if(RMIServer.clientAPI.getNumberOfInstances() == 1)
+        if(server.getClientAPI().getNumberOfInstances() == 1)
         {
-            RMIServer.clientAPI.log(ClientToServer.class.getSimpleName() + RMIServer.instanceNumber, "initConnections - " + " only one instance");
-            RMIServer.rightServerAPI = RMIServer.leftServerAPI = null;
+            server.getClientAPI().log(ClientToServer.class.getSimpleName() + server.getInstanceNumber(), "initConnections - " + " only one instance");
+            server.setRightServerAPI(null);
+            server.setLeftServerAPI(null);
         }
         // only two instances
-        else if(RMIServer.clientAPI.getNumberOfInstances() == 2)
+        else if(server.getClientAPI().getNumberOfInstances() == 2)
         {
-            RMIServer.clientAPI.log(ClientToServer.class.getSimpleName() + RMIServer.instanceNumber, "initConnections - " + "two instances");
+            System.out.println("TEST");
+            server.getClientAPI().log(ClientToServer.class.getSimpleName() + server.getInstanceNumber(), "initConnections - " + "two instances");
             registry = LocateRegistry.getRegistry(rightNeighbourIP, rightNeighbourPort);
-            RMIServer.rightServerAPI = RMIServer.leftServerAPI = (IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE));
+            server.setRightServerAPI((IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE)));
+            server.setLeftServerAPI(server.getRightServerAPI());
         }
         // > 2 instances
         else
         {
-            RMIServer.clientAPI.log(ClientToServer.class.getSimpleName() + RMIServer.instanceNumber, "initConnections - " + "more than two instances");
+            server.getClientAPI().log(ClientToServer.class.getSimpleName() + server.getInstanceNumber(), "initConnections - " + "more than two instances");
             registry = LocateRegistry.getRegistry(rightNeighbourIP, rightNeighbourPort);
-            RMIServer.rightServerAPI = (IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE));
+            server.setRightServerAPI((IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE)));
             registry = LocateRegistry.getRegistry(leftNeighbourIP, leftNeighbourPort);
-            RMIServer.leftServerAPI = (IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE));
+            server.setLeftServerAPI((IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE)));
         }
         return true;
     }
+
 
     @Override
     public boolean initServer(int seats, int maxSeats, int startIndex)
@@ -63,47 +72,47 @@ public class ClientToServer implements IClientToServer
             Fork leftFork;
             if(startIndex +i-1 >= 0)
             {
-                leftFork = startIndex + i == startIndex ? new RemoteFork(startIndex + i - 1) : RMIServer.plates.get(startIndex + i - 1).getRightFork();
+                leftFork = startIndex + i == startIndex ? new RemoteFork(startIndex + i - 1,server) : server.getPlates().get(startIndex + i - 1).getRightFork();
             }
             else
             {
-                leftFork = new RemoteFork(maxSeats-1);
+                leftFork = new RemoteFork(maxSeats-1,server);
             }
             //logger.printLog(ClientToServer.class.getSimpleName()," initServer - plate " + (startIndex + i) + " rightFork index " + rightFork.getIndex() + " leftFork isRemote: " + ((leftFork instanceof RemoteFork) ? "yes" : "no") + " index: " + leftFork.getIndex());
-            RMIServer.plates.add(new Plate(leftFork, rightFork, startIndex + i));
+            server.getPlates().add(new Plate(leftFork, rightFork, startIndex + i));
         }
-        RMIServer.tablePiece = new TablePiece(RMIServer.instanceNumber, RMIServer.plates);
+        server.setTablePiece(new TablePiece(server.getInstanceNumber(), server.getPlates(),server));
         return true;
     }
 
     @Override
     public boolean createNewPhilosopher(int index, boolean hungry) throws RemoteException
     {
-        RMIServer.clientAPI.log(ClientToServer.class.getSimpleName() + RMIServer.instanceNumber, "createNewP - " + index);
-        new Thread(new Philosopher(RMIServer.tablePiece, index, hungry)).start();
-        RMIServer.clientAPI.registerPhilosopher(index, RMIServer.instanceNumber);
+        server.getClientAPI().log(ClientToServer.class.getSimpleName() + server.getInstanceNumber(), "createNewP - " + index);
+        new Thread(new Philosopher(server,server.getTablePiece(), index, hungry)).start();
+        server.getClientAPI().registerPhilosopher(index, server.getInstanceNumber());
         return true;
     }
 
     @Override
     public boolean respawnPhilosopher(int index, boolean hungry, int eatCount) throws RemoteException
     {
-        RMIServer.clientAPI.log(ClientToServer.class.getSimpleName() + RMIServer.instanceNumber, "respawnP - " + index + " hungry: " + hungry + " eatCount" + eatCount);
-        new Thread(new Philosopher(RMIServer.tablePiece, index, hungry, eatCount)).start();
-        RMIServer.clientAPI.registerPhilosopher(index, RMIServer.instanceNumber);
+        server.getClientAPI().log(ClientToServer.class.getSimpleName() + server.getInstanceNumber(), "respawnP - " + index + " hungry: " + hungry + " eatCount" + eatCount);
+        new Thread(new Philosopher(server,server.getTablePiece(), index, hungry, eatCount)).start();
+        server.getClientAPI().registerPhilosopher(index, server.getInstanceNumber());
         return true;
     }
 
     @Override
     public void stopServer() throws RemoteException
     {
-        RMIServer.clientAPI.log(ClientToServer.class.getSimpleName() + RMIServer.instanceNumber, "stopServer - ");
+        server.getClientAPI().log(ClientToServer.class.getSimpleName() + server.getInstanceNumber(), "stopServer - ");
     }
 
     @Override
     public void punishPhilosopher(int index) throws RemoteException
     {
-        RMIServer.clientAPI.log(ClientToServer.class.getSimpleName() + RMIServer.instanceNumber, "punishPhil " + index);
+        server.getClientAPI().log(ClientToServer.class.getSimpleName() + server.getInstanceNumber(), "punishPhil " + index);
     }
 
     @Override
