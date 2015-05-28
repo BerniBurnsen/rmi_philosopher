@@ -44,12 +44,6 @@ public class RemoteFork extends Fork
     }
 
     @Override
-    public String toString()
-    {
-        return "LocalFork: " + index;
-    }
-
-    @Override
     public ForkToken getForkToken()
     {
         try
@@ -61,5 +55,10 @@ public class RemoteFork extends Fork
             //RMIServer.clientAPI.log(RemoteFork.class.getSimpleName(), index + "Error: " + e.getMessage());
         }
         return null;
+    }
+
+    public String toString()
+    {
+        return "RemoteFork " + index + " " + server.getInstanceNumber();
     }
 }
