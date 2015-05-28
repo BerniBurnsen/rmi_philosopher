@@ -34,6 +34,10 @@ public class Logger
                 e.printStackTrace();
             }
         }
+        else
+        {
+            System.out.println(timeString + " - " + from + " - " + message);
+        }
     }
 
     public static Logger getInstance()
