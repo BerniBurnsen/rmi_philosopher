@@ -1,23 +1,26 @@
 package edu.hm.vss.model;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  * Created by Joncn on 27.05.2015.
  */
-public class ForkToken implements Serializable
+public class ForkToken extends UnicastRemoteObject implements Serializable
 {
     private int index;
 
 
 
-    public ForkToken()
+    public ForkToken() throws RemoteException
     {
-
+        super();
     }
 
-    public ForkToken(int index)
+    public ForkToken(int index) throws RemoteException
     {
+        super();
         this.index = index;
     }
 

@@ -1,5 +1,7 @@
 package edu.hm.vss.model;
 
+import java.rmi.RemoteException;
+
 /**
  * Created by B3rni on 20.05.2015.
  */
@@ -10,7 +12,13 @@ public class LocalFork extends Fork
     public LocalFork(int index)
     {
         super(index);
-        token = new ForkToken(index);
+        try
+        {
+            token = new ForkToken(index);
+        } catch (RemoteException e)
+        {
+            e.printStackTrace();
+        }
     }
     @Override
     public boolean isReserved()
