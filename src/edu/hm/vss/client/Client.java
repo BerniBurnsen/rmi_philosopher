@@ -55,6 +55,7 @@ public class Client
         registerObject(Settings.SERVER_TO_CLIENT, new ServerToClient());
 
         logger.printLog(Client.class.getSimpleName(), "main - build up connections");
+
         //build up connections
         for(int i = 0 ; i < instanceCount; i++)
         {
