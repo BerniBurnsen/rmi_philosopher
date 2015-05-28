@@ -36,13 +36,13 @@ public class ClientToServer implements IClientToServer
         Registry registry;
         registry = LocateRegistry.getRegistry(clientIP, clientPort);
         server.setClientAPI((IServerToClient)registry.lookup(Settings.SERVER_TO_CLIENT));
+        server.getClientAPI().log(toString(), "initClientConnection from Server " + server.getInstanceNumber() + " to Client");
         return true;
     }
 
     @Override
     public boolean initServerConnections(String rightNeighbourIP, int rightNeighbourPort, String leftNeighbourIP, int leftNeighbourPort) throws RemoteException, NotBoundException
     {
-
         Registry serverRegistry;
         //only one instance
         if(server.getClientAPI().getNumberOfInstances() == 1)
