@@ -13,8 +13,6 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class ServerToServer extends UnicastRemoteObject implements IServerToServer
 {
-
-
     private RMIServer server;
 
     public ServerToServer() throws RemoteException
