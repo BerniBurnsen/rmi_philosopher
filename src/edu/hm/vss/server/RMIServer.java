@@ -5,18 +5,20 @@ import edu.hm.vss.interfaces.*;
 import edu.hm.vss.model.Plate;
 import edu.hm.vss.model.TablePiece;
 
+import java.io.Serializable;
 import java.rmi.AlreadyBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by B3rni on 13.05.2015.
  */
-public class RMIServer
+public class RMIServer implements Serializable
 {
     private Registry registry;
     private final int instanceNumber;
