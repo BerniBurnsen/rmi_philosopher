@@ -15,7 +15,7 @@ public class ServerToServer implements IServerToServer
     @Override
     public void pushPhilosopher(int index, boolean isHungry, int eatCount, int startIndex, boolean isFirstRound) throws RemoteException
     {
-        RMIServer.clientAPI.log(ServerToServer.class.getSimpleName(), "pushPhil " + index + " hungry: " + isHungry + " eatCount: " + eatCount + " startIndex: " + startIndex + " isFirstRound: " + isFirstRound);
+        RMIServer.clientAPI.log(ServerToServer.class.getSimpleName() + RMIServer.instanceNumber, "pushPhil " + index + " hungry: " + isHungry + " eatCount: " + eatCount + " startIndex: " + startIndex + " isFirstRound: " + isFirstRound);
         new Thread(new Philosopher(RMIServer.tablePiece, index, isHungry, eatCount, startIndex, isFirstRound)).start();
         RMIServer.clientAPI.registerPhilosopher(index, RMIServer.instanceNumber);
     }

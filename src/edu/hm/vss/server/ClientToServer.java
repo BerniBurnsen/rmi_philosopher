@@ -36,14 +36,14 @@ public class ClientToServer implements IClientToServer
         // only two instances
         else if(RMIServer.clientAPI.getNumberOfInstances() == 2)
         {
-            RMIServer.clientAPI.log(ClientToServer.class.getSimpleName(), "initConnections - " + "two instances");
+            RMIServer.clientAPI.log(ClientToServer.class.getSimpleName() + RMIServer.instanceNumber, "initConnections - " + "two instances");
             registry = LocateRegistry.getRegistry(rightNeighbourIP, rightNeighbourPort);
             RMIServer.rightServerAPI = RMIServer.leftServerAPI = (IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER);
         }
         // > 2 instances
         else
         {
-            RMIServer.clientAPI.log(ClientToServer.class.getSimpleName(), "initConnections - " + "more than two instances");
+            RMIServer.clientAPI.log(ClientToServer.class.getSimpleName() + RMIServer.instanceNumber, "initConnections - " + "more than two instances");
             registry = LocateRegistry.getRegistry(rightNeighbourIP, rightNeighbourPort);
             RMIServer.rightServerAPI = (IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER);
             registry = LocateRegistry.getRegistry(leftNeighbourIP, leftNeighbourPort);
@@ -80,7 +80,7 @@ public class ClientToServer implements IClientToServer
     @Override
     public boolean createNewPhilosopher(int index, boolean hungry) throws RemoteException
     {
-        RMIServer.clientAPI.log(ClientToServer.class.getSimpleName(), "createNewP - " + index);
+        RMIServer.clientAPI.log(ClientToServer.class.getSimpleName() + RMIServer.instanceNumber, "createNewP - " + index);
         new Thread(new Philosopher(RMIServer.tablePiece, index, hungry)).start();
         RMIServer.clientAPI.registerPhilosopher(index, RMIServer.instanceNumber);
         return true;
@@ -89,7 +89,7 @@ public class ClientToServer implements IClientToServer
     @Override
     public boolean respawnPhilosopher(int index, boolean hungry, int eatCount) throws RemoteException
     {
-        RMIServer.clientAPI.log(ClientToServer.class.getSimpleName(), "respawnP - " + index + " hungry: " + hungry + " eatCount" + eatCount);
+        RMIServer.clientAPI.log(ClientToServer.class.getSimpleName() + RMIServer.instanceNumber, "respawnP - " + index + " hungry: " + hungry + " eatCount" + eatCount);
         new Thread(new Philosopher(RMIServer.tablePiece, index, hungry, eatCount)).start();
         RMIServer.clientAPI.registerPhilosopher(index, RMIServer.instanceNumber);
         return true;
@@ -98,13 +98,13 @@ public class ClientToServer implements IClientToServer
     @Override
     public void stopServer() throws RemoteException
     {
-        RMIServer.clientAPI.log(ClientToServer.class.getSimpleName(), "stopServer - ");
+        RMIServer.clientAPI.log(ClientToServer.class.getSimpleName() + RMIServer.instanceNumber, "stopServer - ");
     }
 
     @Override
     public void punishPhilosopher(int index) throws RemoteException
     {
-        RMIServer.clientAPI.log(ClientToServer.class.getSimpleName(), "punishPhil " + index);
+        RMIServer.clientAPI.log(ClientToServer.class.getSimpleName() + RMIServer.instanceNumber, "punishPhil " + index);
     }
 
     @Override
