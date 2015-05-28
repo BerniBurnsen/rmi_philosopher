@@ -28,6 +28,7 @@ public class ClientToServer implements IClientToServer
     public ClientToServer(RMIServer server)
     {
         this.server = server;
+        System.out.println("ClientToServer contructor");
     }
 
     @Override

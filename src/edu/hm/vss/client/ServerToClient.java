@@ -17,6 +17,7 @@ public class ServerToClient implements IServerToClient
     public ServerToClient(Client client)
     {
         this.client = client;
+        System.out.println("ServerToClient constructor");
     }
 
     @Override
@@ -29,7 +30,7 @@ public class ServerToClient implements IServerToClient
     @Override
     public void neighbourUnreachable(String IP) throws RemoteException
     {
-        log(ServerToClient.class.getSimpleName(),"neighbourUnreachAble - " + IP);
+        log(ServerToClient.class.getSimpleName(), "neighbourUnreachAble - " + IP);
     }
 
     @Override

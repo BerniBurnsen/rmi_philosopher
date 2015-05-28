@@ -16,6 +16,7 @@ public class ServerToServer implements IServerToServer
     public ServerToServer(RMIServer server)
     {
         this.server = server;
+        System.out.println("ServerToServer contructor");
     }
 
     @Override
