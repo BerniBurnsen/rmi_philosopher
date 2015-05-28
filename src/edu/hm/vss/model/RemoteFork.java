@@ -36,7 +36,7 @@ public class RemoteFork extends Fork
         super.isReserved = isReserved;
         try
         {
-            server.getLeftServerAPI().setIsForkReserved(index, isReserved);
+            server.getLeftServerAPI().setIsForkReserved(isReserved);
         } catch (RemoteException e)
         {
             e.printStackTrace();

@@ -51,9 +51,9 @@ public class ServerToServer extends UnicastRemoteObject implements IServerToServ
     }
 
     @Override
-    public void setIsForkReserved(int index, boolean isReserved) throws RemoteException
+    public void setIsForkReserved(boolean isReserved) throws RemoteException
     {
-        server.getPlates().get(index).getRightFork().setIsReserved(isReserved);
+        server.getPlates().get(server.getPlates().size()-1).getRightFork().setIsReserved(isReserved);
     }
 
     @Override
