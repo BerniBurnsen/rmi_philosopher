@@ -27,19 +27,20 @@ public class ServerToServer implements IServerToServer
     }
 
     @Override
-    public ForkToken requestForkToken()
+    public ForkToken requestForkToken() throws RemoteException
     {
+        server.getClientAPI().log(toString(), "requestForkToken: plateSize: " + server.getPlates().size());
         return server.getPlates().get(server.getPlates().size()-1).getRightFork().getForkToken();
     }
 
     @Override
-    public boolean requestIsRemoteForkReserved()
+    public boolean requestIsRemoteForkReserved() throws RemoteException
     {
         return server.getPlates().get(server.getPlates().size()-1).getRightFork().isReserved();
     }
 
     @Override
-    public void setIsForkReserved(int index, boolean isReserved)
+    public void setIsForkReserved(int index, boolean isReserved) throws RemoteException
     {
         server.getPlates().get(index).getRightFork().setIsReserved(isReserved);
     }

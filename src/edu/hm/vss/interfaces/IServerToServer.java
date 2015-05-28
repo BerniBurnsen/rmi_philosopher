@@ -25,7 +25,7 @@ public interface IServerToServer extends Remote, Serializable
      */
     ForkToken requestForkToken() throws RemoteException;
 
-    boolean requestIsRemoteForkReserved();
+    boolean requestIsRemoteForkReserved() throws RemoteException;
 
-    void setIsForkReserved(int index, boolean isReserved);
+    void setIsForkReserved(int index, boolean isReserved) throws RemoteException;
 }
