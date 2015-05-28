@@ -74,14 +74,25 @@ public class ClientToServer implements IClientToServer
             Fork rightFork = new LocalFork(startIndex+i);
 
             Fork leftFork;
-            if(startIndex +i+1 < server.getPlates().size())
+
+            if(server.getPlates().get(startIndex -1).getRightFork() != null && server.getPlates().get(startIndex -1).getRightFork() instanceof LocalFork)
             {
-                leftFork = startIndex + i == startIndex ? new RemoteFork(startIndex + i + 1,server) : server.getPlates().get(startIndex + i + 1).getRightFork();
+                leftFork = server.getPlates().get(startIndex - 1).getRightFork();
+            }
+            else
+            {
+                leftFork = new RemoteFork((startIndex -1)%maxSeats, server);
+            }
+
+/*
+            if(startIndex +i +1 < server.getPlates().size())
+            {
+                leftFork = startIndex + i + 1 == startIndex ? new RemoteFork(startIndex + i + 1,server) : server.getPlates().get(startIndex + i + 1).getRightFork();
             }
             else
             {
                 leftFork = new RemoteFork(0,server);
-            }
+            }*/
             server.getClientAPI().log(toString()," initServer - plate " + (startIndex + i) + " rightFork index " + rightFork.getIndex() + " leftFork isRemote: " + ((leftFork instanceof RemoteFork) ? "yes" : "no") + " index: " + leftFork.getIndex());
             server.getPlates().add(new Plate(leftFork, rightFork, startIndex + i));
         }
