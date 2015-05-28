@@ -12,29 +12,35 @@ import java.rmi.RemoteException;
  */
 public class ServerToServer implements IServerToServer
 {
+    private final RMIServer server;
+    public ServerToServer(RMIServer server)
+    {
+        this.server =server;
+    }
+
     @Override
     public void pushPhilosopher(int index, boolean isHungry, int eatCount, int startIndex, boolean isFirstRound) throws RemoteException
     {
-        RMIServer.clientAPI.log(ServerToServer.class.getSimpleName() + RMIServer.instanceNumber, "pushPhil " + index + " hungry: " + isHungry + " eatCount: " + eatCount + " startIndex: " + startIndex + " isFirstRound: " + isFirstRound);
-        new Thread(new Philosopher(RMIServer.tablePiece, index, isHungry, eatCount, startIndex, isFirstRound)).start();
-        RMIServer.clientAPI.registerPhilosopher(index, RMIServer.instanceNumber);
+        server.getClientAPI().log(ServerToServer.class.getSimpleName() + server.getInstanceNumber(), "pushPhil " + index + " hungry: " + isHungry + " eatCount: " + eatCount + " startIndex: " + startIndex + " isFirstRound: " + isFirstRound);
+        new Thread(new Philosopher(server,server.getTablePiece(), index, isHungry, eatCount, startIndex, isFirstRound)).start();
+        server.getClientAPI().registerPhilosopher(index, server.getInstanceNumber());
     }
 
     @Override
     public ForkToken requestForkToken(int index)
     {
-        return RMIServer.plates.get(index).getRightFork().getForkToken();
+        return server.getPlates().get(index).getRightFork().getForkToken();
     }
 
     @Override
     public boolean requestIsForkReserved(int index)
     {
-        return RMIServer.plates.get(index).getRightFork().isReserved();
+        return server.getPlates().get(index).getRightFork().isReserved();
     }
 
     @Override
     public void setIsForkReserved(int index, boolean isReserved)
     {
-        RMIServer.plates.get(index).getRightFork().setIsReserved(isReserved);
+        server.getPlates().get(index).getRightFork().setIsReserved(isReserved);
     }
 }

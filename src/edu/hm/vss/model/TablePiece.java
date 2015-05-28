@@ -16,11 +16,13 @@ public class TablePiece implements Serializable, Remote
     private List<Plate> plates;
     private int index;
     private int nextIndexToUse = 0;
+    private RMIServer server;
 
-    public TablePiece(int index, List<Plate> plates)
+    public TablePiece(int index, List<Plate> plates, RMIServer server)
     {
         this.index = index;
         this.plates = plates;
+        this.server = server;
     }
 
     public Plate getPlate(Philosopher p) throws InterruptedException, RemoteException
@@ -29,7 +31,7 @@ public class TablePiece implements Serializable, Remote
         if(p.getStartIndex() == -1)
         {
             p.setStartIndex(plates.get(startIndex).getIndex());
-            RMIServer.clientAPI.log(TablePiece.class.getSimpleName(), " Phil " + p.getIndex() + " startIndex: " + p.getStartIndex());
+            server.getClientAPI().log(TablePiece.class.getSimpleName(), " Phil " + p.getIndex() + " startIndex: " + p.getStartIndex());
         }
         else if(!p.isFirstRound())
         {
