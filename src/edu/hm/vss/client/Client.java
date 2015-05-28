@@ -4,6 +4,7 @@ import edu.hm.vss.helper.Logger;
 import edu.hm.vss.interfaces.IClientToServer;
 import edu.hm.vss.interfaces.Settings;
 
+import java.io.Serializable;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
@@ -18,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by B3rni on 13.05.2015.
  */
-public class Client
+public class Client implements Serializable
 {
     private Registry registry;
     private List<IClientToServer> servers = new ArrayList<>();
