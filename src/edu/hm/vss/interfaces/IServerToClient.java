@@ -30,5 +30,5 @@ public interface IServerToClient extends Remote, Serializable
 
     int getNumberOfInstances() throws RemoteException;
 
-    void log(String message) throws RemoteException;
+    void log(String type, String message) throws RemoteException;
 }

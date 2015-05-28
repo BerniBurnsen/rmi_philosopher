@@ -12,24 +12,23 @@ import java.rmi.RemoteException;
  */
 public class ServerToClient implements IServerToClient
 {
-    private final static Logger logger = Logger.getInstance();
     @Override
-    public void updateEatCount(int philosopherIndex, int eatCount)
+    public void updateEatCount(int philosopherIndex, int eatCount) throws RemoteException
     {
-        logger.printLog(ServerToClient.class.getSimpleName(),"updateEatCount - PhilIndex" + philosopherIndex + " eatCount" + eatCount);
+        log(ServerToClient.class.getSimpleName(), "updateEatCount - PhilIndex" + philosopherIndex + " eatCount" + eatCount);
         Client.allEatCounts.put(philosopherIndex, eatCount);
     }
 
     @Override
-    public void neighbourUnreachable(String IP)
+    public void neighbourUnreachable(String IP) throws RemoteException
     {
-        logger.printLog(ServerToClient.class.getSimpleName(),"neighbourUnreachAble - " + IP);
+        log(ServerToClient.class.getSimpleName(),"neighbourUnreachAble - " + IP);
     }
 
     @Override
-    public void registerPhilosopher(int index, int server)
+    public void registerPhilosopher(int index, int server) throws RemoteException
     {
-        logger.printLog(ServerToClient.class.getSimpleName(),"regPhil - " + index + " server: " + server);
+        log(ServerToClient.class.getSimpleName(), "regPhil - " + index + " server: " + server);
         Client.locationMap.put(index, server);
     }
 
@@ -40,8 +39,8 @@ public class ServerToClient implements IServerToClient
     }
 
     @Override
-    public void log(String message) throws RemoteException
+    public void log(String type, String message) throws RemoteException
     {
-        System.out.println(message);
+        Client.logger.printLog(type, message);
     }
 }

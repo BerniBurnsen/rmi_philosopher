@@ -29,18 +29,15 @@ public class RMIServer
 
     public static List<Plate> plates = new ArrayList<>();
 
-    private final static Logger logger = Logger.getInstance();
-
     public static void startRegistry(int instanceNumber) throws RemoteException
     {
-        logger.printLog(RMIServer.class.getName(),"startRegistry - " + (Settings.PORT_SERVER_BASE+instanceNumber));
         registry = LocateRegistry.createRegistry(Settings.PORT_SERVER_BASE +instanceNumber);
     }
 
     public static void registerObject(String name, Remote remoteObject) throws RemoteException, AlreadyBoundException
     {
         registry.bind(name, remoteObject);
-        logger.printLog(RMIServer.class.getSimpleName(), "registerObject - registered " + name + " " + remoteObject.getClass().getName());
+        //logger.printLog(RMIServer.class.getSimpleName(), "registerObject - registered " + name + " " + remoteObject.getClass().getName());
 
     }
 
@@ -49,7 +46,7 @@ public class RMIServer
         if(args.length == 1)
         {
             instanceNumber = Integer.parseInt(args[0]);
-            logger.printLog(RMIServer.class.getName(),"Server start " + instanceNumber);
+            //logger.printLog(RMIServer.class.getName(),"Server start " + instanceNumber);
             startRegistry(instanceNumber);
             registerObject(Settings.CLIENT_TO_SERVER, new ClientToServer());
             registerObject(Settings.SERVER_TO_SERVER, new ServerToServer());
@@ -58,8 +55,8 @@ public class RMIServer
             //initDiningPhilosophers();
             while(true)
             {
-                Thread.sleep(60 * 5 * 1000);
-                logger.printLog(RMIServer.class.getName(),"sleeping again!");
+                Thread.sleep(60*5*1000);
+                //logger.printLog(RMIServer.class.getName(),"sleeping again!");
             }
         }
 
