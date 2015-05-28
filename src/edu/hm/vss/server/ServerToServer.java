@@ -15,7 +15,7 @@ public class ServerToServer implements IServerToServer
     private final RMIServer server;
     public ServerToServer(RMIServer server)
     {
-        this.server =server;
+        this.server = server;
     }
 
     @Override
@@ -49,7 +49,8 @@ public class ServerToServer implements IServerToServer
     public boolean testConnection() throws RemoteException
     {
         System.out.println("SERVER " + server.getInstanceNumber());
-        System.out.println("SERVER " + server.getClientAPI());
+        System.out.println("SERVER TO CLIENT" + server.getClientAPI());
+        System.out.println("SERVER" + server);
         server.getClientAPI().log(toString(), "Connection OK");
         return true;
     }
