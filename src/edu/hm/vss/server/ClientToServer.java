@@ -101,6 +101,7 @@ public class ClientToServer implements IClientToServer
     @Override
     public void startPhilosophers() throws RemoteException
     {
+        server.getClientAPI().log(toString(), "START");
         for(Thread p : philosophers)
         {
             p.start();

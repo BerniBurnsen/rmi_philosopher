@@ -95,7 +95,7 @@ public class Client
             servers.get(nextServerIndex).createNewPhilosopher(i, i >= numberOfPhilosophers - numberOfHungryPhilosophers ? true : false);
         }
 
-        Thread.sleep(1* 1000);
+        Thread.sleep(2 * 1000);
 
         //start philosophers
         for(int i = 0 ; i < instanceCount ; i++)
