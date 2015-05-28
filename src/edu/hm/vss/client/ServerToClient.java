@@ -6,21 +6,24 @@ import edu.hm.vss.interfaces.IServerToClient;
 import edu.hm.vss.interfaces.IServerToServer;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  * Created by B3rni on 20.05.2015.
  */
-public class ServerToClient implements IServerToClient
+public class ServerToClient extends UnicastRemoteObject implements IServerToClient
 {
     private Client client;
 
-    public ServerToClient()
+    public ServerToClient() throws RemoteException
     {
+        super();
 
     }
 
-    public ServerToClient(Client client)
+    public ServerToClient(Client client) throws RemoteException
     {
+        super();
         this.client = client;
         System.out.println("ServerToClient constructor");
     }

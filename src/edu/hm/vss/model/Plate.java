@@ -8,9 +8,12 @@ import java.rmi.Remote;
  */
 public class Plate implements Serializable, Remote
 {
-    private final Fork leftFork;
-    private final Fork rightFork;
-    private final int index;
+    private Fork leftFork;
+    private Fork rightFork;
+
+
+
+    private int index;
 
     private boolean isReserved = false;
     private Philosopher p = null;
@@ -20,6 +23,10 @@ public class Plate implements Serializable, Remote
         this.leftFork = leftFork;
         this.rightFork = rightFork;
         this.index = index;
+    }
+
+    public Plate()
+    {
     }
 
     public boolean isReserved()
@@ -128,5 +135,35 @@ public class Plate implements Serializable, Remote
     public String toString()
     {
         return "Plate " + getIndex();
+    }
+
+    public void setLeftFork(Fork leftFork)
+    {
+        this.leftFork = leftFork;
+    }
+
+    public void setRightFork(Fork rightFork)
+    {
+        this.rightFork = rightFork;
+    }
+
+    public void setIndex(int index)
+    {
+        this.index = index;
+    }
+
+    public void setIsReserved(boolean isReserved)
+    {
+        this.isReserved = isReserved;
+    }
+
+    public Philosopher getP()
+    {
+        return p;
+    }
+
+    public void setP(Philosopher p)
+    {
+        this.p = p;
     }
 }

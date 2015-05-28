@@ -10,7 +10,7 @@ import java.rmi.server.UnicastRemoteObject;
 /**
  * Created by B3rni on 13.05.2015.
  */
-public class Philosopher extends UnicastRemoteObject implements Serializable, Runnable
+public class Philosopher implements Serializable, Runnable
 {
     private static final long serialVersionUID = 1L;
 
@@ -18,9 +18,9 @@ public class Philosopher extends UnicastRemoteObject implements Serializable, Ru
     private final int SLEEPTIME = 10;
     private final int EATTIME = 1;
 
-    private final TablePiece tablePiece;
-    private final int index;
-    private final boolean isVeryHungry;
+    private  TablePiece tablePiece;
+    private  int index;
+    private  boolean isVeryHungry;
 
     private int eatCounter = 0;
     private boolean run = true;
@@ -29,7 +29,13 @@ public class Philosopher extends UnicastRemoteObject implements Serializable, Ru
     private int startIndex = -1;
     private boolean isFirstRound = true;
 
-    private final RMIServer server;
+    private RMIServer server;
+
+
+    public Philosopher()
+    {
+
+    }
 
     public Philosopher(RMIServer server, TablePiece tablePiece, int index, boolean hungry) throws RemoteException
     {
@@ -211,4 +217,85 @@ public class Philosopher extends UnicastRemoteObject implements Serializable, Ru
     {
         return "Philosopher " + getIndex() + " " + server.getInstanceNumber();
     }
+
+    public static long getSerialVersionUID()
+    {
+        return serialVersionUID;
+    }
+
+    public int getMEDITATIONTIME()
+    {
+        return MEDITATIONTIME;
+    }
+
+    public int getSLEEPTIME()
+    {
+        return SLEEPTIME;
+    }
+
+    public int getEATTIME()
+    {
+        return EATTIME;
+    }
+
+    public TablePiece getTablePiece()
+    {
+        return tablePiece;
+    }
+
+    public void setTablePiece(TablePiece tablePiece)
+    {
+        this.tablePiece = tablePiece;
+    }
+
+    public void setIndex(int index)
+    {
+        this.index = index;
+    }
+
+    public boolean isVeryHungry()
+    {
+        return isVeryHungry;
+    }
+
+    public void setIsVeryHungry(boolean isVeryHungry)
+    {
+        this.isVeryHungry = isVeryHungry;
+    }
+
+    public void setEatCounter(int eatCounter)
+    {
+        this.eatCounter = eatCounter;
+    }
+
+    public boolean isRun()
+    {
+        return run;
+    }
+
+    public void setRun(boolean run)
+    {
+        this.run = run;
+    }
+
+    public String getState()
+    {
+        return state;
+    }
+
+    public void setState(String state)
+    {
+        this.state = state;
+    }
+
+    public RMIServer getServer()
+    {
+        return server;
+    }
+
+    public void setServer(RMIServer server)
+    {
+        this.server = server;
+    }
+
 }

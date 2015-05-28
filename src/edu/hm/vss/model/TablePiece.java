@@ -18,6 +18,12 @@ public class TablePiece implements Serializable, Remote
     private int nextIndexToUse = 0;
     private RMIServer server;
 
+
+    public TablePiece()
+    {
+
+    }
+
     public TablePiece(int index, List<Plate> plates, RMIServer server)
     {
         this.index = index;
@@ -95,4 +101,41 @@ public class TablePiece implements Serializable, Remote
     {
         return "TablePiece " + index + " " + server.getInstanceNumber();
     }
+
+
+    public List<Plate> getPlates()
+    {
+        return plates;
+    }
+
+    public void setPlates(List<Plate> plates)
+    {
+        this.plates = plates;
+    }
+
+    public void setIndex(int index)
+    {
+        this.index = index;
+    }
+
+    public int getNextIndexToUse()
+    {
+        return nextIndexToUse;
+    }
+
+    public void setNextIndexToUse(int nextIndexToUse)
+    {
+        this.nextIndexToUse = nextIndexToUse;
+    }
+
+    public RMIServer getServer()
+    {
+        return server;
+    }
+
+    public void setServer(RMIServer server)
+    {
+        this.server = server;
+    }
+
 }

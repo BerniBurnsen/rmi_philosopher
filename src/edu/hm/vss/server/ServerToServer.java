@@ -6,22 +6,25 @@ import edu.hm.vss.model.ForkToken;
 import edu.hm.vss.model.Philosopher;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  * Created by B3rni on 20.05.2015.
  */
-public class ServerToServer implements IServerToServer
+public class ServerToServer extends UnicastRemoteObject implements IServerToServer
 {
 
 
     private RMIServer server;
 
-    public ServerToServer()
+    public ServerToServer() throws RemoteException
     {
+        super();
 
     }
-    public ServerToServer(RMIServer server)
+    public ServerToServer(RMIServer server) throws RemoteException
     {
+        super();
         this.server = server;
         System.out.println("ServerToServer contructor");
     }

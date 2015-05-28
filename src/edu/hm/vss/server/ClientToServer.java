@@ -14,26 +14,29 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by B3rni on 20.05.2015.
  */
-public class ClientToServer implements IClientToServer
+public class ClientToServer extends UnicastRemoteObject implements IClientToServer
 {
     private RMIServer server;
     private List<Thread> philosophers = new ArrayList<>();
 
 
 
-    public ClientToServer()
+    public ClientToServer() throws RemoteException
     {
+        super();
 
     }
 
-    public ClientToServer(RMIServer server)
+    public ClientToServer(RMIServer server) throws RemoteException
     {
+        super();
         this.server = server;
         System.out.println("ClientToServer contructor");
     }
