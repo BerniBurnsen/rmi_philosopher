@@ -28,4 +28,6 @@ public interface IServerToServer extends Remote, Serializable
     boolean requestIsRemoteForkReserved() throws RemoteException;
 
     void setIsForkReserved(int index, boolean isReserved) throws RemoteException;
+
+    boolean testConnection() throws RemoteException;
 }

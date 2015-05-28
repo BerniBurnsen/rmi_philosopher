@@ -61,7 +61,15 @@ public class ClientToServer implements IClientToServer
             registry = LocateRegistry.getRegistry(leftNeighbourIP, leftNeighbourPort);
             server.setLeftServerAPI((IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE)));
         }
-        return true;
+
+        if(server.getRightServerAPI() != null)
+        {
+            return server.getLeftServerAPI().testConnection() && server.getRightServerAPI().testConnection();
+        }
+        else
+        {
+            return true;
+        }
     }
 
 
