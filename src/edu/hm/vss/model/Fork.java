@@ -8,9 +8,15 @@ import java.rmi.Remote;
  */
 public abstract class Fork implements Serializable, Remote
 {
-    protected final int index;
+
+    protected int index;
     protected boolean isReserved = false;
     protected Philosopher p = null;
+
+    public Fork()
+    {
+
+    }
 
     Fork(int index)
     {
@@ -26,4 +32,20 @@ public abstract class Fork implements Serializable, Remote
     public abstract String toString();
 
     public abstract ForkToken getForkToken();
+
+    public void setIndex(int index)
+    {
+        this.index = index;
+    }
+
+    public Philosopher getP()
+    {
+        return p;
+    }
+
+    public void setP(Philosopher p)
+    {
+        this.p = p;
+    }
+
 }
