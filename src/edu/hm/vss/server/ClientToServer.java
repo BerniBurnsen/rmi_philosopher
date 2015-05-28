@@ -36,18 +36,19 @@ public class ClientToServer implements IClientToServer
         // only two instances
         else if(RMIServer.clientAPI.getNumberOfInstances() == 2)
         {
+            System.out.println("TEST");
             RMIServer.clientAPI.log(ClientToServer.class.getSimpleName() + RMIServer.instanceNumber, "initConnections - " + "two instances");
             registry = LocateRegistry.getRegistry(rightNeighbourIP, rightNeighbourPort);
-            RMIServer.rightServerAPI = RMIServer.leftServerAPI = (IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER);
+            RMIServer.rightServerAPI = RMIServer.leftServerAPI = (IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE));
         }
         // > 2 instances
         else
         {
             RMIServer.clientAPI.log(ClientToServer.class.getSimpleName() + RMIServer.instanceNumber, "initConnections - " + "more than two instances");
             registry = LocateRegistry.getRegistry(rightNeighbourIP, rightNeighbourPort);
-            RMIServer.rightServerAPI = (IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER);
+            RMIServer.rightServerAPI = (IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE));
             registry = LocateRegistry.getRegistry(leftNeighbourIP, leftNeighbourPort);
-            RMIServer.leftServerAPI = (IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER);
+            RMIServer.leftServerAPI = (IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE));
         }
         return true;
     }

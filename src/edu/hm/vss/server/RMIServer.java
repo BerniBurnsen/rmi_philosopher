@@ -48,8 +48,8 @@ public class RMIServer
             instanceNumber = Integer.parseInt(args[0]);
             //logger.printLog(RMIServer.class.getName(),"Server start " + instanceNumber);
             startRegistry(instanceNumber);
-            registerObject(Settings.CLIENT_TO_SERVER, new ClientToServer());
-            registerObject(Settings.SERVER_TO_SERVER, new ServerToServer());
+            registerObject(Settings.CLIENT_TO_SERVER + instanceNumber, new ClientToServer());
+            registerObject(Settings.SERVER_TO_SERVER + instanceNumber, new ServerToServer());
 
             //registerObject("Test", new Test());
             //initDiningPhilosophers();
