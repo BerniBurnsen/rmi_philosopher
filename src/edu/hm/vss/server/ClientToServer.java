@@ -37,6 +37,7 @@ public class ClientToServer implements IClientToServer
         registry = LocateRegistry.getRegistry(clientIP, clientPort);
         server.setClientAPI((IServerToClient)registry.lookup(Settings.SERVER_TO_CLIENT + server.getInstanceNumber()));
         server.getClientAPI().log(toString(), "initClientConnection from Server " + server.getInstanceNumber() + " to Client");
+        server.getClientAPI().log(toString(), "ServerReference: " + server);
         return true;
     }
 
