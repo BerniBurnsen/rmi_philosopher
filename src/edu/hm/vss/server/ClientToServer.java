@@ -66,9 +66,9 @@ public class ClientToServer implements IClientToServer
 
 
     @Override
-    public boolean initServer(int seats, int maxSeats, int startIndex)
+    public boolean initServer(int seats, int maxSeats, int startIndex) throws RemoteException
     {
-        //logger.printLog(ClientToServer.class.getSimpleName()," initServer - Seats: " + seats + " maxSeats " + maxSeats + " startIndex " + startIndex);
+        server.getClientAPI().log(toString()," initServer - Seats: " + seats + " maxSeats " + maxSeats + " startIndex " + startIndex);
         for(int i = 0 ; i < seats ;i++)
         {
             Fork rightFork = new LocalFork(startIndex+i);
@@ -82,7 +82,7 @@ public class ClientToServer implements IClientToServer
             {
                 leftFork = new RemoteFork(0,server);
             }
-            //logger.printLog(ClientToServer.class.getSimpleName()," initServer - plate " + (startIndex + i) + " rightFork index " + rightFork.getIndex() + " leftFork isRemote: " + ((leftFork instanceof RemoteFork) ? "yes" : "no") + " index: " + leftFork.getIndex());
+            server.getClientAPI().log(toString()," initServer - plate " + (startIndex + i) + " rightFork index " + rightFork.getIndex() + " leftFork isRemote: " + ((leftFork instanceof RemoteFork) ? "yes" : "no") + " index: " + leftFork.getIndex());
             server.getPlates().add(new Plate(leftFork, rightFork, startIndex + i));
         }
         server.setTablePiece(new TablePiece(server.getInstanceNumber(), server.getPlates(),server));

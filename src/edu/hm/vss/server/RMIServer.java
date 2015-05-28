@@ -29,8 +29,6 @@ public class RMIServer implements Serializable
 
     private TablePiece tablePiece;
 
-
-
     private List<Plate> plates = new ArrayList<>();
 
     RMIServer(int instanceNumber) throws AlreadyBoundException, RemoteException
