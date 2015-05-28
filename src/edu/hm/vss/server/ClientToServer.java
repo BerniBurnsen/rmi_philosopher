@@ -30,12 +30,14 @@ public class ClientToServer implements IClientToServer
         //only one instance
         if(RMIServer.clientAPI.getNumberOfInstances() == 1)
         {
+
             RMIServer.clientAPI.log(ClientToServer.class.getSimpleName() + RMIServer.instanceNumber, "initConnections - " + " only one instance");
             RMIServer.rightServerAPI = RMIServer.leftServerAPI = null;
         }
         // only two instances
         else if(RMIServer.clientAPI.getNumberOfInstances() == 2)
         {
+            System.out.println("asdf");
             RMIServer.clientAPI.log(ClientToServer.class.getSimpleName() + RMIServer.instanceNumber, "initConnections - " + "two instances");
             registry = LocateRegistry.getRegistry(rightNeighbourIP, rightNeighbourPort);
             RMIServer.rightServerAPI = RMIServer.leftServerAPI = (IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER);
