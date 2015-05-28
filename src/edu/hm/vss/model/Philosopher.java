@@ -29,8 +29,6 @@ public class Philosopher extends UnicastRemoteObject implements Serializable, Ru
     private int startIndex = -1;
     private boolean isFirstRound = true;
 
-    private static final Logger logger = Logger.getInstance();
-
     public Philosopher(TablePiece tablePiece, int index, boolean hungry) throws RemoteException
     {
         this.tablePiece = tablePiece;
@@ -58,7 +56,13 @@ public class Philosopher extends UnicastRemoteObject implements Serializable, Ru
         Fork leftFork;
         Fork rightFork;
 
-        logger.printLog(Philosopher.class.getSimpleName(), index + " spawning on tablePiece " + tablePiece.getIndex());
+        try
+        {
+            RMIServer.clientAPI.log(Philosopher.class.getSimpleName(), index + " spawning on tablePiece " + tablePiece.getIndex());
+        } catch (RemoteException e)
+        {
+            e.printStackTrace();
+        }
 
         eatLoop:
         while(run)
@@ -77,23 +81,23 @@ public class Philosopher extends UnicastRemoteObject implements Serializable, Ru
                     state = "got place";
                     leftFork = plate.getLeftFork();
                     rightFork = plate.getRightFork();
-                    logger.printLog(Philosopher.class.getSimpleName(), index + " leftForkindex: " + leftFork.getIndex() + " and " + rightFork.getIndex());
+                    RMIServer.clientAPI.log(Philosopher.class.getSimpleName(), index + " leftForkindex: " + leftFork.getIndex() + " and " + rightFork.getIndex());
                     //Main.writeInDebugmode(this + " waiting for forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
                     state = "waiting for Forks";
                     plate.waitForForks(this);
                     state = "got forks";
-                    logger.printLog(Philosopher.class.getSimpleName(),index + " got Forks "+ leftFork.getIndex() + " and " + rightFork.getIndex());
+                    RMIServer.clientAPI.log(Philosopher.class.getSimpleName(), index + " got Forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
                     //Main.writeInDebugmode(this + " got forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
                     state = "start eating";
                     eat();
                     state = "releasing forks";
                     plate.releaseForks();
                     state = "releasing plate";
-                    logger.printLog(Philosopher.class.getSimpleName(),index + " release forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
+                    RMIServer.clientAPI.log(Philosopher.class.getSimpleName(), index + " release forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
                             //Main.writeInDebugmode(this + " releases forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
                     tablePiece.releasePlate(plate, this);
                     state = "plate released";
-                    logger.printLog(Philosopher.class.getSimpleName(),index + " released place " + plate.getIndex());
+                    RMIServer.clientAPI.log(Philosopher.class.getSimpleName(), index + " released place " + plate.getIndex());
                     //Main.writeInDebugmode(this + " releases place " + plate.getIndex());
                     state = "meditating";
                     meditate();
@@ -108,6 +112,10 @@ public class Philosopher extends UnicastRemoteObject implements Serializable, Ru
                 System.err.println(this + " stop");
                 run = false;
             }
+            catch (RemoteException e)
+            {
+                // Client not reachable
+            }
         }
         try
         {
@@ -117,15 +125,15 @@ public class Philosopher extends UnicastRemoteObject implements Serializable, Ru
             try
             {
                 RMIServer.clientAPI.neighbourUnreachable(e.getMessage());
+                RMIServer.clientAPI.log(Philosopher.class.getSimpleName(), index + " killed on server " + tablePiece.getIndex());
             } catch (RemoteException e1)
             {
                 //Terminate
             }
         }
-        logger.printLog(Philosopher.class.getSimpleName(), index + " killed on server " + tablePiece.getIndex());
     }
 
-    private void meditate() throws InterruptedException
+    private void meditate() throws InterruptedException, RemoteException
     {
         int meditationTime;
         if(isVeryHungry)
@@ -136,14 +144,14 @@ public class Philosopher extends UnicastRemoteObject implements Serializable, Ru
         {
             meditationTime = MEDITATIONTIME;
         }
-        logger.printLog(Philosopher.class.getSimpleName(),index + " " + this + (isVeryHungry ? " meditate short" : " meditate") + " (" + meditationTime + ")");
+        RMIServer.clientAPI.log(Philosopher.class.getSimpleName(), index + " " + this + (isVeryHungry ? " meditate short" : " meditate") + " (" + meditationTime + ")");
         //Main.writeInDebugmode(this + (isVeryHungry ? " meditate short" : " meditate") + " (" + meditationTime + ")");
         Thread. sleep(meditationTime);
     }
 
-    private void eat() throws InterruptedException
+    private void eat() throws InterruptedException, RemoteException
     {
-        logger.printLog(Philosopher.class.getSimpleName(),index + " eating");
+        RMIServer.clientAPI.log(Philosopher.class.getSimpleName(), index + " eating");
         //Main.writeInDebugmode(this + " eating");
         Thread.sleep(EATTIME);
         synchronized (this)
@@ -156,9 +164,9 @@ public class Philosopher extends UnicastRemoteObject implements Serializable, Ru
         }
     }
 
-    private void goSleeping() throws InterruptedException
+    private void goSleeping() throws InterruptedException, RemoteException
     {
-        logger.printLog(Philosopher.class.getSimpleName(),index + " sleeping");
+        RMIServer.clientAPI.log(Philosopher.class.getSimpleName(), index + " sleeping");
         //Main.writeInDebugmode(this + " sleeping");
         Thread.sleep(SLEEPTIME);
     }

@@ -22,7 +22,7 @@ public class Client
     private static Registry registry;
     private static List<IClientToServer> servers = new ArrayList<>();
     public static final int instanceCount = 2;
-    private static final Logger logger = Logger.getInstance();
+    public static Logger logger;
 
     public static final Map<Integer, Integer> allEatCounts = new ConcurrentHashMap<>();
     public static final Map<Integer, Integer> locationMap = new ConcurrentHashMap<>();
@@ -43,6 +43,8 @@ public class Client
 
     public static void main(String[] args) throws Exception
     {
+        logger = new Logger();
+
         int numberOfPhilosophers = Integer.parseInt(args[0]);
         int numberOfHungryPhilosophers = Integer.parseInt(args[1]);
         int numberOfPlaces = Integer.parseInt(args[2]);

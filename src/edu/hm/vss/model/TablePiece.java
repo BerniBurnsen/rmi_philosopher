@@ -1,9 +1,11 @@
 package edu.hm.vss.model;
 
 import edu.hm.vss.helper.Logger;
+import edu.hm.vss.server.RMIServer;
 
 import java.io.Serializable;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.List;
 
 /**
@@ -11,8 +13,6 @@ import java.util.List;
  */
 public class TablePiece implements Serializable, Remote
 {
-    private static final Logger logger = Logger.getInstance();
-
     private List<Plate> plates;
     private int index;
     private int nextIndexToUse = 0;
@@ -23,13 +23,13 @@ public class TablePiece implements Serializable, Remote
         this.plates = plates;
     }
 
-    public Plate getPlate(Philosopher p) throws InterruptedException
+    public Plate getPlate(Philosopher p) throws InterruptedException, RemoteException
     {
         int startIndex = nextIndexToUse % plates.size();
         if(p.getStartIndex() == -1)
         {
             p.setStartIndex(plates.get(startIndex).getIndex());
-            logger.printLog(TablePiece.class.getSimpleName(), " Phil " + p.getIndex() + " startIndex: " + p.getStartIndex());
+            RMIServer.clientAPI.log(TablePiece.class.getSimpleName(), " Phil " + p.getIndex() + " startIndex: " + p.getStartIndex());
         }
         else if(!p.isFirstRound())
         {

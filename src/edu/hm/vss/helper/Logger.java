@@ -13,9 +13,8 @@ import java.util.Date;
 public class Logger
 {
     private final boolean doLog = true;
-    private static Logger logger;
 
-    private Logger()
+    public Logger()
     {
 
     }
@@ -24,28 +23,6 @@ public class Logger
     {
         DateFormat df = new SimpleDateFormat("mm:ss.SSS");
         String timeString = df.format(new Date());
-        if(RMIServer.clientAPI != null)
-        {
-            try
-            {
-                RMIServer.clientAPI.log(timeString + " - " + from + " - " + message);
-            } catch (RemoteException e)
-            {
-                e.printStackTrace();
-            }
-        }
-        else
-        {
-            System.out.println(timeString + " - " + from + " - " + message);
-        }
-    }
-
-    public static Logger getInstance()
-    {
-        if(logger == null)
-        {
-            logger = new Logger();
-        }
-        return logger;
+        System.out.println(timeString + " - " + from + " - " + message);
     }
 }

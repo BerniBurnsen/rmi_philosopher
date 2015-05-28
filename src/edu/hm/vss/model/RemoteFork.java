@@ -10,8 +10,6 @@ import java.rmi.RemoteException;
  */
 public class RemoteFork extends Fork
 {
-    private static final Logger logger = Logger.getInstance();
-
     public RemoteFork(int index)
     {
         super(index);
@@ -54,11 +52,11 @@ public class RemoteFork extends Fork
     {
         try
         {
-            logger.printLog(RemoteFork.class.getSimpleName(), "request ForkToken " + index);
+            RMIServer.clientAPI.log(RemoteFork.class.getSimpleName(), "request ForkToken " + index);
             return RMIServer.leftServerAPI.requestForkToken(index);
         } catch (RemoteException e)
         {
-            logger.printLog(RemoteFork.class.getSimpleName(), index + "Error: " + e.getMessage());
+            //RMIServer.clientAPI.log(RemoteFork.class.getSimpleName(), index + "Error: " + e.getMessage());
         }
         return null;
     }

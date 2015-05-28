@@ -20,9 +20,6 @@ import java.rmi.registry.Registry;
  */
 public class ClientToServer implements IClientToServer
 {
-
-    private final static Logger logger = Logger.getInstance();
-
     @Override
     public boolean initConnections(String ClientIP, int ClientPort, String rightNeighbourIP, int rightNeighbourPort, String leftNeighbourIP, int leftNeighbourPort) throws RemoteException, NotBoundException
     {
@@ -33,20 +30,20 @@ public class ClientToServer implements IClientToServer
         //only one instance
         if(RMIServer.clientAPI.getNumberOfInstances() == 1)
         {
-            logger.printLog(ClientToServer.class.getSimpleName(), "initConnections - " + " only one instance");
+            RMIServer.clientAPI.log(ClientToServer.class.getSimpleName(), "initConnections - " + " only one instance");
             RMIServer.rightServerAPI = RMIServer.leftServerAPI = null;
         }
         // only two instances
         else if(RMIServer.clientAPI.getNumberOfInstances() == 2)
         {
-            logger.printLog(ClientToServer.class.getSimpleName(), "initConnections - " + "two instances");
+            RMIServer.clientAPI.log(ClientToServer.class.getSimpleName(), "initConnections - " + "two instances");
             registry = LocateRegistry.getRegistry(rightNeighbourIP, rightNeighbourPort);
             RMIServer.rightServerAPI = RMIServer.leftServerAPI = (IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER);
         }
         // > 2 instances
         else
         {
-            logger.printLog(ClientToServer.class.getSimpleName(), "initConnections - " + "more than two instances");
+            RMIServer.clientAPI.log(ClientToServer.class.getSimpleName(), "initConnections - " + "more than two instances");
             registry = LocateRegistry.getRegistry(rightNeighbourIP, rightNeighbourPort);
             RMIServer.rightServerAPI = (IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER);
             registry = LocateRegistry.getRegistry(leftNeighbourIP, leftNeighbourPort);
@@ -59,7 +56,7 @@ public class ClientToServer implements IClientToServer
     @Override
     public boolean initServer(int seats, int maxSeats, int startIndex)
     {
-        logger.printLog(ClientToServer.class.getSimpleName()," initServer - Seats: " + seats + " maxSeats " + maxSeats + " startIndex " + startIndex);
+        //logger.printLog(ClientToServer.class.getSimpleName()," initServer - Seats: " + seats + " maxSeats " + maxSeats + " startIndex " + startIndex);
         for(int i = 0 ; i < seats ;i++)
         {
             Fork rightFork = new LocalFork(startIndex+i);
@@ -73,7 +70,7 @@ public class ClientToServer implements IClientToServer
             {
                 leftFork = new RemoteFork(maxSeats-1);
             }
-            logger.printLog(ClientToServer.class.getSimpleName()," initServer - plate " + (startIndex + i) + " rightFork index " + rightFork.getIndex() + " leftFork isRemote: " + ((leftFork instanceof RemoteFork) ? "yes" : "no") + " index: " + leftFork.getIndex());
+            //logger.printLog(ClientToServer.class.getSimpleName()," initServer - plate " + (startIndex + i) + " rightFork index " + rightFork.getIndex() + " leftFork isRemote: " + ((leftFork instanceof RemoteFork) ? "yes" : "no") + " index: " + leftFork.getIndex());
             RMIServer.plates.add(new Plate(leftFork, rightFork, startIndex + i));
         }
         RMIServer.tablePiece = new TablePiece(RMIServer.instanceNumber, RMIServer.plates);
@@ -83,7 +80,7 @@ public class ClientToServer implements IClientToServer
     @Override
     public boolean createNewPhilosopher(int index, boolean hungry) throws RemoteException
     {
-        logger.printLog(ClientToServer.class.getSimpleName(),"createNewP - " + index);
+        RMIServer.clientAPI.log(ClientToServer.class.getSimpleName(), "createNewP - " + index);
         new Thread(new Philosopher(RMIServer.tablePiece, index, hungry)).start();
         RMIServer.clientAPI.registerPhilosopher(index, RMIServer.instanceNumber);
         return true;
@@ -92,22 +89,22 @@ public class ClientToServer implements IClientToServer
     @Override
     public boolean respawnPhilosopher(int index, boolean hungry, int eatCount) throws RemoteException
     {
-        logger.printLog(ClientToServer.class.getSimpleName(),"respawnP - " + index + " hungry: " + hungry + " eatCount" + eatCount);
+        RMIServer.clientAPI.log(ClientToServer.class.getSimpleName(), "respawnP - " + index + " hungry: " + hungry + " eatCount" + eatCount);
         new Thread(new Philosopher(RMIServer.tablePiece, index, hungry, eatCount)).start();
         RMIServer.clientAPI.registerPhilosopher(index, RMIServer.instanceNumber);
         return true;
     }
 
     @Override
-    public void stopServer()
+    public void stopServer() throws RemoteException
     {
-        logger.printLog(ClientToServer.class.getSimpleName(),"stopServer - ");
+        RMIServer.clientAPI.log(ClientToServer.class.getSimpleName(), "stopServer - ");
     }
 
     @Override
-    public void punishPhilosopher(int index)
+    public void punishPhilosopher(int index) throws RemoteException
     {
-        logger.printLog(ClientToServer.class.getSimpleName(),"punishPhil " + index);
+        RMIServer.clientAPI.log(ClientToServer.class.getSimpleName(), "punishPhil " + index);
     }
 
     @Override
