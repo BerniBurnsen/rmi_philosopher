@@ -21,7 +21,7 @@ public class ServerToServer implements IServerToServer
     @Override
     public void pushPhilosopher(int index, boolean isHungry, int eatCount, int startIndex, boolean isFirstRound) throws RemoteException
     {
-        server.getClientAPI().log(ServerToServer.class.getSimpleName() + server.getInstanceNumber(), "pushPhil " + index + " hungry: " + isHungry + " eatCount: " + eatCount + " startIndex: " + startIndex + " isFirstRound: " + isFirstRound);
+        server.getClientAPI().log(toString(), "pushPhil " + index + " hungry: " + isHungry + " eatCount: " + eatCount + " startIndex: " + startIndex + " isFirstRound: " + isFirstRound);
         new Thread(new Philosopher(server,server.getTablePiece(), index, isHungry, eatCount, startIndex, isFirstRound)).start();
         server.getClientAPI().registerPhilosopher(index, server.getInstanceNumber());
     }
@@ -42,5 +42,10 @@ public class ServerToServer implements IServerToServer
     public void setIsForkReserved(int index, boolean isReserved)
     {
         server.getPlates().get(index).getRightFork().setIsReserved(isReserved);
+    }
+
+    public String toString()
+    {
+        return "ServerToServer " + server.getInstanceNumber();
     }
 }

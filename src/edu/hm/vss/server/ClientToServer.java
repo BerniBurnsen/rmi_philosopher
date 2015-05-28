@@ -35,7 +35,7 @@ public class ClientToServer implements IClientToServer
         //only one instance
         if(server.getClientAPI().getNumberOfInstances() == 1)
         {
-            server.getClientAPI().log(ClientToServer.class.getSimpleName() + server.getInstanceNumber(), "initConnections - " + " only one instance");
+            server.getClientAPI().log(toString(), "initConnections - " + " only one instance");
             server.setRightServerAPI(null);
             server.setLeftServerAPI(null);
         }
@@ -43,7 +43,7 @@ public class ClientToServer implements IClientToServer
         else if(server.getClientAPI().getNumberOfInstances() == 2)
         {
             System.out.println("TEST");
-            server.getClientAPI().log(ClientToServer.class.getSimpleName() + server.getInstanceNumber(), "initConnections - " + "two instances");
+            server.getClientAPI().log(toString(), "initConnections - " + "two instances");
             registry = LocateRegistry.getRegistry(rightNeighbourIP, rightNeighbourPort);
             server.setRightServerAPI((IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE)));
             server.setLeftServerAPI(server.getRightServerAPI());
@@ -51,7 +51,7 @@ public class ClientToServer implements IClientToServer
         // > 2 instances
         else
         {
-            server.getClientAPI().log(ClientToServer.class.getSimpleName() + server.getInstanceNumber(), "initConnections - " + "more than two instances");
+            server.getClientAPI().log(toString(), "initConnections - " + "more than two instances");
             registry = LocateRegistry.getRegistry(rightNeighbourIP, rightNeighbourPort);
             server.setRightServerAPI((IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE)));
             registry = LocateRegistry.getRegistry(leftNeighbourIP, leftNeighbourPort);
@@ -88,7 +88,7 @@ public class ClientToServer implements IClientToServer
     @Override
     public boolean createNewPhilosopher(int index, boolean hungry) throws RemoteException
     {
-        server.getClientAPI().log(ClientToServer.class.getSimpleName() + server.getInstanceNumber(), "createNewP - " + index);
+        server.getClientAPI().log(toString(), "createNewP - " + index);
         new Thread(new Philosopher(server,server.getTablePiece(), index, hungry)).start();
         server.getClientAPI().registerPhilosopher(index, server.getInstanceNumber());
         return true;
@@ -97,7 +97,7 @@ public class ClientToServer implements IClientToServer
     @Override
     public boolean respawnPhilosopher(int index, boolean hungry, int eatCount) throws RemoteException
     {
-        server.getClientAPI().log(ClientToServer.class.getSimpleName() + server.getInstanceNumber(), "respawnP - " + index + " hungry: " + hungry + " eatCount" + eatCount);
+        server.getClientAPI().log(toString(), "respawnP - " + index + " hungry: " + hungry + " eatCount" + eatCount);
         new Thread(new Philosopher(server,server.getTablePiece(), index, hungry, eatCount)).start();
         server.getClientAPI().registerPhilosopher(index, server.getInstanceNumber());
         return true;
@@ -106,18 +106,23 @@ public class ClientToServer implements IClientToServer
     @Override
     public void stopServer() throws RemoteException
     {
-        server.getClientAPI().log(ClientToServer.class.getSimpleName() + server.getInstanceNumber(), "stopServer - ");
+        server.getClientAPI().log(toString(), "stopServer - ");
     }
 
     @Override
     public void punishPhilosopher(int index) throws RemoteException
     {
-        server.getClientAPI().log(ClientToServer.class.getSimpleName() + server.getInstanceNumber(), "punishPhil " + index);
+        server.getClientAPI().log(toString(), "punishPhil " + index);
     }
 
     @Override
     public boolean isReachable()
     {
         return false;
+    }
+
+    public String toString()
+    {
+        return "ClientToServer "+ server.getInstanceNumber();
     }
 }
