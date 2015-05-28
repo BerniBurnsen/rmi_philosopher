@@ -40,6 +40,7 @@ public class Client implements Serializable
         numberOfHungryPhilosophers = numberHungyPhil;
         numberOfPlaces = numberPlaces;
         logger = new Logger();
+        System.out.println("Client constructor");
     }
 
     public Map<Integer, Integer> getAllEatCounts()

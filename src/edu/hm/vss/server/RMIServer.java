@@ -34,6 +34,7 @@ public class RMIServer implements Serializable
     RMIServer(int instanceNumber)
     {
         this.instanceNumber = instanceNumber;
+        System.out.println("RMIServer contructor");
     }
 
     public void init()throws AlreadyBoundException, RemoteException
