@@ -49,6 +49,7 @@ public class ServerToServer implements IServerToServer
     public boolean testConnection() throws RemoteException
     {
         System.out.println("SERVER " + server.getInstanceNumber());
+        System.out.println("SERVER " + server.getClientAPI());
         server.getClientAPI().log(toString(), "Connection OK");
         return true;
     }

@@ -12,17 +12,17 @@ import java.rmi.RemoteException;
  */
 public interface IClientToServer extends Remote, Serializable
 {
+    boolean initClientConnection(String clientIP, int clientPort) throws RemoteException, NotBoundException;
+
     /**
      * Initialites all necessary connection from client to server and backwars additionally from server to the server neighbours.
-     * @param ClientIP
-     * @param ClientPort
      * @param rightNeighbourIP
      * @param rightNeighbourPort
      * @param leftNeighbourIP
      * @param leftNeighbourPort
      * @return
      */
-    boolean initConnections(String ClientIP, int ClientPort, String rightNeighbourIP, int rightNeighbourPort, String leftNeighbourIP, int leftNeighbourPort) throws RemoteException, NotBoundException;
+    boolean initServerConnections(String rightNeighbourIP, int rightNeighbourPort, String leftNeighbourIP, int leftNeighbourPort) throws RemoteException, NotBoundException;
 
     /**
      * initializes the Table, plates and forks on a server
