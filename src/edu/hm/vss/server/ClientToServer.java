@@ -81,7 +81,7 @@ public class ClientToServer implements IClientToServer
             }
             else
             {
-                leftFork = new RemoteFork((startIndex -1)%maxSeats, server);
+                leftFork = new RemoteFork(startIndex - 1 < 0 ? maxSeats-1 :(startIndex -1)%maxSeats, server);
             }
 
 /*
