@@ -30,7 +30,7 @@ public class ClientToServer implements IClientToServer
         //only one instance
         if(RMIServer.clientAPI.getNumberOfInstances() == 1)
         {
-            RMIServer.clientAPI.log(ClientToServer.class.getSimpleName(), "initConnections - " + " only one instance");
+            RMIServer.clientAPI.log(ClientToServer.class.getSimpleName() + RMIServer.instanceNumber, "initConnections - " + " only one instance");
             RMIServer.rightServerAPI = RMIServer.leftServerAPI = null;
         }
         // only two instances
