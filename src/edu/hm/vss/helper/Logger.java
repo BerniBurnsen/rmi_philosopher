@@ -1,5 +1,8 @@
 package edu.hm.vss.helper;
 
+import edu.hm.vss.server.RMIServer;
+
+import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,7 +24,16 @@ public class Logger
     {
         DateFormat df = new SimpleDateFormat("mm:ss.SSS");
         String timeString = df.format(new Date());
-        System.out.println(timeString + " - " +from+" - " + message);
+        if(RMIServer.clientAPI != null)
+        {
+            try
+            {
+                RMIServer.clientAPI.log(timeString + " - " + from + " - " + message);
+            } catch (RemoteException e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static Logger getInstance()

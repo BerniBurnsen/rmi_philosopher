@@ -38,4 +38,10 @@ public class ServerToClient implements IServerToClient
     {
         return Client.instanceCount;
     }
+
+    @Override
+    public void log(String message) throws RemoteException
+    {
+        System.out.println(message);
+    }
 }
