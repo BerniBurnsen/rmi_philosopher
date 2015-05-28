@@ -15,7 +15,7 @@ public class ServerToServer implements IServerToServer
     private final RMIServer server;
     public ServerToServer(RMIServer server)
     {
-        this.server =server;
+        this.server=server;
     }
 
     @Override
