@@ -40,8 +40,6 @@ public class RMIServer implements Serializable
         System.out.println(this);
     }
 
-
-
     public void startRegistry(int instanceNumber) throws RemoteException
     {
         registry = LocateRegistry.createRegistry(Settings.PORT_SERVER_BASE +instanceNumber);
