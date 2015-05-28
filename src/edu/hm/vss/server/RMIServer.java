@@ -31,13 +31,19 @@ public class RMIServer implements Serializable
 
     private List<Plate> plates = new ArrayList<>();
 
-    RMIServer(int instanceNumber) throws AlreadyBoundException, RemoteException
+    RMIServer(int instanceNumber)
     {
         this.instanceNumber = instanceNumber;
+
+
+
+    }
+
+    public void init()throws AlreadyBoundException, RemoteException
+    {
         startRegistry(instanceNumber);
         registerObject(Settings.CLIENT_TO_SERVER + instanceNumber, new ClientToServer(this));
         registerObject(Settings.SERVER_TO_SERVER + instanceNumber, new ServerToServer(this));
-        System.out.println(this);
     }
 
     public void startRegistry(int instanceNumber) throws RemoteException
@@ -56,7 +62,7 @@ public class RMIServer implements Serializable
     {
         if(args.length == 1)
         {
-            new RMIServer(Integer.parseInt(args[0]));
+            new RMIServer(Integer.parseInt(args[0])).init();
             while(true)
             {
                 Thread.sleep(60*5*1000);
