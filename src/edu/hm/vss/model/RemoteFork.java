@@ -20,14 +20,27 @@ public class RemoteFork extends Fork
     @Override
     public boolean isReserved()
     {
-        return server.getLeftServerAPI().requestIsRemoteForkReserved();
+        try
+        {
+            return server.getLeftServerAPI().requestIsRemoteForkReserved();
+        } catch (RemoteException e)
+        {
+            e.printStackTrace();
+        }
+        return true;
     }
 
     @Override
     public void setIsReserved(boolean isReserved)
     {
         super.isReserved = isReserved;
-        server.getLeftServerAPI().setIsForkReserved(index, isReserved);
+        try
+        {
+            server.getLeftServerAPI().setIsForkReserved(index, isReserved);
+        } catch (RemoteException e)
+        {
+            e.printStackTrace();
+        }
         if(isReserved)
         {
             this.p = p;
