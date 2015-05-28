@@ -21,7 +21,10 @@ import java.util.List;
 public class RMIServer implements Serializable
 {
     private Registry registry;
-    private final int instanceNumber;
+
+
+
+    private int instanceNumber;
 
     private IServerToClient clientAPI;
     private IServerToServer leftServerAPI;
@@ -30,6 +33,11 @@ public class RMIServer implements Serializable
     private TablePiece tablePiece;
 
     private List<Plate> plates = new ArrayList<>();
+
+    public RMIServer()
+    {
+
+    }
 
     RMIServer(int instanceNumber)
     {
@@ -125,5 +133,21 @@ public class RMIServer implements Serializable
     public void setPlates(List<Plate> plates)
     {
         this.plates = plates;
+    }
+
+    public Registry getRegistry()
+    {
+        return registry;
+    }
+
+    public void setRegistry(Registry registry)
+    {
+        this.registry = registry;
+    }
+
+    public void setInstanceNumber(int instanceNumber)
+    {
+
+        this.instanceNumber = instanceNumber;
     }
 }

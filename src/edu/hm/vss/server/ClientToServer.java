@@ -22,8 +22,15 @@ import java.util.List;
  */
 public class ClientToServer implements IClientToServer
 {
-    private final RMIServer server;
-    private final List<Thread> philosophers = new ArrayList<>();
+    private RMIServer server;
+    private List<Thread> philosophers = new ArrayList<>();
+
+
+
+    public ClientToServer()
+    {
+
+    }
 
     public ClientToServer(RMIServer server)
     {
@@ -166,5 +173,26 @@ public class ClientToServer implements IClientToServer
     public String toString()
     {
         return "ClientToServer "+ server.getInstanceNumber();
+    }
+
+    public List<Thread> getPhilosophers()
+    {
+        return philosophers;
+    }
+
+    public void setPhilosophers(List<Thread> philosophers)
+    {
+        this.philosophers = philosophers;
+    }
+
+    public RMIServer getServer()
+    {
+
+        return server;
+    }
+
+    public void setServer(RMIServer server)
+    {
+        this.server = server;
     }
 }

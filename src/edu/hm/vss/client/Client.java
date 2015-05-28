@@ -23,16 +23,20 @@ public class Client implements Serializable
 {
     private Registry registry;
     private List<IClientToServer> servers = new ArrayList<>();
-    public final int instanceCount = 2;
+    public int instanceCount = 2;
     public Logger logger;
 
     private int numberOfPhilosophers;
     private int numberOfHungryPhilosophers;
     private int numberOfPlaces;
 
+    public Map<Integer, Integer> allEatCounts = new ConcurrentHashMap<>();
+    public Map<Integer, Integer> locationMap = new ConcurrentHashMap<>();
 
-    public final Map<Integer, Integer> allEatCounts = new ConcurrentHashMap<>();
-    public final Map<Integer, Integer> locationMap = new ConcurrentHashMap<>();
+    public Client()
+    {
+
+    }
 
     public Client(int numberPhil, int numberHungyPhil, int numberPlaces)
     {
@@ -157,5 +161,76 @@ public class Client implements Serializable
         new Client(numberOfPhilosophers,numberOfHungryPhilosophers,numberOfPlaces).init();
         Thread.sleep(5 * 60 * 1000);
 
+    }
+
+
+    public Registry getRegistry()
+    {
+        return registry;
+    }
+
+    public void setRegistry(Registry registry)
+    {
+        this.registry = registry;
+    }
+
+    public List<IClientToServer> getServers()
+    {
+        return servers;
+    }
+
+    public void setServers(List<IClientToServer> servers)
+    {
+        this.servers = servers;
+    }
+
+    public void setInstanceCount(int instanceCount)
+    {
+        this.instanceCount = instanceCount;
+    }
+
+    public void setLogger(Logger logger)
+    {
+        this.logger = logger;
+    }
+
+    public int getNumberOfPhilosophers()
+    {
+        return numberOfPhilosophers;
+    }
+
+    public void setNumberOfPhilosophers(int numberOfPhilosophers)
+    {
+        this.numberOfPhilosophers = numberOfPhilosophers;
+    }
+
+    public int getNumberOfHungryPhilosophers()
+    {
+        return numberOfHungryPhilosophers;
+    }
+
+    public void setNumberOfHungryPhilosophers(int numberOfHungryPhilosophers)
+    {
+        this.numberOfHungryPhilosophers = numberOfHungryPhilosophers;
+    }
+
+    public int getNumberOfPlaces()
+    {
+        return numberOfPlaces;
+    }
+
+    public void setNumberOfPlaces(int numberOfPlaces)
+    {
+        this.numberOfPlaces = numberOfPlaces;
+    }
+
+    public void setAllEatCounts(Map<Integer, Integer> allEatCounts)
+    {
+        this.allEatCounts = allEatCounts;
+    }
+
+    public void setLocationMap(Map<Integer, Integer> locationMap)
+    {
+        this.locationMap = locationMap;
     }
 }

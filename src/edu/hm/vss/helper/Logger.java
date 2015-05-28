@@ -13,7 +13,9 @@ import java.util.Date;
  */
 public class Logger implements Serializable
 {
-    private final boolean doLog = true;
+
+
+    private boolean doLog = true;
 
     public Logger()
     {
@@ -25,5 +27,15 @@ public class Logger implements Serializable
         DateFormat df = new SimpleDateFormat("mm:ss.SSS");
         String timeString = df.format(new Date());
         System.out.println(timeString + " - " + from + " - " + message);
+    }
+
+    public boolean isDoLog()
+    {
+        return doLog;
+    }
+
+    public void setDoLog(boolean doLog)
+    {
+        this.doLog = doLog;
     }
 }

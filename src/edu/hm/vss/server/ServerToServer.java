@@ -12,7 +12,14 @@ import java.rmi.RemoteException;
  */
 public class ServerToServer implements IServerToServer
 {
-    private final RMIServer server;
+
+
+    private RMIServer server;
+
+    public ServerToServer()
+    {
+
+    }
     public ServerToServer(RMIServer server)
     {
         this.server = server;
@@ -62,5 +69,15 @@ public class ServerToServer implements IServerToServer
     public String toString()
     {
         return "ServerToServer " + server.getInstanceNumber();
+    }
+
+    public RMIServer getServer()
+    {
+        return server;
+    }
+
+    public void setServer(RMIServer server)
+    {
+        this.server = server;
     }
 }

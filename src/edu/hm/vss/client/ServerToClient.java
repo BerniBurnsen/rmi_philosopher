@@ -12,7 +12,12 @@ import java.rmi.RemoteException;
  */
 public class ServerToClient implements IServerToClient
 {
-    private final Client client;
+    private Client client;
+
+    public ServerToClient()
+    {
+
+    }
 
     public ServerToClient(Client client)
     {
@@ -50,5 +55,15 @@ public class ServerToClient implements IServerToClient
     public void log(String type, String message) throws RemoteException
     {
         client.getLogger().printLog(type, message);
+    }
+
+    public Client getClient()
+    {
+        return client;
+    }
+
+    public void setClient(Client client)
+    {
+        this.client = client;
     }
 }
