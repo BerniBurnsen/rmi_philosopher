@@ -20,7 +20,7 @@ public class RemoteFork extends Fork
     @Override
     public boolean isReserved()
     {
-        return server.getLeftServerAPI().requestIsForkReserved(index);
+        return server.getLeftServerAPI().requestIsRemoteForkReserved();
     }
 
     @Override
@@ -49,7 +49,7 @@ public class RemoteFork extends Fork
         try
         {
             server.getClientAPI().log(RemoteFork.class.getSimpleName(), "request ForkToken " + index);
-            return server.getLeftServerAPI().requestForkToken(index);
+            return server.getLeftServerAPI().requestForkToken();
         } catch (RemoteException e)
         {
             //RMIServer.clientAPI.log(RemoteFork.class.getSimpleName(), index + "Error: " + e.getMessage());
