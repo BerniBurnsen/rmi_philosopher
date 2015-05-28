@@ -45,6 +45,14 @@ public class ServerToServer implements IServerToServer
         server.getPlates().get(index).getRightFork().setIsReserved(isReserved);
     }
 
+    @Override
+    public boolean testConnection() throws RemoteException
+    {
+        System.out.println("SERVER " + server.getInstanceNumber());
+        server.getClientAPI().log(toString(), "Connection OK");
+        return true;
+    }
+
     public String toString()
     {
         return "ServerToServer " + server.getInstanceNumber();
