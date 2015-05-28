@@ -29,13 +29,21 @@ public class ClientToServer implements IClientToServer
     {
         this.server = server;
     }
+
     @Override
-    public boolean initConnections(String ClientIP, int ClientPort, String rightNeighbourIP, int rightNeighbourPort, String leftNeighbourIP, int leftNeighbourPort) throws RemoteException, NotBoundException
+    public boolean initClientConnection(String clientIP, int clientPort) throws RemoteException, NotBoundException
     {
         Registry registry;
-        registry = LocateRegistry.getRegistry(ClientIP, ClientPort);
+        registry = LocateRegistry.getRegistry(clientIP, clientPort);
         server.setClientAPI((IServerToClient)registry.lookup(Settings.SERVER_TO_CLIENT));
+        return true;
+    }
 
+    @Override
+    public boolean initServerConnections(String rightNeighbourIP, int rightNeighbourPort, String leftNeighbourIP, int leftNeighbourPort) throws RemoteException, NotBoundException
+    {
+
+        Registry serverRegistry;
         //only one instance
         if(server.getClientAPI().getNumberOfInstances() == 1)
         {
@@ -48,18 +56,18 @@ public class ClientToServer implements IClientToServer
         {
             System.out.println("TEST");
             server.getClientAPI().log(toString(), "initConnections - " + "two instances");
-            registry = LocateRegistry.getRegistry(rightNeighbourIP, rightNeighbourPort);
-            server.setRightServerAPI((IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE)));
+            serverRegistry = LocateRegistry.getRegistry(rightNeighbourIP, rightNeighbourPort);
+            server.setRightServerAPI((IServerToServer)serverRegistry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE)));
             server.setLeftServerAPI(server.getRightServerAPI());
         }
         // > 2 instances
         else
         {
             server.getClientAPI().log(toString(), "initConnections - " + "more than two instances");
-            registry = LocateRegistry.getRegistry(rightNeighbourIP, rightNeighbourPort);
-            server.setRightServerAPI((IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE)));
-            registry = LocateRegistry.getRegistry(leftNeighbourIP, leftNeighbourPort);
-            server.setLeftServerAPI((IServerToServer)registry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE)));
+            serverRegistry = LocateRegistry.getRegistry(rightNeighbourIP, rightNeighbourPort);
+            server.setRightServerAPI((IServerToServer)serverRegistry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE)));
+            serverRegistry = LocateRegistry.getRegistry(leftNeighbourIP, leftNeighbourPort);
+            server.setLeftServerAPI((IServerToServer)serverRegistry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE)));
         }
 
         if(server.getRightServerAPI() != null)
@@ -71,7 +79,6 @@ public class ClientToServer implements IClientToServer
             return true;
         }
     }
-
 
     @Override
     public boolean initServer(int seats, int maxSeats, int startIndex) throws RemoteException

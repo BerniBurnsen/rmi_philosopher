@@ -61,7 +61,11 @@ public class Client
             registry = LocateRegistry.getRegistry(Settings.SERVERS[i %Settings.SERVERS.length], Settings.PORT_SERVER_BASE +i);
             IClientToServer serverAPI = (IClientToServer)registry.lookup(Settings.CLIENT_TO_SERVER + i);
             servers.add(serverAPI);
+            serverAPI.initClientConnection(Settings.CLIENT_IP, Settings.PORT_CLIENT);
+        }
 
+        for(int i = 0 ; i < instanceCount; i++)
+        {
             String leftNeighbour = (i-1) < 0 ? Settings.SERVERS[Settings.SERVERS.length -1] : Settings.SERVERS[(i-1) % Settings.SERVERS.length];
             String rightNeighbour = (i+1) <= instanceCount ? Settings.SERVERS[(i+1) %Settings.SERVERS.length] :Settings.SERVERS[instanceCount -1] ;
 
@@ -71,7 +75,7 @@ public class Client
             logger.printLog(Client.class.getSimpleName(), "main - Instancenumber " + i + " leftNeighbour: " + leftNeighbour + " leftPort: " + leftPort);
             logger.printLog(Client.class.getSimpleName(), "main - Instancenumber " + i + " rightNeighbour: " + rightNeighbour + " rightPort " + rightPort);
 
-            serverAPI.initConnections(Settings.CLIENT_IP,Settings.PORT_CLIENT,rightNeighbour,rightPort,leftNeighbour,leftPort);
+            servers.get(i).initServerConnections(rightNeighbour,rightPort,leftNeighbour,leftPort);
         }
 
         //build plates
