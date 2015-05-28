@@ -66,7 +66,7 @@ public class Client
         logger.printLog(Client.class.getSimpleName(), "main - #phil" + numberOfPhilosophers + " #hungry " + numberOfHungryPhilosophers + " #places " + numberOfPlaces);
 
         startRegistry();
-        registerObject(Settings.SERVER_TO_CLIENT + i, new ServerToClient(this));
+        registerObject(Settings.SERVER_TO_CLIENT, new ServerToClient(this));
 
         logger.printLog(Client.class.getSimpleName(), "main - build up connections");
 
