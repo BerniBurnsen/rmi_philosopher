@@ -37,6 +37,7 @@ public class RMIServer implements Serializable
         startRegistry(instanceNumber);
         registerObject(Settings.CLIENT_TO_SERVER + instanceNumber, new ClientToServer(this));
         registerObject(Settings.SERVER_TO_SERVER + instanceNumber, new ServerToServer(this));
+        System.out.println(this);
     }
 
 
