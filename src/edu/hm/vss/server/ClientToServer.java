@@ -70,13 +70,13 @@ public class ClientToServer implements IClientToServer
             Fork rightFork = new LocalFork(startIndex+i);
 
             Fork leftFork;
-            if(startIndex +i-1 >= 0)
+            if(startIndex +i+1 < server.getPlates().size())
             {
-                leftFork = startIndex + i == startIndex ? new RemoteFork(startIndex + i - 1,server) : server.getPlates().get(startIndex + i - 1).getRightFork();
+                leftFork = startIndex + i == startIndex ? new RemoteFork(startIndex + i + 1,server) : server.getPlates().get(startIndex + i + 1).getRightFork();
             }
             else
             {
-                leftFork = new RemoteFork(maxSeats-1,server);
+                leftFork = new RemoteFork(0,server);
             }
             //logger.printLog(ClientToServer.class.getSimpleName()," initServer - plate " + (startIndex + i) + " rightFork index " + rightFork.getIndex() + " leftFork isRemote: " + ((leftFork instanceof RemoteFork) ? "yes" : "no") + " index: " + leftFork.getIndex());
             server.getPlates().add(new Plate(leftFork, rightFork, startIndex + i));
