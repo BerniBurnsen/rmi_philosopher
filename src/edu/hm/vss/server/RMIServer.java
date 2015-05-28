@@ -46,17 +46,17 @@ public class RMIServer
         if(args.length == 1)
         {
             instanceNumber = Integer.parseInt(args[0]);
-            System.out.println(RMIServer.class.getName() + " Server start " + instanceNumber);
+            //logger.printLog(RMIServer.class.getName(),"Server start " + instanceNumber);
             startRegistry(instanceNumber);
-            registerObject(Settings.CLIENT_TO_SERVER +instanceNumber, new ClientToServer());
-            registerObject(Settings.SERVER_TO_SERVER +instanceNumber, new ServerToServer());
+            registerObject(Settings.CLIENT_TO_SERVER + instanceNumber, new ClientToServer());
+            registerObject(Settings.SERVER_TO_SERVER + instanceNumber, new ServerToServer());
 
             //registerObject("Test", new Test());
             //initDiningPhilosophers();
             while(true)
             {
                 Thread.sleep(60*5*1000);
-                System.out.println(RMIServer.class.getName() + " sleeping again!");
+                //logger.printLog(RMIServer.class.getName(),"sleeping again!");
             }
         }
 
