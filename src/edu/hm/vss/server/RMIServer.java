@@ -67,7 +67,6 @@ public class RMIServer implements Serializable
                 //logger.printLog(RMIServer.class.getName(),"sleeping again!");
             }
         }
-
     }
 
     public void setTablePiece(TablePiece tablePiece)
