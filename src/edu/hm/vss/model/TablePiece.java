@@ -1,5 +1,7 @@
 package edu.hm.vss.model;
 
+import edu.hm.vss.helper.Logger;
+
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.util.List;
@@ -9,12 +11,17 @@ import java.util.List;
  */
 public class TablePiece implements Serializable, Remote
 {
+    private static final Logger logger = Logger.getInstance();
+
     private List<Plate> plates;
-    public TablePiece(List<Plate> plates)
+    private int index;
+    private int nextIndexToUse = 0;
+
+    public TablePiece(int index, List<Plate> plates)
     {
+        this.index = index;
         this.plates = plates;
     }
-    int nextIndexToUse = 0;
 
     public Plate getPlate(Philosopher p) throws InterruptedException
     {
@@ -22,8 +29,9 @@ public class TablePiece implements Serializable, Remote
         if(p.getStartIndex() == -1)
         {
             p.setStartIndex(plates.get(startIndex).getIndex());
+            logger.printLog(TablePiece.class.getSimpleName(), " Phil " + p.getIndex() + " startIndex: " + p.getStartIndex());
         }
-        else
+        else if(!p.isFirstRound())
         {
             startIndex = 0;
         }
@@ -45,6 +53,7 @@ public class TablePiece implements Serializable, Remote
             if(plate == null)
             {
                 p.setIsFirstRound(false);
+                nextIndexToUse++;
                 return null;
             }
             else if(plate.getIndex() == p.getStartIndex() && !p.isFirstRound())
@@ -56,9 +65,11 @@ public class TablePiece implements Serializable, Remote
                         plate.wait();
                     }
                     plate.setIsReserved(true, p);
+                    nextIndexToUse++;
                     return plate;
                 }
             }
+            p.setIsFirstRound(false);
         }
         return null;
     }
@@ -71,5 +82,10 @@ public class TablePiece implements Serializable, Remote
             plate.setIsReserved(false, p);
             plate.notify();
         }
+    }
+
+    public int getIndex()
+    {
+        return index;
     }
 }

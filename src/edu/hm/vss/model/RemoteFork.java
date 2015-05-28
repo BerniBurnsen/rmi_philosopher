@@ -55,7 +55,7 @@ public class RemoteFork extends Fork
         try
         {
             logger.printLog(RemoteFork.class.getSimpleName(), "request ForkToken " + index);
-            return RMIServer.rightServerAPI.requestForkToken(index);
+            return RMIServer.leftServerAPI.requestForkToken(index);
         } catch (RemoteException e)
         {
             logger.printLog(RemoteFork.class.getSimpleName(), index + "Error: " + e.getMessage());

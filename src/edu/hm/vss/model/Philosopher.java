@@ -58,6 +58,9 @@ public class Philosopher extends UnicastRemoteObject implements Serializable, Ru
         Fork leftFork;
         Fork rightFork;
 
+        logger.printLog(Philosopher.class.getSimpleName(), index + " spawning on tablePiece " + tablePiece.getIndex());
+
+        eatLoop:
         while(run)
         {
             try
@@ -69,7 +72,7 @@ public class Philosopher extends UnicastRemoteObject implements Serializable, Ru
                     if(plate == null)
                     {
                         //Terminate own Thread
-                        break;
+                        break eatLoop;
                     }
                     state = "got place";
                     leftFork = plate.getLeftFork();
@@ -119,6 +122,7 @@ public class Philosopher extends UnicastRemoteObject implements Serializable, Ru
                 //Terminate
             }
         }
+        logger.printLog(Philosopher.class.getSimpleName(), index + " killed on server " + tablePiece.getIndex());
     }
 
     private void meditate() throws InterruptedException
