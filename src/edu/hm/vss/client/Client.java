@@ -5,6 +5,7 @@ import edu.hm.vss.interfaces.IClientToServer;
 import edu.hm.vss.interfaces.Settings;
 
 import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -19,42 +20,55 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Client
 {
-    private static Registry registry;
-    private static List<IClientToServer> servers = new ArrayList<>();
-    public static final int instanceCount = 2;
-    public static Logger logger;
+    private Registry registry;
+    private List<IClientToServer> servers = new ArrayList<>();
+    public final int instanceCount = 2;
+    public Logger logger;
 
-    public static final Map<Integer, Integer> allEatCounts = new ConcurrentHashMap<>();
-    public static final Map<Integer, Integer> locationMap = new ConcurrentHashMap<>();
+    private int numberOfPhilosophers;
+    private int numberOfHungryPhilosophers;
+    private int numberOfPlaces;
 
-    public static void startRegistry() throws RemoteException
+
+    public final Map<Integer, Integer> allEatCounts = new ConcurrentHashMap<>();
+    public final Map<Integer, Integer> locationMap = new ConcurrentHashMap<>();
+
+    public Client(int numberPhil, int numberHungyPhil, int numberPlaces)
     {
-        logger.printLog(Client.class.getName(), "StartRegistry");
-        registry = LocateRegistry.createRegistry(Settings.PORT_CLIENT);
-    }
-
-    public static void registerObject(String name, Remote remoteObject) throws RemoteException, AlreadyBoundException
-    {
-        logger.printLog(Client.class.getSimpleName(), "registerObject " + name + " " + remoteObject.getClass().getName());
-        registry.bind(name, remoteObject);
-        logger.printLog(Client.class.getSimpleName(), "registered" + name);
-
-    }
-
-    public static void main(String[] args) throws Exception
-    {
+        numberOfPhilosophers = numberPhil;
+        numberOfHungryPhilosophers = numberHungyPhil;
+        numberOfPlaces = numberPlaces;
         logger = new Logger();
+    }
 
-        int numberOfPhilosophers = Integer.parseInt(args[0]);
-        int numberOfHungryPhilosophers = Integer.parseInt(args[1]);
-        int numberOfPlaces = Integer.parseInt(args[2]);
+    public Map<Integer, Integer> getAllEatCounts()
+    {
+        return allEatCounts;
+    }
 
+    public Map<Integer, Integer> getLocationMap()
+    {
+        return locationMap;
+    }
+
+    public int getInstanceCount()
+    {
+        return instanceCount;
+    }
+
+    public Logger getLogger()
+    {
+        return logger;
+    }
+
+    public void init() throws RemoteException, AlreadyBoundException, NotBoundException
+    {
         logger.printLog(Client.class.getSimpleName(), "main - #phil" + numberOfPhilosophers + " #hungry " + numberOfHungryPhilosophers + " #places " + numberOfPlaces);
 
         startRegistry();
         for(int i = 0 ; i < instanceCount; i++)
         {
-            registerObject(Settings.SERVER_TO_CLIENT + i, new ServerToClient());
+            registerObject(Settings.SERVER_TO_CLIENT + i, new ServerToClient(this));
         }
 
         logger.printLog(Client.class.getSimpleName(), "main - build up connections");
@@ -79,7 +93,7 @@ public class Client
             logger.printLog(Client.class.getSimpleName(), "main - Instancenumber " + i + " leftNeighbour: " + leftNeighbour + " leftPort: " + leftPort);
             logger.printLog(Client.class.getSimpleName(), "main - Instancenumber " + i + " rightNeighbour: " + rightNeighbour + " rightPort " + rightPort);
 
-            servers.get(i).initServerConnections(rightNeighbour,rightPort,leftNeighbour,leftPort);
+            servers.get(i).initServerConnections(rightNeighbour, rightPort, leftNeighbour,leftPort);
         }
 
         //build plates
@@ -103,14 +117,46 @@ public class Client
             servers.get(nextServerIndex).createNewPhilosopher(i, i >= numberOfPhilosophers - numberOfHungryPhilosophers ? true : false);
         }
 
-        Thread.sleep(2 * 1000);
+        try
+        {
 
+            Thread.sleep(2 * 1000);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
         //start philosophers
         for(int i = 0 ; i < instanceCount ; i++)
         {
             servers.get(i).startPhilosophers();
         }
 
+
+    }
+
+
+    public void startRegistry() throws RemoteException
+    {
+        logger.printLog(Client.class.getName(), "StartRegistry");
+        registry = LocateRegistry.createRegistry(Settings.PORT_CLIENT);
+    }
+
+    public void registerObject(String name, Remote remoteObject) throws RemoteException, AlreadyBoundException
+    {
+        logger.printLog(Client.class.getSimpleName(), "registerObject " + name + " " + remoteObject.getClass().getName());
+        registry.bind(name, remoteObject);
+        logger.printLog(Client.class.getSimpleName(), "registered" + name);
+
+    }
+
+    public static void main(String[] args) throws Exception
+    {
+        int numberOfPhilosophers = Integer.parseInt(args[0]);
+        int numberOfHungryPhilosophers = Integer.parseInt(args[1]);
+        int numberOfPlaces = Integer.parseInt(args[2]);
+
+        new Client(numberOfPhilosophers,numberOfHungryPhilosophers,numberOfPlaces).init();
         Thread.sleep(5 * 60 * 1000);
+
     }
 }

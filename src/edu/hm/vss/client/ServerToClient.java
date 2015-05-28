@@ -12,11 +12,18 @@ import java.rmi.RemoteException;
  */
 public class ServerToClient implements IServerToClient
 {
+    private final Client client;
+
+    public ServerToClient(Client client)
+    {
+        this.client = client;
+    }
+
     @Override
     public void updateEatCount(int philosopherIndex, int eatCount) throws RemoteException
     {
         log(ServerToClient.class.getSimpleName(), "updateEatCount - PhilIndex" + philosopherIndex + " eatCount" + eatCount);
-        Client.allEatCounts.put(philosopherIndex, eatCount);
+        client.getAllEatCounts().put(philosopherIndex, eatCount);
     }
 
     @Override
@@ -29,18 +36,18 @@ public class ServerToClient implements IServerToClient
     public void registerPhilosopher(int index, int server) throws RemoteException
     {
         log(ServerToClient.class.getSimpleName(), "regPhil - " + index + " server: " + server);
-        Client.locationMap.put(index, server);
+        client.getLocationMap().put(index, server);
     }
 
     @Override
     public int getNumberOfInstances() throws RemoteException
     {
-        return Client.instanceCount;
+        return client.getInstanceCount();
     }
 
     @Override
     public void log(String type, String message) throws RemoteException
     {
-        Client.logger.printLog(type, message);
+        client.getLogger().printLog(type, message);
     }
 }
