@@ -64,19 +64,24 @@ public class Philosopher extends Thread implements Serializable
         Fork leftFork;
         Fork rightFork;
 
-        new Thread(() -> {
-            while(run)
+        new Thread(new Runnable() {
+
+            @Override
+            public void run()
             {
-                try
+                while(run)
                 {
-                    Thread.sleep(2 * 1000);
-                    server.getClientAPI().updateEatCount(index, eatCounter);
-                } catch (InterruptedException e)
-                {
-                    e.printStackTrace();
-                } catch (RemoteException e)
-                {
-                    e.printStackTrace();
+                    try
+                    {
+                        Thread.sleep(2 * 1000);
+                        server.getClientAPI().updateEatCount(index, eatCounter);
+                    } catch (InterruptedException e)
+                    {
+                        run = false;
+                    } catch (RemoteException e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
             }
         }).start();
@@ -149,6 +154,7 @@ public class Philosopher extends Thread implements Serializable
                 if(server.getRightServerAPI().pushPhilosopher(index, isVeryHungry, eatCounter, startIndex, isFirstRound))
                 {
                     server.getPhilosophers().remove(index);
+                    run = false;
                 }
             } catch (RemoteException e)
             {

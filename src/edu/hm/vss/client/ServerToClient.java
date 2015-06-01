@@ -30,7 +30,7 @@ public class ServerToClient extends UnicastRemoteObject implements IServerToClie
     @Override
     public void updateEatCount(int philosopherIndex, int eatCount) throws RemoteException
     {
-        log(ServerToClient.class.getSimpleName(), "updateEatCount - PhilIndex" + philosopherIndex + " eatCount" + eatCount);
+        //log(ServerToClient.class.getSimpleName(), "updateEatCount - PhilIndex" + philosopherIndex + " eatCount" + eatCount);
         client.getAllEatCounts().put(philosopherIndex, eatCount);
     }
 
