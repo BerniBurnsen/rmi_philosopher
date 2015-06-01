@@ -18,7 +18,6 @@ public class ServerToClient extends UnicastRemoteObject implements IServerToClie
     public ServerToClient() throws RemoteException
     {
         super();
-
     }
 
     public ServerToClient(Client client) throws RemoteException

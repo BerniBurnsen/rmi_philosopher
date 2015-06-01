@@ -3,6 +3,7 @@ package edu.hm.vss.client;
 import edu.hm.vss.helper.Logger;
 import edu.hm.vss.interfaces.IClientToServer;
 import edu.hm.vss.interfaces.Settings;
+import edu.hm.vss.model.Overseer;
 
 import java.io.Serializable;
 import java.rmi.AlreadyBoundException;
@@ -27,6 +28,8 @@ public class Client implements Serializable
     private int numberOfPhilosophers;
     private int numberOfHungryPhilosophers;
     private int numberOfPlaces;
+
+    private Overseer overseer;
 
     public Map<Integer, Integer> allEatCounts = new ConcurrentHashMap<>();
     public Map<Integer, Integer> locationMap = new ConcurrentHashMap<>();
@@ -110,6 +113,10 @@ public class Client implements Serializable
             currentIndex+= counterArray[i];
         }
 
+        //spawn Overseer
+        overseer = new Overseer(this, 10);
+        overseer.start();
+
         //spawn philosophers
         for(int i = 0 ; i < numberOfPhilosophers ; i++)
         {
@@ -145,6 +152,7 @@ public class Client implements Serializable
                          {
                              e.printStackTrace();
                          }
+                         overseer.interrupt();
                      }
                  }
              }

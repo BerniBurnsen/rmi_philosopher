@@ -52,7 +52,7 @@ public class Philosopher extends Thread implements Serializable
 
     public Philosopher(RMIServer server,TablePiece tablePiece, int index, boolean isHungry, int eatCount, int startIndex, boolean isFirstRound) throws RemoteException
     {
-        this(server,tablePiece, index, isHungry, eatCount);
+        this(server, tablePiece, index, isHungry, eatCount);
         this.startIndex = startIndex;
         this.isFirstRound = isFirstRound;
     }
@@ -63,6 +63,23 @@ public class Philosopher extends Thread implements Serializable
         Plate plate;
         Fork leftFork;
         Fork rightFork;
+
+        new Thread(() -> {
+            while(run)
+            {
+                try
+                {
+                    Thread.sleep(2 * 1000);
+                    server.getClientAPI().updateEatCount(index, eatCounter);
+                } catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                } catch (RemoteException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 
         try
         {
