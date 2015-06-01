@@ -73,8 +73,8 @@ public class Philosopher extends Thread implements Serializable
                 {
                     try
                     {
-                        Thread.sleep(2 * 1000);
                         server.getClientAPI().updateEatCount(index, eatCounter);
+                        Thread.sleep(2 * 1000);
                     } catch (InterruptedException e)
                     {
                         run = false;
