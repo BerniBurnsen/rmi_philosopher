@@ -134,6 +134,7 @@ public class Philosopher extends Thread implements Serializable
                 }
                 else
                 {
+                    meditate();
                     setAllowedToEat(true);
                 }
             }
