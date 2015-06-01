@@ -129,8 +129,10 @@ public class Philosopher extends Thread implements Serializable
         {
             try
             {
-                server.getRightServerAPI().pushPhilosopher(index, isVeryHungry, eatCounter, startIndex, isFirstRound);
-                server.getPhilosophers().remove(index);
+                if(server.getRightServerAPI().pushPhilosopher(index, isVeryHungry, eatCounter, startIndex, isFirstRound))
+                {
+                    server.getPhilosophers().remove(index);
+                }
             } catch (RemoteException e)
             {
                 try

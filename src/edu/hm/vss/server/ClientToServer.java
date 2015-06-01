@@ -128,6 +128,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     public void startPhilosophers() throws RemoteException
     {
         server.getClientAPI().log(toString(), "--------START----------");
+        server.setRun(true);
         for(Philosopher p : server.getPhilosophers().values())
         {
             p.start();
@@ -149,6 +150,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     public void stopServer() throws RemoteException
     {
         server.getClientAPI().log(toString(), "-------STOPPING------");
+        server.setRun(false);
         for(Philosopher p : server.getPhilosophers().values())
         {
             p.interrupt();

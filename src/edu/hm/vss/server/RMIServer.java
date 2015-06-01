@@ -37,6 +37,8 @@ public class RMIServer implements Serializable
 
     private ConcurrentMap<Integer, Philosopher> philosophers = new ConcurrentHashMap<>();
 
+    private boolean run = false;
+
     public RMIServer()
     {
 
@@ -162,5 +164,15 @@ public class RMIServer implements Serializable
     public void setPhilosophers(ConcurrentMap<Integer, Philosopher> philosophers)
     {
         this.philosophers = philosophers;
+    }
+
+    public boolean isRun()
+    {
+        return run;
+    }
+
+    public void setRun(boolean run)
+    {
+        this.run = run;
     }
 }

@@ -26,13 +26,18 @@ public class ServerToServer extends UnicastRemoteObject implements IServerToServ
     }
 
     @Override
-    public void pushPhilosopher(int index, boolean isHungry, int eatCount, int startIndex, boolean isFirstRound) throws RemoteException
+    public boolean pushPhilosopher(int index, boolean isHungry, int eatCount, int startIndex, boolean isFirstRound) throws RemoteException
     {
-        server.getClientAPI().log(toString(), "pushPhil " + index + " hungry: " + isHungry + " eatCount: " + eatCount + " startIndex: " + startIndex + " isFirstRound: " + isFirstRound);
-        Philosopher p = new Philosopher(server,server.getTablePiece(), index, isHungry, eatCount, startIndex, isFirstRound);
-        server.getPhilosophers().put(index, p);
-        p.start();
-        server.getClientAPI().registerPhilosopher(index, server.getInstanceNumber());
+        if(server.isRun())
+        {
+            server.getClientAPI().log(toString(), "pushPhil " + index + " hungry: " + isHungry + " eatCount: " + eatCount + " startIndex: " + startIndex + " isFirstRound: " + isFirstRound);
+            Philosopher p = new Philosopher(server, server.getTablePiece(), index, isHungry, eatCount, startIndex, isFirstRound);
+            server.getPhilosophers().put(index, p);
+            p.start();
+            server.getClientAPI().registerPhilosopher(index, server.getInstanceNumber());
+            return true;
+        }
+        return false;
     }
 
     @Override

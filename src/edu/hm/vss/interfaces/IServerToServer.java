@@ -15,7 +15,7 @@ public interface IServerToServer extends Remote, Serializable
      * @param isHungry
      * @param eatCount
      */
-    void pushPhilosopher(int index, boolean isHungry, int eatCount, int startIndex, boolean isFirstRound) throws RemoteException;
+    boolean pushPhilosopher(int index, boolean isHungry, int eatCount, int startIndex, boolean isFirstRound) throws RemoteException;
 
     boolean testConnection() throws RemoteException;
 
