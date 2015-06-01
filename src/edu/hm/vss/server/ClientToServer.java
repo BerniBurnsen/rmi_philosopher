@@ -43,7 +43,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     {
         Registry registry;
         registry = LocateRegistry.getRegistry(clientIP, clientPort);
-        server.setClientAPI((IServerToClient)registry.lookup(Settings.SERVER_TO_CLIENT));
+        server.setClientAPI((IServerToClient) registry.lookup(Settings.SERVER_TO_CLIENT));
         server.getClientAPI().log(toString(), "initClientConnection from Server " + server.getInstanceNumber() + " to Client");
         server.getClientAPI().log(toString(), "ServerReference: " + server);
         return true;
@@ -195,7 +195,11 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     public void punishPhilosopher(int index) throws RemoteException
     {
         server.getClientAPI().log(toString(), "punishPhil " + index);
-        server.getPhilosophers().get(index).setAllowedToEat(false);
+        Philosopher p =  server.getPhilosophers().get(index);
+        if(p != null)
+        {
+            p.setAllowedToEat(false);
+        }
     }
 
     @Override

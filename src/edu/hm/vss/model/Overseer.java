@@ -1,6 +1,8 @@
 package edu.hm.vss.model;
 
 import edu.hm.vss.client.Client;
+import edu.hm.vss.interfaces.IClientToServer;
+import edu.hm.vss.server.ClientToServer;
 
 import java.rmi.RemoteException;
 import java.util.Map;
@@ -46,7 +48,10 @@ public class Overseer extends Thread
                 {
                     try
                     {
-                        client.getServers().get(client.getLocationMap().get(i)).punishPhilosopher(i);
+                        for(IClientToServer server : client.getServers())
+                        {
+                            server.punishPhilosopher(i);
+                        }
                     } catch (RemoteException e)
                     {
                         e.printStackTrace();
