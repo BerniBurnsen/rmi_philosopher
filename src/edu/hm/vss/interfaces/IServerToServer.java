@@ -1,7 +1,5 @@
 package edu.hm.vss.interfaces;
 
-import edu.hm.vss.model.ForkToken;
-
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;

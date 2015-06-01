@@ -1,7 +1,6 @@
 package edu.hm.vss.server;
 
 import edu.hm.vss.interfaces.IServerToServer;
-import edu.hm.vss.model.ForkToken;
 import edu.hm.vss.model.Philosopher;
 
 import java.rmi.RemoteException;
