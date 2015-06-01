@@ -125,19 +125,22 @@ public class Philosopher extends Thread implements Serializable
                 // Client not reachable
             }
         }
-        try
-        {
-            server.getRightServerAPI().pushPhilosopher(index, isVeryHungry, eatCounter, startIndex, isFirstRound);
-            server.getPhilosophers().remove(index);
-        } catch (RemoteException e)
+        if(run)
         {
             try
             {
-                server.getClientAPI().neighbourUnreachable(e.getMessage());
-                server.getClientAPI().log(toString(), index + " killed on server " + tablePiece.getIndex());
-            } catch (RemoteException e1)
+                server.getRightServerAPI().pushPhilosopher(index, isVeryHungry, eatCounter, startIndex, isFirstRound);
+                server.getPhilosophers().remove(index);
+            } catch (RemoteException e)
             {
-                //Terminate
+                try
+                {
+                    server.getClientAPI().neighbourUnreachable(e.getMessage());
+                    server.getClientAPI().log(toString(), index + " killed on server " + tablePiece.getIndex());
+                } catch (RemoteException e1)
+                {
+                    //Terminate
+                }
             }
         }
     }
