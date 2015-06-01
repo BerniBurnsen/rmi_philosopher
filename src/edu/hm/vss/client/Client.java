@@ -121,7 +121,7 @@ public class Client implements Serializable
         try
         {
 
-            Thread.sleep(2 * 1000);
+            Thread.sleep(500);
         } catch (InterruptedException e)
         {
             e.printStackTrace();

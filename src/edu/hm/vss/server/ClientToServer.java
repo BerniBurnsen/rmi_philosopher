@@ -149,24 +149,46 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     @Override
     public void stopServer() throws RemoteException
     {
-        server.getClientAPI().log(toString(), "-------STOPPING------");
-        server.setRun(false);
-        for(Philosopher p : server.getPhilosophers().values())
-        {
-            p.interrupt();
+        new Thread(() -> {
             try
             {
-                p.join();
-            } catch (InterruptedException e)
-            {
-                e.printStackTrace();
+                server.setRun(false);
+
+                for (Philosopher p : server.getPhilosophers().values())
+                {
+                    p.interrupt();
+                    try
+                    {
+                        p.join();
+                    } catch (InterruptedException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+
+                try
+                {
+                    Thread.sleep(3 * 1000);
+                } catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+
+                server.getClientAPI().log(toString(), "-------STOPPING------");
+                for (Philosopher p : server.getPhilosophers().values())
+                {
+                    server.getClientAPI().log(toString(), p + " eats " + p.getEatCounter() + " times ::: STATE: " + p.getCurrentState());
+                }
+                server.getClientAPI().log(toString(), "");
+                server.getClientAPI().log(toString(), "Current number of Philosophers on Server: " + server.getPhilosophers().size());
+                server.getClientAPI().log(toString(), "");
+                server.getClientAPI().log(toString(), "-------STOPPING------");
             }
-            server.getClientAPI().log(toString(), p + " eats " + p.getEatCounter() + " times ::: STATE: " + p.getCurrentState());
-        }
-        server.getClientAPI().log(toString(), "");
-        server.getClientAPI().log(toString(), "Current number of Philosophers on Server: " + server.getPhilosophers().size());
-        server.getClientAPI().log(toString(), "");
-        server.getClientAPI().log(toString(), "-------STOPPING------");
+            catch ( RemoteException e)
+            {
+
+            }
+        });
     }
 
     @Override
