@@ -7,37 +7,11 @@ import java.rmi.RemoteException;
  */
 public class LocalFork extends Fork
 {
-    private ForkToken token;
+    private boolean isReserved = false;
 
     public LocalFork(int index)
     {
         super(index);
-        try
-        {
-            token = new ForkToken(index);
-        } catch (RemoteException e)
-        {
-            e.printStackTrace();
-        }
-    }
-    @Override
-    public boolean isReserved()
-    {
-        return isReserved;
-    }
-
-    @Override
-    public void setIsReserved(boolean isReserved)
-    {
-        super.isReserved = isReserved;
-        if(isReserved)
-        {
-            this.p = p;
-        }
-        else
-        {
-            this.p = null;
-        }
     }
 
     public Philosopher getPhilosopher()
@@ -52,8 +26,45 @@ public class LocalFork extends Fork
     }
 
     @Override
-    public ForkToken getForkToken()
+    public boolean tryToGet()
     {
-        return token;
+        synchronized (this)
+        {
+            if(isReserved)
+            {
+                return false;
+            }
+            isReserved = true;
+            return true;
+        }
+    }
+
+    @Override
+    public void waitFor()
+    {
+        synchronized (this)
+        {
+            if(isReserved)
+            {
+                try
+                {
+                    this.wait();
+                } catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            isReserved = true;
+        }
+    }
+
+    @Override
+    public void release()
+    {
+        synchronized (this)
+        {
+            isReserved = false;
+            this.notify();
+        }
     }
 }

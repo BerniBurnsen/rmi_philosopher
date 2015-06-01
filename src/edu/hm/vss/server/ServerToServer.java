@@ -1,6 +1,5 @@
 package edu.hm.vss.server;
 
-import edu.hm.vss.helper.Logger;
 import edu.hm.vss.interfaces.IServerToServer;
 import edu.hm.vss.model.ForkToken;
 import edu.hm.vss.model.Philosopher;
@@ -36,25 +35,6 @@ public class ServerToServer extends UnicastRemoteObject implements IServerToServ
     }
 
     @Override
-    public ForkToken requestForkToken() throws RemoteException
-    {
-        server.getClientAPI().log(toString(), "requestForkToken: plateSize: " + server.getPlates().size());
-        return server.getPlates().get(server.getPlates().size()-1).getRightFork().getForkToken();
-    }
-
-    @Override
-    public boolean requestIsRemoteForkReserved() throws RemoteException
-    {
-        return server.getPlates().get(server.getPlates().size()-1).getRightFork().isReserved();
-    }
-
-    @Override
-    public void setIsForkReserved(boolean isReserved) throws RemoteException
-    {
-        server.getPlates().get(server.getPlates().size()-1).getRightFork().setIsReserved(isReserved);
-    }
-
-    @Override
     public boolean testConnection() throws RemoteException
     {
         System.out.println("SERVER " + server.getInstanceNumber());
@@ -65,6 +45,24 @@ public class ServerToServer extends UnicastRemoteObject implements IServerToServ
         System.out.println("SERVER " + server);
         server.getClientAPI().log(toString(), "Connection OK");
         return true;
+    }
+
+    @Override
+    public boolean tryToGetFork() throws RemoteException
+    {
+        return server.getPlates().get(server.getPlates().size()-1).getRightFork().tryToGet();
+    }
+
+    @Override
+    public void waitForFork() throws RemoteException
+    {
+        server.getPlates().get(server.getPlates().size()-1).getRightFork().waitFor();
+    }
+
+    @Override
+    public void releaseFork() throws RemoteException
+    {
+        server.getPlates().get(server.getPlates().size()-1).getRightFork().release();
     }
 
     public String toString()

@@ -19,15 +19,11 @@ public interface IServerToServer extends Remote, Serializable
      */
     void pushPhilosopher(int index, boolean isHungry, int eatCount, int startIndex, boolean isFirstRound) throws RemoteException;
 
-    /**
-     * requests a fork (token) on a neighbour server
-     * @return
-     */
-    ForkToken requestForkToken() throws RemoteException;
-
-    boolean requestIsRemoteForkReserved() throws RemoteException;
-
-    void setIsForkReserved(boolean isReserved) throws RemoteException;
-
     boolean testConnection() throws RemoteException;
+
+    boolean tryToGetFork() throws RemoteException;
+
+    void waitForFork() throws RemoteException;
+
+    void releaseFork() throws RemoteException;
 }

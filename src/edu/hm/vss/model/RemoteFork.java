@@ -17,57 +17,27 @@ public class RemoteFork extends Fork
         this.server = server;
     }
 
-    @Override
-    public boolean isReserved()
-    {
-        try
-        {
-            return server.getLeftServerAPI().requestIsRemoteForkReserved();
-        } catch (RemoteException e)
-        {
-            e.printStackTrace();
-        }
-        return true;
-    }
-
-    @Override
-    public void setIsReserved(boolean isReserved)
-    {
-        super.isReserved = isReserved;
-        try
-        {
-            server.getLeftServerAPI().setIsForkReserved(isReserved);
-        } catch (RemoteException e)
-        {
-            e.printStackTrace();
-        }
-        if(isReserved)
-        {
-            this.p = p;
-        }
-        else
-        {
-            this.p = null;
-        }
-    }
-
     public Philosopher getPhilosopher()
     {
         return p;
     }
 
     @Override
-    public ForkToken getForkToken()
+    public boolean tryToGet() throws RemoteException
     {
-        try
-        {
-            server.getClientAPI().log(RemoteFork.class.getSimpleName(), "request ForkToken " + index);
-            return server.getLeftServerAPI().requestForkToken();
-        } catch (RemoteException e)
-        {
-            //RMIServer.clientAPI.log(RemoteFork.class.getSimpleName(), index + "Error: " + e.getMessage());
-        }
-        return null;
+        return server.getLeftServerAPI().tryToGetFork();
+    }
+
+    @Override
+    public void waitFor() throws RemoteException
+    {
+        server.getLeftServerAPI().waitForFork();
+    }
+
+    @Override
+    public void release() throws RemoteException
+    {
+        server.getLeftServerAPI().releaseFork();
     }
 
     public String toString()

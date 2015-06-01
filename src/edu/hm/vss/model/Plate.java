@@ -2,6 +2,7 @@ package edu.hm.vss.model;
 
 import java.io.Serializable;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  * Created by Joncn on 13.05.2015.
@@ -10,8 +11,6 @@ public class Plate implements Serializable, Remote
 {
     private Fork leftFork;
     private Fork rightFork;
-
-
 
     private int index;
 
@@ -52,7 +51,7 @@ public class Plate implements Serializable, Remote
         return index;
     }
 
-    public void waitForForks(Philosopher p) throws InterruptedException
+    public void waitForForks(Philosopher p) throws InterruptedException, RemoteException
     {
         Fork firstFork;
         Fork secondFork;
@@ -69,52 +68,20 @@ public class Plate implements Serializable, Remote
         boolean obtained = false;
         while(!obtained)
         {
-            synchronized (firstFork.getForkToken())
+            firstFork.waitFor();
+            if(secondFork.tryToGet());
             {
-                while (firstFork.isReserved())
-                {
-                    firstFork.getForkToken().wait(1);
-                }
-                synchronized (secondFork.getForkToken())
-                {
-                    if (secondFork.isReserved())
-                    {
-                        secondFork.getForkToken().wait(1);
-                    }
-                    else
-                    {
-                        obtained = true;
-                        firstFork.setIsReserved(true);
-                        secondFork.setIsReserved(true);
-                    }
-                }
+                obtained = true;
             }
+            firstFork.release();
         }
         //Main.writeInDebugmode(p + " obtained both" + leftFork + " " + rightFork);
     }
 
-    public void releaseForks()
+    public void releaseForks() throws RemoteException
     {
-        releaseLeftFork();
-        releaseRightFork();
-    }
-
-    private void releaseRightFork()
-    {
-        synchronized (rightFork.getForkToken())
-        {
-            rightFork.setIsReserved(false);
-            rightFork.getForkToken().notify();
-        }
-    }
-
-    private void releaseLeftFork()
-    {
-        synchronized (leftFork.getForkToken())
-        {
-            leftFork.setIsReserved(false);
-            leftFork.getForkToken().notify();
-        }
+        leftFork.release();
+        rightFork.release();
     }
 
     public Fork getLeftFork()
