@@ -131,6 +131,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     public boolean createNewPhilosopher(int index, boolean hungry) throws RemoteException
     {
         server.getClientAPI().log(toString(), "createNewP - " + index);
+        philosophers.clear();
         philosophers.add(new Thread(new Philosopher(server, server.getTablePiece(), index, hungry)));
         server.getClientAPI().registerPhilosopher(index, server.getInstanceNumber());
         return true;
@@ -139,7 +140,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     @Override
     public void startPhilosophers() throws RemoteException
     {
-        server.getClientAPI().log(toString() + " " + server.getInstanceNumber(), "START");
+        server.getClientAPI().log(toString(), "START");
         for(Thread p : philosophers)
         {
             p.start();
