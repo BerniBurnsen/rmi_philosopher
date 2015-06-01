@@ -188,7 +188,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
             {
 
             }
-        });
+        }).start();
     }
 
     @Override
