@@ -148,7 +148,7 @@ public class Client implements Serializable
                      }
                  }
              }
-        , 60*1000);
+        , 10*1000);
     }
 
 
@@ -173,8 +173,6 @@ public class Client implements Serializable
         int numberOfPlaces = Integer.parseInt(args[2]);
 
         new Client(numberOfPhilosophers,numberOfHungryPhilosophers,numberOfPlaces).init();
-        Thread.sleep(5 * 60 * 1000);
-
     }
 
 

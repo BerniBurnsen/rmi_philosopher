@@ -13,19 +13,20 @@ import java.util.Date;
  */
 public class Logger implements Serializable
 {
-
-
     private boolean doLog = true;
+    private long startTime;
 
     public Logger()
     {
-
+        startTime = new Date().getTime();
     }
 
     public void printLog(String from, String message)
     {
         DateFormat df = new SimpleDateFormat("mm:ss.SSS");
-        String timeString = df.format(new Date());
+        Date date = new Date();
+        date.setTime(new Date().getTime() - startTime);
+        String timeString = df.format(date);
         System.out.println(timeString + " - " + from + " - " + message);
     }
 
