@@ -139,7 +139,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     @Override
     public void startPhilosophers() throws RemoteException
     {
-        server.getClientAPI().log(toString(), "START");
+        server.getClientAPI().log(toString() + " " + server.getInstanceNumber(), "START");
         for(Thread p : philosophers)
         {
             p.start();
