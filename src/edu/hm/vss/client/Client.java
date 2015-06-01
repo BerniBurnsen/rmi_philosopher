@@ -11,9 +11,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -134,7 +132,23 @@ public class Client implements Serializable
             servers.get(i).startPhilosophers();
         }
 
-
+        new Timer().schedule(new TimerTask() {
+                 @Override
+                 public void run()
+                 {
+                     for(int i = 0 ; i < instanceCount ; i++)
+                     {
+                         try
+                         {
+                             servers.get(i).stopServer();
+                         } catch (RemoteException e)
+                         {
+                             e.printStackTrace();
+                         }
+                     }
+                 }
+             }
+        , 60*1000);
     }
 
 

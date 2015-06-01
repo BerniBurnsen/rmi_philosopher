@@ -10,7 +10,7 @@ import java.rmi.server.UnicastRemoteObject;
 /**
  * Created by B3rni on 13.05.2015.
  */
-public class Philosopher implements Serializable, Runnable
+public class Philosopher extends Thread implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
@@ -30,7 +30,6 @@ public class Philosopher implements Serializable, Runnable
     private boolean isFirstRound = true;
 
     private RMIServer server;
-
 
     public Philosopher()
     {
@@ -129,6 +128,7 @@ public class Philosopher implements Serializable, Runnable
         try
         {
             server.getRightServerAPI().pushPhilosopher(index, isVeryHungry, eatCounter, startIndex, isFirstRound);
+            server.getPhilosophers().remove(index);
         } catch (RemoteException e)
         {
             try
@@ -178,6 +178,12 @@ public class Philosopher implements Serializable, Runnable
         server.getClientAPI().log(toString(), index + " sleeping");
         //Main.writeInDebugmode(this + " sleeping");
         Thread.sleep(SLEEPTIME);
+    }
+
+    @Override
+    public void interrupt()
+    {
+        run = false;
     }
 
     public int getIndex()
@@ -278,7 +284,7 @@ public class Philosopher implements Serializable, Runnable
         this.run = run;
     }
 
-    public String getState()
+    public String getCurrentState()
     {
         return state;
     }

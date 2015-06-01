@@ -2,6 +2,7 @@ package edu.hm.vss.server;
 
 import edu.hm.vss.helper.Logger;
 import edu.hm.vss.interfaces.*;
+import edu.hm.vss.model.Philosopher;
 import edu.hm.vss.model.Plate;
 import edu.hm.vss.model.TablePiece;
 
@@ -14,6 +15,8 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Created by B3rni on 13.05.2015.
@@ -21,8 +24,6 @@ import java.util.List;
 public class RMIServer implements Serializable
 {
     private Registry registry;
-
-
 
     private int instanceNumber;
 
@@ -33,6 +34,8 @@ public class RMIServer implements Serializable
     private TablePiece tablePiece;
 
     private List<Plate> plates = new ArrayList<>();
+
+    private ConcurrentMap<Integer, Philosopher> philosophers = new ConcurrentHashMap<>();
 
     public RMIServer()
     {
@@ -149,5 +152,15 @@ public class RMIServer implements Serializable
     {
 
         this.instanceNumber = instanceNumber;
+    }
+
+    public ConcurrentMap<Integer, Philosopher> getPhilosophers()
+    {
+        return philosophers;
+    }
+
+    public void setPhilosophers(ConcurrentMap<Integer, Philosopher> philosophers)
+    {
+        this.philosophers = philosophers;
     }
 }

@@ -24,9 +24,6 @@ import java.util.List;
 public class ClientToServer extends UnicastRemoteObject implements IClientToServer
 {
     private RMIServer server;
-    private List<Thread> philosophers = new ArrayList<>();
-
-
 
     public ClientToServer() throws RemoteException
     {
@@ -95,8 +92,8 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     @Override
     public boolean initServer(int seats, int maxSeats, int startIndex) throws RemoteException
     {
-        philosophers.clear();
-        server.getClientAPI().log(toString()," initServer - Seats: " + seats + " maxSeats " + maxSeats + " startIndex " + startIndex);
+        server.getPhilosophers().clear();
+        server.getClientAPI().log(toString(), " initServer - Seats: " + seats + " maxSeats " + maxSeats + " startIndex " + startIndex);
         for(int i = 0 ; i < seats ;i++)
         {
             Fork rightFork = new LocalFork(startIndex+i);
@@ -111,20 +108,10 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
             {
                 leftFork = new RemoteFork(startIndex - 1 < 0 ? maxSeats-1 :(startIndex -1)%maxSeats, server);
             }
-
-/*
-            if(startIndex +i +1 < server.getPlates().size())
-            {
-                leftFork = startIndex + i + 1 == startIndex ? new RemoteFork(startIndex + i + 1,server) : server.getPlates().get(startIndex + i + 1).getRightFork();
-            }
-            else
-            {
-                leftFork = new RemoteFork(0,server);
-            }*/
             server.getClientAPI().log(toString()," initServer - plate " + (startIndex + i) + " rightFork index " + rightFork.getIndex() + " leftFork isRemote: " + ((leftFork instanceof RemoteFork) ? "yes" : "no") + " index: " + leftFork.getIndex());
             server.getPlates().add(new Plate(leftFork, rightFork, startIndex + i));
         }
-        server.setTablePiece(new TablePiece(server.getInstanceNumber(), server.getPlates(),server));
+        server.setTablePiece(new TablePiece(server.getInstanceNumber(), server.getPlates(), server));
         return true;
     }
 
@@ -132,7 +119,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     public boolean createNewPhilosopher(int index, boolean hungry) throws RemoteException
     {
         server.getClientAPI().log(toString(), "createNewP - " + index);
-        philosophers.add(new Thread(new Philosopher(server, server.getTablePiece(), index, hungry)));
+        server.getPhilosophers().put(index, new Philosopher(server, server.getTablePiece(), index, hungry));
         server.getClientAPI().registerPhilosopher(index, server.getInstanceNumber());
         return true;
     }
@@ -141,7 +128,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     public void startPhilosophers() throws RemoteException
     {
         server.getClientAPI().log(toString(), "--------START----------");
-        for(Thread p : philosophers)
+        for(Philosopher p : server.getPhilosophers().values())
         {
             p.start();
         }
@@ -151,7 +138,9 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     public boolean respawnPhilosopher(int index, boolean hungry, int eatCount) throws RemoteException
     {
         server.getClientAPI().log(toString(), "respawnP - " + index + " hungry: " + hungry + " eatCount" + eatCount);
-        new Thread(new Philosopher(server,server.getTablePiece(), index, hungry, eatCount)).start();
+        Philosopher p = new Philosopher(server,server.getTablePiece(), index, hungry, eatCount);
+        server.getPhilosophers().put(index, p);
+        p.start();
         server.getClientAPI().registerPhilosopher(index, server.getInstanceNumber());
         return true;
     }
@@ -159,7 +148,23 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     @Override
     public void stopServer() throws RemoteException
     {
-        server.getClientAPI().log(toString(), "stopServer - ");
+        server.getClientAPI().log(toString(), "-------STOPPING------");
+        for(Philosopher p : server.getPhilosophers().values())
+        {
+            p.interrupt();
+            try
+            {
+                p.join();
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+            server.getClientAPI().log(toString(), p + " eats " + p.getEatCounter() + " times ::: STATE: " + p.getCurrentState());
+        }
+        server.getClientAPI().log(toString(), "");
+        server.getClientAPI().log(toString(), "Current number of Philosophers on Server: " + server.getPhilosophers().size());
+        server.getClientAPI().log(toString(), "");
+        server.getClientAPI().log(toString(), "-------STOPPING------");
     }
 
     @Override
@@ -177,16 +182,6 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     public String toString()
     {
         return "ClientToServer "+ server.getInstanceNumber();
-    }
-
-    public List<Thread> getPhilosophers()
-    {
-        return philosophers;
-    }
-
-    public void setPhilosophers(List<Thread> philosophers)
-    {
-        this.philosophers = philosophers;
     }
 
     public RMIServer getServer()
