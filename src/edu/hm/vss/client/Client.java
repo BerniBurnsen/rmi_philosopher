@@ -95,9 +95,12 @@ public class Client implements Serializable
     {
         logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - #phil" + numberOfPhilosophers + " #hungry " + numberOfHungryPhilosophers + " #places " + numberOfPlaces);
 
-        startRegistry();
-        serverToClient = new ServerToClient(this);
-        registerObject(Settings.SERVER_TO_CLIENT, serverToClient);
+        if(!isFallback)
+        {
+            startRegistry();
+            serverToClient = new ServerToClient(this);
+            registerObject(Settings.SERVER_TO_CLIENT, serverToClient);
+        }
 
         logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - build up connections");
 
@@ -157,12 +160,11 @@ public class Client implements Serializable
         overseer.start();
 
         //spawn philosophers
-
         for (int i = 0; i < numberOfPhilosophers; i++)
         {
             int nextServerIndex = i % activeServers.size();
             logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - spawning Phil - " + i);
-            if(isFallback)
+            if(!isFallback)
             {
                 servers.get(nextServerIndex).createNewPhilosopher(i, i >= numberOfPhilosophers - numberOfHungryPhilosophers ? true : false);
                 allEatCounts.put(i, 0);
@@ -241,15 +243,25 @@ public class Client implements Serializable
         {
             try
             {
-                servers.get(Settings.PORT_SERVER_BASE - port).stopServer();
+                logger.printLog(LogLevel.ERROR, Client.class.getSimpleName(), "Search unreachable server or stop: " + activeServers.get(port) + " - " + port);
+                servers.get(port - Settings.PORT_SERVER_BASE).stopServer();
             } catch (RemoteException e)
             {
+                logger.printLog(LogLevel.ERROR, Client.class.getSimpleName(), "!!! --- Unreachable Server found: " + activeServers.get(port) + " - " + port);
                 missingPort = port;
             }
         }
         if(missingPort > -1)
         {
             activeServers.remove(missingPort);
+            instanceCount--;
+        }
+        if(instanceCount == 0)
+        {
+            logger.printLog(LogLevel.ERROR, Client.class.getSimpleName(), "!!! --- NO SERVERS FOUND --- !!!");
+            logger.printLog(LogLevel.ERROR, Client.class.getSimpleName(), "Lost connection to all servers. Could not run fallback");
+            logger.printLog(LogLevel.ERROR, Client.class.getSimpleName(), "!!! --- NO SERVERS FOUND --- !!!");
+            return;
         }
         try
         {

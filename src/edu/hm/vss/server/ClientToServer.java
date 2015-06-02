@@ -98,18 +98,23 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
         {
             Fork rightFork = new LocalFork(startIndex+i);
 
-            Fork leftFork;
+            Fork leftFork = null;
 
-            if(i - 1 >= 0 && server.getPlates().get(i - 1) != null && server.getPlates().get(i - 1).getRightFork() instanceof LocalFork)
+            if( (i - 1) >= 0 && server.getPlates().get(i - 1) != null && server.getPlates().get(i - 1).getRightFork() instanceof LocalFork)
             {
                 leftFork = server.getPlates().get(i - 1).getRightFork();
             }
-            else
+            else if( seats != maxSeats)
             {
                 leftFork = new RemoteFork(startIndex - 1 < 0 ? maxSeats-1 :(startIndex -1)%maxSeats, server);
             }
-            server.getClientAPI().log(LogLevel.INIT, toString()," initServer - plate " + (startIndex + i) + " rightFork index " + rightFork.getIndex() + " leftFork isRemote: " + ((leftFork instanceof RemoteFork) ? "yes" : "no") + " index: " + leftFork.getIndex());
+            server.getClientAPI().log(LogLevel.INIT, toString(), " initServer - plate " + (startIndex + i) + " rightFork index " + rightFork.getIndex() + " leftFork isRemote: " + ((leftFork instanceof RemoteFork) ? "yes" : "no") + " index: " + leftFork.getIndex());
             server.getPlates().add(new Plate(leftFork, rightFork, startIndex + i));
+        }
+        if(server.getPlates().get(0).getLeftFork() == null)
+        {
+            server.getPlates().get(0).setLeftFork(server.getPlates().get(seats -1).getRightFork());
+            server.getClientAPI().log(LogLevel.INIT, toString(), " initServer - plate " + 0 + " rightFork index " + 0 + " leftFork isRemote: no");
         }
         server.setTablePiece(new TablePiece(server.getInstanceNumber(), server.getPlates(), server));
         return true;
@@ -152,6 +157,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
         new Thread(() -> {
             try
             {
+                boolean running = server.isRun();
                 server.setRun(false);
 
                 for (Philosopher p : server.getPhilosophers().values())
@@ -174,15 +180,18 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
                     e.printStackTrace();
                 }
 
-                server.getClientAPI().log(LogLevel.INIT, toString(), "-------STOPPING------");
-                for (Philosopher p : server.getPhilosophers().values())
+                if(running)
                 {
-                    server.getClientAPI().log(LogLevel.INIT, toString(), p + " eats " + p.getEatCounter() + " times ::: STATE: " + p.getCurrentState());
+                    server.getClientAPI().log(LogLevel.INIT, toString(), "-------STOPPING------");
+                    for (Philosopher p : server.getPhilosophers().values())
+                    {
+                        server.getClientAPI().log(LogLevel.INIT, toString(), p + " eats " + p.getEatCounter() + " times ::: STATE: " + p.getCurrentState());
+                    }
+                    server.getClientAPI().log(LogLevel.INIT, toString(), "");
+                    server.getClientAPI().log(LogLevel.INIT, toString(), "Current number of Philosophers on Server: " + server.getPhilosophers().size());
+                    server.getClientAPI().log(LogLevel.INIT, toString(), "");
+                    server.getClientAPI().log(LogLevel.INIT, toString(), "-------STOPPING------");
                 }
-                server.getClientAPI().log(LogLevel.INIT, toString(), "");
-                server.getClientAPI().log(LogLevel.INIT, toString(), "Current number of Philosophers on Server: " + server.getPhilosophers().size());
-                server.getClientAPI().log(LogLevel.INIT, toString(), "");
-                server.getClientAPI().log(LogLevel.INIT, toString(), "-------STOPPING------");
             }
             catch ( RemoteException e)
             {
