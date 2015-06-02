@@ -90,84 +90,75 @@ public class Philosopher extends Thread implements Serializable
         try
         {
             server.getClientAPI().log(LogLevel.PHIL, toString(), index + " spawning on tablePiece " + tablePiece.getIndex());
-        } catch (RemoteException e)
-        {
-            e.printStackTrace();
-        }
-
-        eatLoop:
-        while(run)
-        {
-            try
-            {
-                if(isAllowedToEat())
-                {
-                    state = "waiting for place";
-                    plate = tablePiece.getPlate(this);
-                    if(plate == null)
-                    {
-                        //Terminate own Thread
-                        break eatLoop;
-                    }
-                    state = "got place";
-                    leftFork = plate.getLeftFork();
-                    rightFork = plate.getRightFork();
-                    server.getClientAPI().log(LogLevel.PHIL, toString(), index + " leftForkindex: " + leftFork.getIndex() + " and " + rightFork.getIndex());
-                    //Main.writeInDebugmode(this + " waiting for forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
-                    state = "waiting for Forks";
-                    plate.waitForForks(this);
-                    state = "got forks";
-                    server.getClientAPI().log(LogLevel.PHIL, toString(), index + " got Forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
-                    //Main.writeInDebugmode(this + " got forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
-                    state = "start eating";
-                    eat();
-                    state = "releasing forks";
-                    plate.releaseForks();
-                    state = "releasing plate";
-                    server.getClientAPI().log(LogLevel.PHIL, toString(), index + " release forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
-                            //Main.writeInDebugmode(this + " releases forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
-                    tablePiece.releasePlate(plate, this);
-                    state = "plate released";
-                    server.getClientAPI().log(LogLevel.PHIL, toString(), index + " released place " + plate.getIndex());
-                    //Main.writeInDebugmode(this + " releases place " + plate.getIndex());
-                    state = "meditating";
-                    meditate();
-                }
-                else
-                {
-                    goSleeping();
-                    setAllowedToEat(true);
-                }
-            }
-            catch (InterruptedException e)
-            {
-                System.err.println(this + " stop");
-                run = false;
-            }
-            catch (RemoteException e)
-            {
-                // Client not reachable
-            }
-        }
-        if(run)
-        {
-            try
-            {
-                if(server.getRightServerAPI().pushPhilosopher(index, isVeryHungry, eatCounter, startIndex, isFirstRound))
-                {
-                    server.getPhilosophers().remove(index);
-                    run = false;
-                }
-            } catch (RemoteException e)
+            eatLoop:
+            while(run)
             {
                 try
                 {
-                    server.getClientAPI().neighbourUnreachable(e.getMessage());
-                    server.getClientAPI().log(LogLevel.PHIL, toString(), index + " terminated on server " + tablePiece.getIndex());
-                } catch (RemoteException e1)
-                {
-                    //Terminate
+                    if(isAllowedToEat())
+                    {
+                        state = "waiting for place";
+                        plate = tablePiece.getPlate(this);
+                        if(plate == null)
+                        {
+                            //Terminate own Thread
+                            break eatLoop;
+                        }
+                        state = "got place";
+                        leftFork = plate.getLeftFork();
+                        rightFork = plate.getRightFork();
+                        server.getClientAPI().log(LogLevel.PHIL, toString(), index + " leftForkindex: " + leftFork.getIndex() + " and " + rightFork.getIndex());
+                        //Main.writeInDebugmode(this + " waiting for forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
+                        state = "waiting for Forks";
+                        plate.waitForForks(this);
+                        state = "got forks";
+                        server.getClientAPI().log(LogLevel.PHIL, toString(), index + " got Forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
+                        //Main.writeInDebugmode(this + " got forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
+                        state = "start eating";
+                        eat();
+                        state = "releasing forks";
+                        plate.releaseForks();
+                        state = "releasing plate";
+                        server.getClientAPI().log(LogLevel.PHIL, toString(), index + " release forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
+                                //Main.writeInDebugmode(this + " releases forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
+                        tablePiece.releasePlate(plate, this);
+                        state = "plate released";
+                        server.getClientAPI().log(LogLevel.PHIL, toString(), index + " released place " + plate.getIndex());
+                        //Main.writeInDebugmode(this + " releases place " + plate.getIndex());
+                        state = "meditating";
+                        meditate();
+                    }
+                    else
+                    {
+                        goSleeping();
+                        setAllowedToEat(true);
+                    }
                 }
+                catch (InterruptedException e)
+                {
+                    System.err.println(this + " stop");
+                    run = false;
+                }
+            }
+            if(run)
+            {
+                    if(server.getRightServerAPI().pushPhilosopher(index, isVeryHungry, eatCounter, startIndex, isFirstRound))
+                    {
+                        server.getPhilosophers().remove(index);
+                        run = false;
+                    }
+                    server.getClientAPI().log(LogLevel.PHIL, toString(), index + " terminated on server " + tablePiece.getIndex());
+                }
+            }
+        catch (RemoteException e)
+        {
+            try
+            {
+                server.getClientAPI().log(LogLevel.FALLBACK, toString(), "!!! --- Error reaching neighbour --- !!!");
+                server.getClientAPI().neighbourUnreachable(e.getMessage());
+            } catch (RemoteException e1)
+            {
+                //Client unreachable, nothing to do
             }
         }
     }

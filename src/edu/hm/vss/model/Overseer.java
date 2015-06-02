@@ -25,6 +25,7 @@ public class Overseer extends Thread
     {
         run = true;
         int[] pCount = new int[client.getNumberOfPhilosophers()];
+        runLoop:
         while(run)
         {
             int minCount = Integer.MAX_VALUE;
@@ -55,7 +56,13 @@ public class Overseer extends Thread
                         }
                     } catch (RemoteException e)
                     {
-                        e.printStackTrace();
+                        try
+                        {
+                            client.getServerToClient().neighbourUnreachable(e.getMessage());
+                        } catch (RemoteException e1)
+                        {
+                            //client unreachable, nothing to do
+                        }
                     }
                 }
             }

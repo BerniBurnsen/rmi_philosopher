@@ -34,6 +34,7 @@ public class Client implements Serializable
 
     public Map<Integer, Integer> allEatCounts = new ConcurrentHashMap<>();
     public Map<Integer, Integer> locationMap = new ConcurrentHashMap<>();
+    private ServerToClient serverToClient;
 
     public Client()
     {
@@ -74,7 +75,8 @@ public class Client implements Serializable
         logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - #phil" + numberOfPhilosophers + " #hungry " + numberOfHungryPhilosophers + " #places " + numberOfPlaces);
 
         startRegistry();
-        registerObject(Settings.SERVER_TO_CLIENT, new ServerToClient(this));
+        serverToClient = new ServerToClient(this);
+        registerObject(Settings.SERVER_TO_CLIENT, serverToClient);
 
         logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - build up connections");
 
@@ -253,5 +255,10 @@ public class Client implements Serializable
     public void setLocationMap(Map<Integer, Integer> locationMap)
     {
         this.locationMap = locationMap;
+    }
+
+    public ServerToClient getServerToClient()
+    {
+        return serverToClient;
     }
 }

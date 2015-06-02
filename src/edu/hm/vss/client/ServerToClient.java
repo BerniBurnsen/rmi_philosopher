@@ -8,6 +8,8 @@ import edu.hm.vss.interfaces.IServerToServer;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by B3rni on 20.05.2015.
@@ -36,9 +38,14 @@ public class ServerToClient extends UnicastRemoteObject implements IServerToClie
     }
 
     @Override
-    public void neighbourUnreachable(String IP) throws RemoteException
+    public void neighbourUnreachable(String IPMessage) throws RemoteException
     {
-        log(LogLevel.ERROR, ServerToClient.class.getSimpleName(), "neighbourUnreachAble - " + IP);
+        Pattern pattern = Pattern.compile("\t\t\"^([01]?\\\\d\\\\d?|2[0-4]\\\\d|25[0-5])\\\\.\" +\n" +
+                "\t\t\"([01]?\\\\d\\\\d?|2[0-4]\\\\d|25[0-5])\\\\.\" +\n" +
+                "\t\t\"([01]?\\\\d\\\\d?|2[0-4]\\\\d|25[0-5])\\\\.\" +\n" +
+                "\t\t\"([01]?\\\\d\\\\d?|2[0-4]\\\\d|25[0-5])$\";");
+        Matcher matcher = pattern.matcher(IPMessage);
+        log(LogLevel.ERROR, ServerToClient.class.getSimpleName(), "neighbourUnreachAble - " + matcher.group(1));
     }
 
     @Override
