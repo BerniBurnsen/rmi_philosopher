@@ -157,50 +157,50 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     @Override
     public void stopServer() throws RemoteException
     {
-        new Thread(() -> {
-            try
+        try
+        {
+            boolean running = server.isRun();
+            server.setRun(false);
+
+            for (Philosopher p : server.getPhilosophers().values())
             {
-                boolean running = server.isRun();
-                server.setRun(false);
-
-                for (Philosopher p : server.getPhilosophers().values())
-                {
-                    p.interrupt();
-                    try
-                    {
-                        p.join();
-                    } catch (InterruptedException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-
+                p.interrupt();
+            }
+            for (Philosopher p : server.getPhilosophers().values())
+            {
                 try
                 {
-                    Thread.sleep(1 * 1000);
+                    p.join();
                 } catch (InterruptedException e)
                 {
                     e.printStackTrace();
                 }
-
-                if(running)
-                {
-                    server.getClientAPI().log(LogLevel.INIT, toString(), "-------STOPPING------");
-                    for (Philosopher p : server.getPhilosophers().values())
-                    {
-                        server.getClientAPI().log(LogLevel.INIT, toString(), p + " eats " + p.getEatCounter() + " times ::: STATE: " + p.getCurrentState());
-                    }
-                    server.getClientAPI().log(LogLevel.INIT, toString(), "");
-                    server.getClientAPI().log(LogLevel.INIT, toString(), "Current number of Philosophers on Server: " + server.getPhilosophers().size());
-                    server.getClientAPI().log(LogLevel.INIT, toString(), "");
-                    server.getClientAPI().log(LogLevel.INIT, toString(), "-------STOPPING------");
-                }
             }
-            catch ( RemoteException e)
+            try
             {
-
+                Thread.sleep(1 * 1000);
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
             }
-        }).start();
+
+            if(running)
+            {
+                server.getClientAPI().log(LogLevel.INIT, toString(), "-------STOPPING------");
+                for (Philosopher p : server.getPhilosophers().values())
+                {
+                    server.getClientAPI().log(LogLevel.INIT, toString(), p + " eats " + p.getEatCounter() + " times ::: STATE: " + p.getCurrentState());
+                }
+                server.getClientAPI().log(LogLevel.INIT, toString(), "");
+                server.getClientAPI().log(LogLevel.INIT, toString(), "Current number of Philosophers on Server: " + server.getPhilosophers().size());
+                server.getClientAPI().log(LogLevel.INIT, toString(), "");
+                server.getClientAPI().log(LogLevel.INIT, toString(), "-------STOPPING------");
+            }
+        }
+        catch ( RemoteException e)
+        {
+
+        }
     }
 
     @Override
