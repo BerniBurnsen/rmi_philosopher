@@ -204,6 +204,7 @@ public class Philosopher extends Thread implements Serializable
     @Override
     public void interrupt()
     {
+        super.interrupt();
         run = false;
     }
 

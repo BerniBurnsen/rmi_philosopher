@@ -102,7 +102,6 @@ public class TablePiece implements Serializable, Remote
         return "TablePiece " + index + " " + server.getInstanceNumber();
     }
 
-
     public List<Plate> getPlates()
     {
         return plates;

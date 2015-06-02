@@ -73,7 +73,8 @@ public class Overseer extends Thread
     @Override
     public void interrupt()
     {
-        run = false;
+        super.interrupt();
+        run = false;run = false;
     }
 
     @Override
