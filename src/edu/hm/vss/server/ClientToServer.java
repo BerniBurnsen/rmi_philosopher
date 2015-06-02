@@ -146,7 +146,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     @Override
     public boolean respawnPhilosopher(int index, boolean hungry, int eatCount) throws RemoteException
     {
-        server.getClientAPI().log(LogLevel.FALLBACK, toString(), "respawnP - " + index + " hungry: " + hungry + " eatCount" + eatCount);
+        server.getClientAPI().log(LogLevel.FALLBACK, toString(), "respawnP - " + index + " hungry: " + hungry + " eatCount: " + eatCount);
         Philosopher p = new Philosopher(server,server.getTablePiece(), index, hungry, eatCount);
         server.getPhilosophers().put(index, p);
         p.start();

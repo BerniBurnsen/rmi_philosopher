@@ -238,6 +238,7 @@ public class Client implements Serializable
         //find out the missing server
         int missingPort = -1;
         Set<Integer> activePorts = activeServers.keySet();
+        overseer.interrupt();
 
         for(int port : activePorts)
         {

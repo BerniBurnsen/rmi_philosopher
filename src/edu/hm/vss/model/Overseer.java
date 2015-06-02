@@ -75,4 +75,10 @@ public class Overseer extends Thread
     {
         run = false;
     }
+
+    @Override
+    public String toString()
+    {
+        return Overseer.class.getSimpleName();
+    }
 }
