@@ -206,7 +206,7 @@ public class Client implements Serializable
                      }
                  }
              }
-        , 10*1000);
+        , 100*1000);
     }
 
 

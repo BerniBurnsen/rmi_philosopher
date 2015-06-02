@@ -174,7 +174,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
 
                 try
                 {
-                    Thread.sleep(3 * 1000);
+                    Thread.sleep(1 * 1000);
                 } catch (InterruptedException e)
                 {
                     e.printStackTrace();
