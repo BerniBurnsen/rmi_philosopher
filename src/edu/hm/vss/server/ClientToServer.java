@@ -120,6 +120,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
             server.getClientAPI().log(LogLevel.INIT, toString(), " initServer - plate 0 rightFork index " + 0 + " leftFork isRemote: no");
         }
         server.setTablePiece(new TablePiece(server.getInstanceNumber(), server.getPlates(), server));
+        server.setRun(true);
         return true;
     }
 
@@ -136,7 +137,6 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     public void startPhilosophers() throws RemoteException
     {
         server.getClientAPI().log(LogLevel.INIT, toString(), "--------START----------");
-        server.setRun(true);
         for(Philosopher p : server.getPhilosophers().values())
         {
             p.start();
