@@ -21,6 +21,18 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Client implements Serializable
 {
+    private final LogLevel[] logLevels =
+            {
+//                    LogLevel.PHIL,
+                    LogLevel.CLIENT,
+                    LogLevel.SERVER,
+                    LogLevel.OVERSEER,
+                    LogLevel.REMOTE,
+                    LogLevel.INIT,
+                    LogLevel.ERROR,
+                    LogLevel.FALLBACK
+            };
+
     private Registry registry;
     private List<IClientToServer> servers = new ArrayList<>();
     public int instanceCount = 2;
@@ -46,7 +58,7 @@ public class Client implements Serializable
         numberOfPhilosophers = numberPhil;
         numberOfHungryPhilosophers = numberHungyPhil;
         numberOfPlaces = numberPlaces;
-        logger = new Logger(LogLevel.INIT, LogLevel.ERROR, LogLevel.FALLBACK, LogLevel.REMOTE, LogLevel.SERVER);
+        logger = new Logger(logLevels);
         System.out.println("Client constructor");
     }
 

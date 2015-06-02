@@ -5,5 +5,12 @@ package edu.hm.vss.helper;
  */
 public enum LogLevel
 {
-    PHIL, CLIENT, SERVER, OVERSEER, REMOTE, INIT, ERROR, FALLBACK
+    PHIL,
+    CLIENT,
+    SERVER,
+    OVERSEER,
+    REMOTE,
+    INIT,
+    ERROR,
+    FALLBACK
 }
