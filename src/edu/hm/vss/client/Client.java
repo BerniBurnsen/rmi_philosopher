@@ -45,7 +45,7 @@ public class Client implements Serializable
         numberOfPhilosophers = numberPhil;
         numberOfHungryPhilosophers = numberHungyPhil;
         numberOfPlaces = numberPlaces;
-        logger = new Logger();
+        logger = new Logger(LogLevel.INIT, LogLevel.ERROR, LogLevel.FALLBACK, LogLevel.REMOTE, LogLevel.SERVER);
         System.out.println("Client constructor");
     }
 
