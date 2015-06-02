@@ -133,8 +133,8 @@ public class Client implements Serializable
             int rightPort = (i+1) < instanceCount ? Settings.PORT_SERVER_BASE + i + 1 : Settings.PORT_SERVER_BASE;
             int leftPort = (i-1) < 0 ? Settings.PORT_SERVER_BASE + (instanceCount-1) : Settings.PORT_SERVER_BASE  + i - 1;
 */
-            logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - Instancenumber " + i + " leftNeighbour: " + leftNeighbour + " leftPort: " + leftPort);
-            logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - Instancenumber " + i + " rightNeighbour: " + rightNeighbour + " rightPort " + rightPort);
+            logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - Instancenumber " + count + " leftNeighbour: " + leftNeighbour + " leftPort: " + leftPort);
+            logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - Instancenumber " + count + " rightNeighbour: " + rightNeighbour + " rightPort " + rightPort);
 
             servers.get(count++).initServerConnections(rightNeighbour, rightPort, leftNeighbour,leftPort);
         }
