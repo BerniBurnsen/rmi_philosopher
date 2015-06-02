@@ -149,7 +149,6 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
         server.getClientAPI().log(LogLevel.FALLBACK, toString(), "respawnP - " + index + " hungry: " + hungry + " eatCount: " + eatCount);
         Philosopher p = new Philosopher(server,server.getTablePiece(), index, hungry, eatCount);
         server.getPhilosophers().put(index, p);
-        p.start();
         server.getClientAPI().registerPhilosopher(index, server.getInstanceNumber());
         return true;
     }
