@@ -1,5 +1,6 @@
 package edu.hm.vss.client;
 
+import edu.hm.vss.helper.LogLevel;
 import edu.hm.vss.helper.Logger;
 import edu.hm.vss.interfaces.IClientToServer;
 import edu.hm.vss.interfaces.Settings;
@@ -70,12 +71,12 @@ public class Client implements Serializable
 
     public void init() throws RemoteException, AlreadyBoundException, NotBoundException
     {
-        logger.printLog(Client.class.getSimpleName(), "main - #phil" + numberOfPhilosophers + " #hungry " + numberOfHungryPhilosophers + " #places " + numberOfPlaces);
+        logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - #phil" + numberOfPhilosophers + " #hungry " + numberOfHungryPhilosophers + " #places " + numberOfPlaces);
 
         startRegistry();
         registerObject(Settings.SERVER_TO_CLIENT, new ServerToClient(this));
 
-        logger.printLog(Client.class.getSimpleName(), "main - build up connections");
+        logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - build up connections");
 
         //build up connections
         for(int i = 0 ; i < instanceCount; i++)
@@ -94,8 +95,8 @@ public class Client implements Serializable
             int rightPort = (i+1) < instanceCount ? Settings.PORT_SERVER_BASE + i + 1 : Settings.PORT_SERVER_BASE;
             int leftPort = (i-1) < 0 ? Settings.PORT_SERVER_BASE + (instanceCount-1) : Settings.PORT_SERVER_BASE  + i - 1;
 
-            logger.printLog(Client.class.getSimpleName(), "main - Instancenumber " + i + " leftNeighbour: " + leftNeighbour + " leftPort: " + leftPort);
-            logger.printLog(Client.class.getSimpleName(), "main - Instancenumber " + i + " rightNeighbour: " + rightNeighbour + " rightPort " + rightPort);
+            logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - Instancenumber " + i + " leftNeighbour: " + leftNeighbour + " leftPort: " + leftPort);
+            logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - Instancenumber " + i + " rightNeighbour: " + rightNeighbour + " rightPort " + rightPort);
 
             servers.get(i).initServerConnections(rightNeighbour, rightPort, leftNeighbour,leftPort);
         }
@@ -121,7 +122,7 @@ public class Client implements Serializable
         for(int i = 0 ; i < numberOfPhilosophers ; i++)
         {
             int nextServerIndex = i % instanceCount;
-            logger.printLog(Client.class.getSimpleName(), "main - spawning Phil - " + i);
+            logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - spawning Phil - " + i);
             servers.get(nextServerIndex).createNewPhilosopher(i, i >= numberOfPhilosophers - numberOfHungryPhilosophers ? true : false);
         }
 
@@ -162,15 +163,15 @@ public class Client implements Serializable
 
     public void startRegistry() throws RemoteException
     {
-        logger.printLog(Client.class.getName(), "StartRegistry");
+        logger.printLog(LogLevel.INIT, Client.class.getName(), "StartRegistry");
         registry = LocateRegistry.createRegistry(Settings.PORT_CLIENT);
     }
 
     public void registerObject(String name, Remote remoteObject) throws RemoteException, AlreadyBoundException
     {
-        logger.printLog(Client.class.getSimpleName(), "registerObject " + name + " " + remoteObject.getClass().getName());
+        logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "registerObject " + name + " " + remoteObject.getClass().getName());
         registry.bind(name, remoteObject);
-        logger.printLog(Client.class.getSimpleName(), "registered" + name);
+        logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "registered" + name);
 
     }
 

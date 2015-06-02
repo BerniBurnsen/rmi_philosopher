@@ -1,5 +1,6 @@
 package edu.hm.vss.model;
 
+import edu.hm.vss.helper.LogLevel;
 import edu.hm.vss.helper.Logger;
 import edu.hm.vss.server.RMIServer;
 
@@ -37,7 +38,6 @@ public class TablePiece implements Serializable, Remote
         if(p.getStartIndex() == -1)
         {
             p.setStartIndex(plates.get(startIndex).getIndex());
-            server.getClientAPI().log(toString(), " Phil " + p.getIndex() + " startIndex: " + p.getStartIndex());
         }
         else if(!p.isFirstRound())
         {

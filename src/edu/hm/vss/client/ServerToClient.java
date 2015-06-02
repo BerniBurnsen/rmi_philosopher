@@ -1,6 +1,7 @@
 package edu.hm.vss.client;
 
 import com.sun.corba.se.spi.activation.Server;
+import edu.hm.vss.helper.LogLevel;
 import edu.hm.vss.helper.Logger;
 import edu.hm.vss.interfaces.IServerToClient;
 import edu.hm.vss.interfaces.IServerToServer;
@@ -37,13 +38,13 @@ public class ServerToClient extends UnicastRemoteObject implements IServerToClie
     @Override
     public void neighbourUnreachable(String IP) throws RemoteException
     {
-        log(ServerToClient.class.getSimpleName(), "neighbourUnreachAble - " + IP);
+        log(LogLevel.ERROR, ServerToClient.class.getSimpleName(), "neighbourUnreachAble - " + IP);
     }
 
     @Override
     public void registerPhilosopher(int index, int server) throws RemoteException
     {
-        log(ServerToClient.class.getSimpleName(), "regPhil - " + index + " server: " + server);
+        log(LogLevel.CLIENT, ServerToClient.class.getSimpleName(), "regPhil - " + index + " server: " + server);
         client.getLocationMap().put(index, server);
     }
 
@@ -54,9 +55,9 @@ public class ServerToClient extends UnicastRemoteObject implements IServerToClie
     }
 
     @Override
-    public void log(String type, String message) throws RemoteException
+    public void log(LogLevel level, String type, String message) throws RemoteException
     {
-        client.getLogger().printLog(type, message);
+        client.getLogger().printLog(level, type, message);
     }
 
     public Client getClient()

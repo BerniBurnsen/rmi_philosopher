@@ -1,8 +1,8 @@
 package edu.hm.vss.model;
 
 import edu.hm.vss.client.Client;
+import edu.hm.vss.helper.LogLevel;
 import edu.hm.vss.interfaces.IClientToServer;
-import edu.hm.vss.server.ClientToServer;
 
 import java.rmi.RemoteException;
 import java.util.Map;
@@ -50,6 +50,7 @@ public class Overseer extends Thread
                     {
                         for(IClientToServer server : client.getServers())
                         {
+                            client.getLogger().printLog(LogLevel.OVERSEER, toString(), "Punisch Philosoper " + i);
                             server.punishPhilosopher(i);
                         }
                     } catch (RemoteException e)

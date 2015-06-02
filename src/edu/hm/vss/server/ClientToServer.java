@@ -1,6 +1,7 @@
 package edu.hm.vss.server;
 
 import edu.hm.vss.client.ServerToClient;
+import edu.hm.vss.helper.LogLevel;
 import edu.hm.vss.helper.Logger;
 import edu.hm.vss.interfaces.IClientToServer;
 import edu.hm.vss.interfaces.IServerToClient;
@@ -44,8 +45,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
         Registry registry;
         registry = LocateRegistry.getRegistry(clientIP, clientPort);
         server.setClientAPI((IServerToClient) registry.lookup(Settings.SERVER_TO_CLIENT));
-        server.getClientAPI().log(toString(), "initClientConnection from Server " + server.getInstanceNumber() + " to Client");
-        server.getClientAPI().log(toString(), "ServerReference: " + server);
+        server.getClientAPI().log(LogLevel.INIT, toString(), "initClientConnection from Server " + server.getInstanceNumber() + " to Client");
         return true;
     }
 
@@ -56,7 +56,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
         //only one instance
         if(server.getClientAPI().getNumberOfInstances() == 1)
         {
-            server.getClientAPI().log(toString(), "initConnections - " + " only one instance");
+            server.getClientAPI().log(LogLevel.INIT, toString(), "initConnections - " + " only one instance");
             server.setRightServerAPI(null);
             server.setLeftServerAPI(null);
         }
@@ -64,7 +64,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
         else if(server.getClientAPI().getNumberOfInstances() == 2)
         {
             System.out.println("TEST");
-            server.getClientAPI().log(toString(), "initConnections - " + "two instances");
+            server.getClientAPI().log(LogLevel.INIT, toString(), "initConnections - " + "two instances");
             serverRegistry = LocateRegistry.getRegistry(rightNeighbourIP, rightNeighbourPort);
             server.setRightServerAPI((IServerToServer)serverRegistry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE)));
             server.setLeftServerAPI(server.getRightServerAPI());
@@ -72,7 +72,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
         // > 2 instances
         else
         {
-            server.getClientAPI().log(toString(), "initConnections - " + "more than two instances");
+            server.getClientAPI().log(LogLevel.INIT, toString(), "initConnections - " + "more than two instances");
             serverRegistry = LocateRegistry.getRegistry(rightNeighbourIP, rightNeighbourPort);
             server.setRightServerAPI((IServerToServer)serverRegistry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE)));
             serverRegistry = LocateRegistry.getRegistry(leftNeighbourIP, leftNeighbourPort);
@@ -93,7 +93,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     public boolean initServer(int seats, int maxSeats, int startIndex) throws RemoteException
     {
         server.getPhilosophers().clear();
-        server.getClientAPI().log(toString(), " initServer - Seats: " + seats + " maxSeats " + maxSeats + " startIndex " + startIndex);
+        server.getClientAPI().log(LogLevel.INIT, toString(), " initServer - Seats: " + seats + " maxSeats " + maxSeats + " startIndex " + startIndex);
         for(int i = 0 ; i < seats ;i++)
         {
             Fork rightFork = new LocalFork(startIndex+i);
@@ -108,7 +108,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
             {
                 leftFork = new RemoteFork(startIndex - 1 < 0 ? maxSeats-1 :(startIndex -1)%maxSeats, server);
             }
-            server.getClientAPI().log(toString()," initServer - plate " + (startIndex + i) + " rightFork index " + rightFork.getIndex() + " leftFork isRemote: " + ((leftFork instanceof RemoteFork) ? "yes" : "no") + " index: " + leftFork.getIndex());
+            server.getClientAPI().log(LogLevel.INIT, toString()," initServer - plate " + (startIndex + i) + " rightFork index " + rightFork.getIndex() + " leftFork isRemote: " + ((leftFork instanceof RemoteFork) ? "yes" : "no") + " index: " + leftFork.getIndex());
             server.getPlates().add(new Plate(leftFork, rightFork, startIndex + i));
         }
         server.setTablePiece(new TablePiece(server.getInstanceNumber(), server.getPlates(), server));
@@ -118,7 +118,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     @Override
     public boolean createNewPhilosopher(int index, boolean hungry) throws RemoteException
     {
-        server.getClientAPI().log(toString(), "createNewP - " + index);
+        server.getClientAPI().log(LogLevel.INIT, toString(), "createNewP - " + index);
         server.getPhilosophers().put(index, new Philosopher(server, server.getTablePiece(), index, hungry));
         server.getClientAPI().registerPhilosopher(index, server.getInstanceNumber());
         return true;
@@ -127,7 +127,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     @Override
     public void startPhilosophers() throws RemoteException
     {
-        server.getClientAPI().log(toString(), "--------START----------");
+        server.getClientAPI().log(LogLevel.INIT, toString(), "--------START----------");
         server.setRun(true);
         for(Philosopher p : server.getPhilosophers().values())
         {
@@ -138,7 +138,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     @Override
     public boolean respawnPhilosopher(int index, boolean hungry, int eatCount) throws RemoteException
     {
-        server.getClientAPI().log(toString(), "respawnP - " + index + " hungry: " + hungry + " eatCount" + eatCount);
+        server.getClientAPI().log(LogLevel.FALLBACK, toString(), "respawnP - " + index + " hungry: " + hungry + " eatCount" + eatCount);
         Philosopher p = new Philosopher(server,server.getTablePiece(), index, hungry, eatCount);
         server.getPhilosophers().put(index, p);
         p.start();
@@ -174,15 +174,15 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
                     e.printStackTrace();
                 }
 
-                server.getClientAPI().log(toString(), "-------STOPPING------");
+                server.getClientAPI().log(LogLevel.INIT, toString(), "-------STOPPING------");
                 for (Philosopher p : server.getPhilosophers().values())
                 {
-                    server.getClientAPI().log(toString(), p + " eats " + p.getEatCounter() + " times ::: STATE: " + p.getCurrentState());
+                    server.getClientAPI().log(LogLevel.INIT, toString(), p + " eats " + p.getEatCounter() + " times ::: STATE: " + p.getCurrentState());
                 }
-                server.getClientAPI().log(toString(), "");
-                server.getClientAPI().log(toString(), "Current number of Philosophers on Server: " + server.getPhilosophers().size());
-                server.getClientAPI().log(toString(), "");
-                server.getClientAPI().log(toString(), "-------STOPPING------");
+                server.getClientAPI().log(LogLevel.INIT, toString(), "");
+                server.getClientAPI().log(LogLevel.INIT, toString(), "Current number of Philosophers on Server: " + server.getPhilosophers().size());
+                server.getClientAPI().log(LogLevel.INIT, toString(), "");
+                server.getClientAPI().log(LogLevel.INIT, toString(), "-------STOPPING------");
             }
             catch ( RemoteException e)
             {
@@ -194,7 +194,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     @Override
     public void punishPhilosopher(int index) throws RemoteException
     {
-        server.getClientAPI().log(toString(), "punishPhil " + index);
+        server.getClientAPI().log(LogLevel.SERVER, toString(), "punishPhil " + index);
         Philosopher p =  server.getPhilosophers().get(index);
         if(p != null)
         {

@@ -1,5 +1,6 @@
 package edu.hm.vss.server;
 
+import edu.hm.vss.helper.LogLevel;
 import edu.hm.vss.interfaces.IServerToServer;
 import edu.hm.vss.model.Philosopher;
 
@@ -30,7 +31,7 @@ public class ServerToServer extends UnicastRemoteObject implements IServerToServ
     {
         if(server.isRun())
         {
-            server.getClientAPI().log(toString(), "pushPhil " + index + " hungry: " + isHungry + " eatCount: " + eatCount + " startIndex: " + startIndex + " isFirstRound: " + isFirstRound);
+            server.getClientAPI().log(LogLevel.SERVER, toString(), "pushPhil " + index + " hungry: " + isHungry + " eatCount: " + eatCount + " startIndex: " + startIndex + " isFirstRound: " + isFirstRound);
             Philosopher p = new Philosopher(server, server.getTablePiece(), index, isHungry, eatCount, startIndex, isFirstRound);
             server.getPhilosophers().put(index, p);
             p.start();
@@ -43,13 +44,7 @@ public class ServerToServer extends UnicastRemoteObject implements IServerToServ
     @Override
     public boolean testConnection() throws RemoteException
     {
-        System.out.println("SERVER " + server.getInstanceNumber());
-        System.out.println("SERVER TO CLIENT " + server.getClientAPI());
-        System.out.println("SERVER TO CLIENT " + server.getLeftServerAPI());
-        System.out.println("SERVER TO CLIENT " + server.getRightServerAPI());
-        System.out.println("SERVER TO CLIENT " + server.getPlates());
-        System.out.println("SERVER " + server);
-        server.getClientAPI().log(toString(), "Connection OK");
+        server.getClientAPI().log(LogLevel.SERVER, toString(), "Connection OK");
         return true;
     }
 

@@ -1,5 +1,6 @@
 package edu.hm.vss.model;
 
+import edu.hm.vss.helper.LogLevel;
 import edu.hm.vss.helper.Logger;
 import edu.hm.vss.server.RMIServer;
 
@@ -88,7 +89,7 @@ public class Philosopher extends Thread implements Serializable
 
         try
         {
-            server.getClientAPI().log(toString(), index + " spawning on tablePiece " + tablePiece.getIndex());
+            server.getClientAPI().log(LogLevel.PHIL, toString(), index + " spawning on tablePiece " + tablePiece.getIndex());
         } catch (RemoteException e)
         {
             e.printStackTrace();
@@ -111,23 +112,23 @@ public class Philosopher extends Thread implements Serializable
                     state = "got place";
                     leftFork = plate.getLeftFork();
                     rightFork = plate.getRightFork();
-                    server.getClientAPI().log(toString(), index + " leftForkindex: " + leftFork.getIndex() + " and " + rightFork.getIndex());
+                    server.getClientAPI().log(LogLevel.PHIL, toString(), index + " leftForkindex: " + leftFork.getIndex() + " and " + rightFork.getIndex());
                     //Main.writeInDebugmode(this + " waiting for forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
                     state = "waiting for Forks";
                     plate.waitForForks(this);
                     state = "got forks";
-                    server.getClientAPI().log(toString(), index + " got Forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
+                    server.getClientAPI().log(LogLevel.PHIL, toString(), index + " got Forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
                     //Main.writeInDebugmode(this + " got forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
                     state = "start eating";
                     eat();
                     state = "releasing forks";
                     plate.releaseForks();
                     state = "releasing plate";
-                    server.getClientAPI().log(toString(), index + " release forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
+                    server.getClientAPI().log(LogLevel.PHIL, toString(), index + " release forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
                             //Main.writeInDebugmode(this + " releases forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
                     tablePiece.releasePlate(plate, this);
                     state = "plate released";
-                    server.getClientAPI().log(toString(), index + " released place " + plate.getIndex());
+                    server.getClientAPI().log(LogLevel.PHIL, toString(), index + " released place " + plate.getIndex());
                     //Main.writeInDebugmode(this + " releases place " + plate.getIndex());
                     state = "meditating";
                     meditate();
@@ -162,7 +163,7 @@ public class Philosopher extends Thread implements Serializable
                 try
                 {
                     server.getClientAPI().neighbourUnreachable(e.getMessage());
-                    server.getClientAPI().log(toString(), index + " killed on server " + tablePiece.getIndex());
+                    server.getClientAPI().log(LogLevel.PHIL, toString(), index + " terminated on server " + tablePiece.getIndex());
                 } catch (RemoteException e1)
                 {
                     //Terminate
@@ -182,14 +183,14 @@ public class Philosopher extends Thread implements Serializable
         {
             meditationTime = MEDITATIONTIME;
         }
-        server.getClientAPI().log(toString(), index + " " + this + (isVeryHungry ? " meditate short" : " meditate") + " (" + meditationTime + ")");
+        server.getClientAPI().log(LogLevel.PHIL, toString(), index + " " + this + (isVeryHungry ? " meditate short" : " meditate") + " (" + meditationTime + ")");
         //Main.writeInDebugmode(this + (isVeryHungry ? " meditate short" : " meditate") + " (" + meditationTime + ")");
         Thread. sleep(meditationTime);
     }
 
     private void eat() throws InterruptedException, RemoteException
     {
-        server.getClientAPI().log(toString(), index + " eating");
+        server.getClientAPI().log(LogLevel.PHIL, toString(), index + " eating");
         //Main.writeInDebugmode(this + " eating");
         Thread.sleep(EATTIME);
         synchronized (this)
@@ -204,7 +205,7 @@ public class Philosopher extends Thread implements Serializable
 
     private void goSleeping() throws InterruptedException, RemoteException
     {
-        server.getClientAPI().log(toString(), index + " sleeping");
+        server.getClientAPI().log(LogLevel.PHIL, toString(), index + " sleeping");
         //Main.writeInDebugmode(this + " sleeping");
         Thread.sleep(SLEEPTIME);
     }

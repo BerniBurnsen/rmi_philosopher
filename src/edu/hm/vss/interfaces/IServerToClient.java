@@ -1,5 +1,7 @@
 package edu.hm.vss.interfaces;
 
+import edu.hm.vss.helper.LogLevel;
+
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -30,5 +32,5 @@ public interface IServerToClient extends Remote, Serializable
 
     int getNumberOfInstances() throws RemoteException;
 
-    void log(String type, String message) throws RemoteException;
+    void log(LogLevel level, String type, String message) throws RemoteException;
 }
