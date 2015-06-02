@@ -136,7 +136,6 @@ public class Philosopher extends Thread implements Serializable
                 }
                 catch (InterruptedException e)
                 {
-                    System.err.println(this + " stop");
                     run = false;
                 }
             }
