@@ -35,8 +35,8 @@ public class Client implements Serializable
 
     private Registry registry;
     private List<IClientToServer> servers = new ArrayList<>();
-    public int instanceCount = 2;
-    public Logger logger;
+    private int instanceCount = 2;
+    private Logger logger;
 
     private int numberOfPhilosophers;
     private int numberOfHungryPhilosophers;
@@ -44,9 +44,10 @@ public class Client implements Serializable
 
     private Overseer overseer;
 
-    public Map<Integer, Integer> allEatCounts = new ConcurrentHashMap<>();
-    public Map<Integer, Integer> locationMap = new ConcurrentHashMap<>();
+    private Map<Integer, Integer> allEatCounts = new ConcurrentHashMap<>();
+    private Map<Integer, Integer> locationMap = new ConcurrentHashMap<>();
     private ServerToClient serverToClient;
+    private Map<Integer, String> activeServers = new TreeMap<>();
 
     public Client()
     {
@@ -59,6 +60,14 @@ public class Client implements Serializable
         numberOfHungryPhilosophers = numberHungyPhil;
         numberOfPlaces = numberPlaces;
         logger = new Logger(logLevels);
+        for(int i = 0; i < instanceCount; i++)
+        {
+            int port;
+            String ip;
+            ip = Settings.SERVERS[i%Settings.SERVERS.length];
+            port = Settings.PORT_SERVER_BASE + i;
+            activeServers.put(port, ip);
+        }
         System.out.println("Client constructor");
     }
 
@@ -82,7 +91,7 @@ public class Client implements Serializable
         return logger;
     }
 
-    public void init() throws RemoteException, AlreadyBoundException, NotBoundException
+    public void init(boolean isFallback) throws RemoteException, AlreadyBoundException, NotBoundException
     {
         logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - #phil" + numberOfPhilosophers + " #hungry " + numberOfHungryPhilosophers + " #places " + numberOfPlaces);
 
@@ -93,36 +102,51 @@ public class Client implements Serializable
         logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - build up connections");
 
         //build up connections
-        for(int i = 0 ; i < instanceCount; i++)
+        for(Map.Entry<Integer, String> connection : activeServers.entrySet())
         {
-            registry = LocateRegistry.getRegistry(Settings.SERVERS[i %Settings.SERVERS.length], Settings.PORT_SERVER_BASE +i);
-            IClientToServer serverAPI = (IClientToServer)registry.lookup(Settings.CLIENT_TO_SERVER + i);
+            registry = LocateRegistry.getRegistry(connection.getValue(), connection.getKey());
+            IClientToServer serverAPI = (IClientToServer)registry.lookup(Settings.CLIENT_TO_SERVER + (connection.getKey() - Settings.PORT_SERVER_BASE));
             servers.add(serverAPI);
             serverAPI.initClientConnection(Settings.CLIENT_IP, Settings.PORT_CLIENT);
+
+            /*registry = LocateRegistry.getRegistry(Settings.SERVERS[i %Settings.SERVERS.length], Settings.PORT_SERVER_BASE +i);
+            IClientToServer serverAPI = (IClientToServer)registry.lookup(Settings.CLIENT_TO_SERVER + i);
+            servers.add(serverAPI);
+            serverAPI.initClientConnection(Settings.CLIENT_IP, Settings.PORT_CLIENT);*/
         }
 
-        for(int i = 0 ; i < instanceCount; i++)
+        List<Integer> activePorts = new LinkedList<>(activeServers.keySet());
+        Collections.sort(activePorts);
+
+        int count = 0;
+        for(Integer currentPort : activePorts)
         {
+            int leftPort = activePorts.contains(currentPort - 1) ? (currentPort -1) : activePorts.get(activePorts.size()-1);
+            int rightPort = activePorts.contains(currentPort + 1) ? (currentPort + 1) : activePorts.get(0);
+
+            String leftNeighbour = activeServers.get(leftPort);
+            String rightNeighbour = activeServers.get(rightPort);
+/*
             String leftNeighbour = (i-1) < 0 ? Settings.SERVERS[Settings.SERVERS.length -1] : Settings.SERVERS[(i-1) % Settings.SERVERS.length];
             String rightNeighbour = (i+1) <= instanceCount ? Settings.SERVERS[(i+1) %Settings.SERVERS.length] :Settings.SERVERS[instanceCount -1] ;
 
             int rightPort = (i+1) < instanceCount ? Settings.PORT_SERVER_BASE + i + 1 : Settings.PORT_SERVER_BASE;
             int leftPort = (i-1) < 0 ? Settings.PORT_SERVER_BASE + (instanceCount-1) : Settings.PORT_SERVER_BASE  + i - 1;
-
+*/
             logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - Instancenumber " + i + " leftNeighbour: " + leftNeighbour + " leftPort: " + leftPort);
             logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - Instancenumber " + i + " rightNeighbour: " + rightNeighbour + " rightPort " + rightPort);
 
-            servers.get(i).initServerConnections(rightNeighbour, rightPort, leftNeighbour,leftPort);
+            servers.get(count++).initServerConnections(rightNeighbour, rightPort, leftNeighbour,leftPort);
         }
 
         //build plates
-        int[] counterArray = new int[instanceCount];
+        int[] counterArray = new int[activeServers.size()];
         for(int i = 0 ; i < numberOfPlaces ; i++)
         {
-            counterArray[i % instanceCount]++;
+            counterArray[i % activeServers.size()]++;
         }
         int currentIndex = 0;
-        for(int i = 0 ; i < instanceCount ; i++)
+        for(int i = 0 ; i < activeServers.size() ; i++)
         {
             servers.get(i).initServer(counterArray[i],numberOfPlaces,currentIndex);
             currentIndex+= counterArray[i];
@@ -133,11 +157,20 @@ public class Client implements Serializable
         overseer.start();
 
         //spawn philosophers
-        for(int i = 0 ; i < numberOfPhilosophers ; i++)
+
+        for (int i = 0; i < numberOfPhilosophers; i++)
         {
-            int nextServerIndex = i % instanceCount;
+            int nextServerIndex = i % activeServers.size();
             logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - spawning Phil - " + i);
-            servers.get(nextServerIndex).createNewPhilosopher(i, i >= numberOfPhilosophers - numberOfHungryPhilosophers ? true : false);
+            if(isFallback)
+            {
+                servers.get(nextServerIndex).createNewPhilosopher(i, i >= numberOfPhilosophers - numberOfHungryPhilosophers ? true : false);
+                allEatCounts.put(i, 0);
+            }
+            else
+            {
+                servers.get(nextServerIndex).respawnPhilosopher(i, i >= numberOfPhilosophers - numberOfHungryPhilosophers ? true : false, allEatCounts.get(i));
+            }
         }
 
         try
@@ -195,7 +228,42 @@ public class Client implements Serializable
         int numberOfHungryPhilosophers = Integer.parseInt(args[1]);
         int numberOfPlaces = Integer.parseInt(args[2]);
 
-        new Client(numberOfPhilosophers,numberOfHungryPhilosophers,numberOfPlaces).init();
+        new Client(numberOfPhilosophers,numberOfHungryPhilosophers,numberOfPlaces).init(false);
+    }
+
+    public void startFallback(String ip)
+    {
+        //find out the missing server
+        int missingPort = -1;
+        Set<Integer> activePorts = activeServers.keySet();
+
+        for(int port : activePorts)
+        {
+            try
+            {
+                servers.get(Settings.PORT_SERVER_BASE - port).stopServer();
+            } catch (RemoteException e)
+            {
+                missingPort = port;
+            }
+        }
+        if(missingPort > -1)
+        {
+            activeServers.remove(missingPort);
+        }
+        try
+        {
+            init(true);
+        } catch (RemoteException e)
+        {
+            e.printStackTrace();
+        } catch (AlreadyBoundException e)
+        {
+            e.printStackTrace();
+        } catch (NotBoundException e)
+        {
+            e.printStackTrace();
+        }
     }
 
 

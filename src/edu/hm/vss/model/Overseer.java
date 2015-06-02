@@ -63,6 +63,7 @@ public class Overseer extends Thread
                         {
                             //client unreachable, nothing to do
                         }
+                        break runLoop;
                     }
                 }
             }

@@ -36,7 +36,7 @@ public class Logger implements Serializable
         String timeString = df.format(date);
         if(levels.contains(level))
         {
-            System.out.println(level + ": " + timeString + " - " + from + " - " + message);
+            System.out.println(level + ":\t " + timeString + " - " + from + " - " + message);
         }
     }
 

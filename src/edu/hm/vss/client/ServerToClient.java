@@ -17,11 +17,9 @@ import java.util.regex.Pattern;
 public class ServerToClient extends UnicastRemoteObject implements IServerToClient
 {
     private Client client;
+    private boolean connectionError = false;
 
-    private final String IPADDRESS_PATTERN = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-                                        "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-                                        "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-                                        "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
+    private final String IPADDRESS_PATTERN = "(([0-1]?[0-9]{1,2}\\.)|(2[0-4][0-9]\\.)|(25[0-5]\\.)){3}(([0-1]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))";
 
     public ServerToClient() throws RemoteException
     {
@@ -45,9 +43,22 @@ public class ServerToClient extends UnicastRemoteObject implements IServerToClie
     @Override
     public void neighbourUnreachable(String IPMessage) throws RemoteException
     {
-        Pattern pattern = Pattern.compile(IPADDRESS_PATTERN);
-        Matcher matcher = pattern.matcher(IPMessage);
-        log(LogLevel.ERROR, ServerToClient.class.getSimpleName(), "neighbourUnreachAble - " + matcher.group(1));
+        if(!connectionError)
+        {
+            Pattern pattern = Pattern.compile(IPADDRESS_PATTERN);
+            Matcher matcher = pattern.matcher(IPMessage);
+            if (matcher.find())
+            {
+                connectionError = true;
+                String IPAdress = matcher.group(0);
+                log(LogLevel.ERROR, ServerToClient.class.getSimpleName(), "neighbourUnreachable - " + IPAdress);
+                client.startFallback(IPAdress);
+
+            } else
+            {
+                log(LogLevel.ERROR, ServerToClient.class.getSimpleName(), "neighbourUnreachable - No IP could be found!");
+            }
+        }
     }
 
     @Override
