@@ -108,7 +108,10 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
             {
                 leftFork = new RemoteFork(startIndex - 1 < 0 ? maxSeats-1 :(startIndex -1)%maxSeats, server);
             }
-            server.getClientAPI().log(LogLevel.INIT, toString(), " initServer - plate " + (startIndex + i) + " rightFork index " + rightFork.getIndex() + " leftFork isRemote: " + ((leftFork instanceof RemoteFork) ? "yes" : "no") + " index: " + leftFork.getIndex());
+            if(leftFork != null)
+            {
+                server.getClientAPI().log(LogLevel.INIT, toString(), " initServer - plate " + (startIndex + i) + " rightFork index " + rightFork.getIndex() + " leftFork isRemote: " + ((leftFork instanceof RemoteFork) ? "yes" : "no") + " index: " + leftFork.getIndex());
+            }
             server.getPlates().add(new Plate(leftFork, rightFork, startIndex + i));
         }
         if(server.getPlates().get(0).getLeftFork() == null)
