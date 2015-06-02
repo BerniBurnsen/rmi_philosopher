@@ -139,6 +139,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
         server.getClientAPI().log(LogLevel.INIT, toString(), "--------START----------");
         for(Philosopher p : server.getPhilosophers().values())
         {
+            server.getClientAPI().log(LogLevel.INIT, toString(), "starting " + p);
             p.start();
         }
     }
