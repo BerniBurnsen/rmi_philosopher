@@ -162,13 +162,13 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
 
         for (Philosopher p : server.getPhilosophers().values())
         {
+            System.out.println("interrupt " + p);
             p.interrupt();
         }
         for (Philosopher p : server.getPhilosophers().values())
         {
             try
             {
-
                 p.join();
                 System.out.println("joined on " + p);
             } catch (InterruptedException e)
