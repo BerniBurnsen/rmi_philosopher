@@ -153,7 +153,7 @@ public class Client implements Serializable
                              servers.get(i).stopServer();
                          } catch (RemoteException e)
                          {
-                             e.printStackTrace();
+                             //e.printStackTrace();
                          }
                          overseer.interrupt();
                      }

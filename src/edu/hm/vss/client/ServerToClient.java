@@ -18,6 +18,11 @@ public class ServerToClient extends UnicastRemoteObject implements IServerToClie
 {
     private Client client;
 
+    private final String IPADDRESS_PATTERN = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                                        "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                                        "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                                        "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
+
     public ServerToClient() throws RemoteException
     {
         super();
@@ -40,10 +45,7 @@ public class ServerToClient extends UnicastRemoteObject implements IServerToClie
     @Override
     public void neighbourUnreachable(String IPMessage) throws RemoteException
     {
-        Pattern pattern = Pattern.compile("\t\t\"^([01]?\\\\d\\\\d?|2[0-4]\\\\d|25[0-5])\\\\.\" +\n" +
-                "\t\t\"([01]?\\\\d\\\\d?|2[0-4]\\\\d|25[0-5])\\\\.\" +\n" +
-                "\t\t\"([01]?\\\\d\\\\d?|2[0-4]\\\\d|25[0-5])\\\\.\" +\n" +
-                "\t\t\"([01]?\\\\d\\\\d?|2[0-4]\\\\d|25[0-5])$\";");
+        Pattern pattern = Pattern.compile(IPADDRESS_PATTERN);
         Matcher matcher = pattern.matcher(IPMessage);
         log(LogLevel.ERROR, ServerToClient.class.getSimpleName(), "neighbourUnreachAble - " + matcher.group(1));
     }
