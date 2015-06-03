@@ -36,7 +36,7 @@ public class Client implements Serializable
 
     private Registry registry;
     private List<IClientToServer> servers = new ArrayList<>();
-    private int instanceCount = 2;
+    private int instanceCount = 4;
     private Logger logger;
 
     private int numberOfPhilosophers;

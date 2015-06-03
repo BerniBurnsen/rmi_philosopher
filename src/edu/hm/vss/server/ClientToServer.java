@@ -80,7 +80,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
             serverRegistry = LocateRegistry.getRegistry(rightNeighbourIP, rightNeighbourPort);
             server.setRightServerAPI((IServerToServer)serverRegistry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE)));
             serverRegistry = LocateRegistry.getRegistry(leftNeighbourIP, leftNeighbourPort);
-            server.setLeftServerAPI((IServerToServer)serverRegistry.lookup(Settings.SERVER_TO_SERVER + (rightNeighbourPort - Settings.PORT_SERVER_BASE)));
+            server.setLeftServerAPI((IServerToServer)serverRegistry.lookup(Settings.SERVER_TO_SERVER + (leftNeighbourPort - Settings.PORT_SERVER_BASE)));
         }
 
         if(server.getRightServerAPI() != null)
