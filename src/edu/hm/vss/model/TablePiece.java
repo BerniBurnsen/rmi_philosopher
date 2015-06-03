@@ -41,11 +41,12 @@ public class TablePiece implements Serializable, Remote
         }
         else if(!p.isFirstRound())
         {
+            server.getClientAPI().log(LogLevel.TABLE, toString(), p + " is first round: " +p.isFirstRound());
             startIndex = 0;
         }
         Plate plate = plates.get(startIndex);
 
-        server.getClientAPI().log(LogLevel.TABLE, toString(), p + " startIndex" + startIndex);
+        server.getClientAPI().log(LogLevel.TABLE, toString(), p + " startIndex " + startIndex);
 
         for (int i = startIndex; i < plates.size(); i++)
         {
