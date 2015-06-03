@@ -41,15 +41,18 @@ public class User
                             if(input.equals("y"))
                             {
                                 userInterface.addPhilosopher(true);
+                                System.out.println("Hungry Philosopher added!");
                             }
                             else if(input.equals("n"))
                             {
                                 userInterface.addPhilosopher(false);
+                                System.out.println("Philosopher added!?");
                             }
                         }
                         else if ( input.equals("c"))
                         {
                             userInterface.addPlate();
+                            System.out.println("Plate added!");
                         }
                         break;
                     case "remove":
@@ -62,15 +65,18 @@ public class User
                             if(input.equals("y"))
                             {
                                 userInterface.removePhilosopher(true);
+                                System.out.println("Hungry Philosopher removed!");
                             }
                             else if(input.equals("n"))
                             {
                                 userInterface.removePhilosopher(false);
+                                System.out.println("Philosopher removed!");
                             }
                         }
                         else if ( input.equals("c"))
                         {
                             userInterface.removePlate();
+                            System.out.println("Plate removed!");
                         }
                         break;
                     default:

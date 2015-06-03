@@ -34,6 +34,7 @@ public class UserInterface extends UnicastRemoteObject implements IUserInterface
 
         }
         client.setNumberOfPhilosophers(client.getNumberOfPhilosophers() > 0 ? client.getNumberOfPhilosophers()-1 : 0);
+        client.startFallback();
     }
 
     @Override
@@ -44,17 +45,20 @@ public class UserInterface extends UnicastRemoteObject implements IUserInterface
             client.setNumberOfHungryPhilosophers(client.getNumberOfHungryPhilosophers()+1);
         }
         client.setNumberOfPhilosophers(client.getNumberOfPhilosophers()+1);
+        client.startFallback();
     }
 
     @Override
     public void removePlate() throws RemoteException
     {
         client.setNumberOfPlaces(client.getNumberOfPlaces() > 2 ? client.getNumberOfPlaces()-1 : 2);
+        client.startFallback();
     }
 
     @Override
     public void addPlate() throws RemoteException
     {
         client.setNumberOfPlaces(client.getNumberOfPlaces()+1);
+        client.startFallback();
     }
 }
