@@ -45,6 +45,7 @@ public class ServerToClient extends UnicastRemoteObject implements IServerToClie
     {
         if (!connectionError)
         {
+            connectionError = !connectionError;
             log(LogLevel.ERROR, ServerToClient.class.getSimpleName(), "neighbourUnreachable");
             client.startFallback();
         }
