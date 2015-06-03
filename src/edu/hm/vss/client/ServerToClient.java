@@ -19,8 +19,6 @@ public class ServerToClient extends UnicastRemoteObject implements IServerToClie
     private Client client;
     private boolean connectionError = false;
 
-    private final String IPADDRESS_PATTERN = "(([0-1]?[0-9]{1,2}\\.)|(2[0-4][0-9]\\.)|(25[0-5]\\.)){3}(([0-1]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))";
-
     public ServerToClient() throws RemoteException
     {
         super();
@@ -43,11 +41,14 @@ public class ServerToClient extends UnicastRemoteObject implements IServerToClie
     @Override
     public void neighbourUnreachable() throws RemoteException
     {
-        if (!connectionError)
+        synchronized (client)
         {
-            connectionError = !connectionError;
-            log(LogLevel.ERROR, ServerToClient.class.getSimpleName(), "neighbourUnreachable");
-            client.startFallback();
+            if (!connectionError)
+            {
+                connectionError = !connectionError;
+                log(LogLevel.ERROR, ServerToClient.class.getSimpleName(), "neighbourUnreachable");
+                client.startFallback();
+            }
         }
     }
 

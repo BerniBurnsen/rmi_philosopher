@@ -57,13 +57,6 @@ public class Overseer extends Thread
                         }
                     } catch (RemoteException e)
                     {
-                        try
-                        {
-                            client.getServerToClient().neighbourUnreachable();
-                        } catch (RemoteException e1)
-                        {
-                            //client unreachable, nothing to do
-                        }
                         break runLoop;
                     }
                 }
