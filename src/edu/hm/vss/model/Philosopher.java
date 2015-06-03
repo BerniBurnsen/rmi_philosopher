@@ -18,7 +18,7 @@ public class Philosopher extends Thread implements Serializable
     private final int MEDITATIONTIME = 5;
     private final int SLEEPTIME = 10;
     private final int EATTIME = 1;
-    private final int PENALTYTIME = 50;
+    private final int PENALTYTIME = 15;
 
     private  TablePiece tablePiece;
     private  int index;
