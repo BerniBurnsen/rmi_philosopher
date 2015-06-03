@@ -107,6 +107,10 @@ public class Philosopher extends Thread implements Serializable
                         state = "got place";
                         leftFork = plate.getLeftFork();
                         rightFork = plate.getRightFork();
+                        if(server.getClientAPI() == null)
+                        {
+                            System.out.println("ClientAPI is NULL");
+                        }
                         server.getClientAPI().log(LogLevel.PHIL, toString(), index + " leftForkindex: " + leftFork.getIndex() + " and " + rightFork.getIndex());
                         //Main.writeInDebugmode(this + " waiting for forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
                         state = "waiting for Forks";
@@ -141,6 +145,10 @@ public class Philosopher extends Thread implements Serializable
             }
             if(run)
             {
+                if(server.getRightServerAPI() == null)
+                {
+                    System.out.println("RightServerAPI is NULL");
+                }
                     if(server.getRightServerAPI().pushPhilosopher(index, isVeryHungry, eatCounter, startIndex, isFirstRound))
                     {
                         server.getPhilosophers().remove(index);
