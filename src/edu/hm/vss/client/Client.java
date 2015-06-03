@@ -49,6 +49,7 @@ public class Client implements Serializable
     private Map<Integer, Integer> locationMap = new ConcurrentHashMap<>();
     private ServerToClient serverToClient;
     private Map<Integer, String> activeServers = new TreeMap<>();
+    private UserInterface userInterface;
 
     public Client()
     {
@@ -100,7 +101,9 @@ public class Client implements Serializable
         {
             startRegistry();
             serverToClient = new ServerToClient(this);
+            userInterface = new UserInterface(this);
             registerObject(Settings.SERVER_TO_CLIENT, serverToClient);
+            registerObject(Settings.USERINTERFACE, userInterface);
         }
 
         logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - build up connections");
