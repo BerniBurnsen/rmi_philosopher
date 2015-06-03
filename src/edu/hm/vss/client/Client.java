@@ -157,6 +157,7 @@ public class Client implements Serializable
         }
 
         //spawn Overseer
+        overseer = null;
         overseer = new Overseer(this, 10);
         overseer.start();
 

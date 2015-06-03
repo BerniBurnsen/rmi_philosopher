@@ -64,7 +64,7 @@ public class TablePiece implements Serializable, Remote
 
             if(server.getClientAPI().getNumberOfInstances() == 1)
             {
-                if(i + 1 < plates.size())
+                if(i + 1 >= plates.size())
                 {
                     plate = plates.get(0);
                     i=0;
