@@ -23,14 +23,15 @@ public class Client implements Serializable
 {
     private final LogLevel[] logLevels =
             {
-                    LogLevel.PHIL,
+//                    LogLevel.PHIL,
                     LogLevel.CLIENT,
                     LogLevel.SERVER,
                     LogLevel.OVERSEER,
                     LogLevel.REMOTE,
                     LogLevel.INIT,
                     LogLevel.ERROR,
-                    LogLevel.FALLBACK
+                    LogLevel.FALLBACK,
+                    LogLevel.TABLE
             };
 
     private Registry registry;
@@ -206,7 +207,7 @@ public class Client implements Serializable
                      }
                  }
              }
-        , 100*1000);
+        , 30*1000);
     }
 
 

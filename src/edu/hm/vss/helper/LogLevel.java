@@ -12,5 +12,6 @@ public enum LogLevel
     REMOTE,
     INIT,
     ERROR,
-    FALLBACK
+    FALLBACK,
+    TABLE
 }

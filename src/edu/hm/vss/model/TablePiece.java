@@ -52,6 +52,7 @@ public class TablePiece implements Serializable, Remote
                 if (!plate.isReserved())
                 {
                     //Main.writeInDebugmode(p + " got " + plate);
+                    server.getClientAPI().log(LogLevel.TABLE, toString(), p + " got Plate " + plate.getIndex());
                     plate.setIsReserved(true, p);
                     nextIndexToUse++;
                     return plate;
@@ -64,10 +65,12 @@ public class TablePiece implements Serializable, Remote
                 {
                     plate = plates.get(0);
                     i=0;
+                    server.getClientAPI().log(LogLevel.TABLE, toString(), p + " got no Place, start by 0");
                     p.setIsFirstRound(false);
                 }
                 else
                 {
+                    server.getClientAPI().log(LogLevel.TABLE, toString(), p + " got no Place, go to " + i+1);
                     plate = plates.get(i+1);
                 }
             }
@@ -77,6 +80,7 @@ public class TablePiece implements Serializable, Remote
             }
             if(plate == null)
             {
+                server.getClientAPI().log(LogLevel.TABLE, toString(), p + " got no Place, go to next Server");
                 p.setIsFirstRound(false);
                 nextIndexToUse++;
                 return null;
@@ -87,6 +91,7 @@ public class TablePiece implements Serializable, Remote
                 {
                     while(plate.isReserved())
                     {
+                        server.getClientAPI().log(LogLevel.TABLE, toString(), p + " waiting for Plate " + plate.getIndex());
                         plate.wait();
                     }
                     plate.setIsReserved(true, p);
