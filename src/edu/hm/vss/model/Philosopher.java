@@ -137,6 +137,7 @@ public class Philosopher extends Thread implements Serializable
             }
             if(run)
             {
+                server.getClientAPI().log(LogLevel.PHIL, toString(), index + " try to push me to next Server!");
                 if(server.getRightServerAPI().pushPhilosopher(index, isVeryHungry, eatCounter, startIndex, isFirstRound))
                 {
                     server.getPhilosophers().remove(index);
