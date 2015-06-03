@@ -57,6 +57,7 @@ public class Overseer extends Thread
                         }
                     } catch (RemoteException e)
                     {
+                        client.getLogger().printLog(LogLevel.OVERSEER, toString(), "RemoteException");
                         //nothing to do
                     }
                 }
