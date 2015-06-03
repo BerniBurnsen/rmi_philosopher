@@ -44,7 +44,10 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     {
         Registry registry;
         registry = LocateRegistry.getRegistry(clientIP, clientPort);
-        server.setClientAPI((IServerToClient) registry.lookup(Settings.SERVER_TO_CLIENT));
+        if(server.getClientAPI() == null)
+        {
+            server.setClientAPI((IServerToClient) registry.lookup(Settings.SERVER_TO_CLIENT));
+        }
         server.getClientAPI().log(LogLevel.INIT, toString(), "initClientConnection from Server " + server.getInstanceNumber() + " to Client");
         return true;
     }
