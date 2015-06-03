@@ -203,7 +203,7 @@ public class Client implements Serializable
                      }
                  }
              }
-        , 60*1000);
+        , 45*1000);
     }
 
 
@@ -249,6 +249,13 @@ public class Client implements Serializable
             }
         }
         overseer.interrupt();
+        try
+        {
+            overseer.join(100);
+        } catch (InterruptedException e)
+        {
+            //e.printStackTrace();
+        }
         if(missingPort > -1)
         {
             activeServers.remove(missingPort);
