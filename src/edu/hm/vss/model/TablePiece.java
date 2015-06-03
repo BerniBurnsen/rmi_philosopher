@@ -68,7 +68,7 @@ public class TablePiece implements Serializable, Remote
                 {
                     plate = plates.get(0);
                     i=0;
-                    server.getClientAPI().log(LogLevel.TABLE, toString(), p + " got no Place, start by 0");
+                    //server.getClientAPI().log(LogLevel.TABLE, toString(), p + " got no Place, start by 0");
                     p.setIsFirstRound(false);
                 }
                 else
