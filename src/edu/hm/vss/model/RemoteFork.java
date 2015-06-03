@@ -23,13 +23,13 @@ public class RemoteFork extends Fork
     }
 
     @Override
-    public boolean tryToGet() throws RemoteException
+    public boolean tryToGet() throws RemoteException, InterruptedException
     {
         return server.getLeftServerAPI().tryToGetFork();
     }
 
     @Override
-    public void waitFor() throws RemoteException
+    public void waitFor() throws RemoteException, InterruptedException
     {
         server.getLeftServerAPI().waitForFork();
     }
