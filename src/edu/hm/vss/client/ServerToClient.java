@@ -41,15 +41,28 @@ public class ServerToClient extends UnicastRemoteObject implements IServerToClie
     @Override
     public void neighbourUnreachable() throws RemoteException
     {
-        synchronized (client)
+        new Thread(new Runnable()
         {
-            if (!connectionError)
+            @Override
+            public void run()
             {
-                connectionError = !connectionError;
-                log(LogLevel.ERROR, ServerToClient.class.getSimpleName(), "neighbourUnreachable");
-                client.startFallback();
+                synchronized (client)
+                {
+                    if (!connectionError)
+                    {
+                        connectionError = !connectionError;
+                        try
+                        {
+                            log(LogLevel.ERROR, ServerToClient.class.getSimpleName(), "neighbourUnreachable");
+                        } catch (RemoteException e)
+                        {
+                            //e.printStackTrace();
+                        }
+                        client.startFallback();
+                    }
+                }
             }
-        }
+        }).start();
     }
 
     @Override
