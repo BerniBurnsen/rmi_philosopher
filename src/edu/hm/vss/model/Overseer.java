@@ -57,7 +57,7 @@ public class Overseer extends Thread
                         }
                     } catch (RemoteException e)
                     {
-                        break runLoop;
+                        //nothing to do
                     }
                 }
             }
