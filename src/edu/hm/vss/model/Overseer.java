@@ -5,9 +5,7 @@ import edu.hm.vss.helper.LogLevel;
 import edu.hm.vss.interfaces.IClientToServer;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Overseer extends Thread
 {
@@ -35,7 +33,8 @@ public class Overseer extends Thread
         {
             int minCount = Integer.MAX_VALUE;
 
-            for(Map.Entry<Integer, Integer> e : client.getAllEatCounts().entrySet())
+            Set<Map.Entry<Integer, Integer>> eatCounts = new TreeSet<>(client.getAllEatCounts().entrySet());
+            for(Map.Entry<Integer, Integer> e : eatCounts)
             {
                 pCount[e.getKey()] = e.getValue();
             }

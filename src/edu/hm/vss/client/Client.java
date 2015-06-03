@@ -24,13 +24,13 @@ public class Client implements Serializable
     private final LogLevel[] logLevels =
             {
 //                    LogLevel.PHIL,
-                    LogLevel.CLIENT,
-                    LogLevel.SERVER,
-//                    LogLevel.OVERSEER,
+//                    LogLevel.CLIENT,
+//                    LogLevel.SERVER,
+                    LogLevel.OVERSEER,
 //                    LogLevel.REMOTE,
                     LogLevel.INIT,
-                    LogLevel.ERROR,
-                    LogLevel.FALLBACK,
+//                    LogLevel.ERROR,
+//                    LogLevel.FALLBACK,
 //                    LogLevel.TABLE
             };
 
