@@ -45,6 +45,8 @@ public class TablePiece implements Serializable, Remote
         }
         Plate plate = plates.get(startIndex);
 
+        server.getClientAPI().log(LogLevel.TABLE, toString(), p + " startIndex" + startIndex);
+
         for (int i = startIndex; i < plates.size(); i++)
         {
             synchronized (plate)
@@ -78,6 +80,7 @@ public class TablePiece implements Serializable, Remote
             {
                 plate = (i + 1 < plates.size()) ? plates.get((i + 1)) : null;
             }
+
             if(plate == null)
             {
                 server.getClientAPI().log(LogLevel.TABLE, toString(), p + " got no Place, go to next Server");
