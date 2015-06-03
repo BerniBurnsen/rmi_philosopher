@@ -57,7 +57,16 @@ public class TablePiece implements Serializable, Remote
                     return plate;
                 }
             }
-            plate = (i + 1 < plates.size()) ? plates.get((i + 1)) : null;
+
+            if(server.getClientAPI().getNumberOfInstances() == 1)
+            {
+                plate = (i + 1 < plates.size()) ? plates.get(0) : plates.get(i+1);
+            }
+            else
+            {
+                plate = (i + 1 < plates.size()) ? plates.get((i + 1)) : null;
+            }
+
             if(plate == null)
             {
                 p.setIsFirstRound(false);
