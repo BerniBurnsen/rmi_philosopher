@@ -18,6 +18,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by B3rni on 20.05.2015.
@@ -145,6 +146,11 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
             server.getClientAPI().log(LogLevel.INIT, toString(), "starting " + p);
             p.start();
         }
+
+        for(Map.Entry<Integer, Philosopher> entry : server.getPhilosophers().entrySet())
+        {
+            server.getClientAPI().log(LogLevel.INIT,toString(),"phil after start " + entry.getKey() + " " + entry.getValue());
+        }
     }
 
     @Override
@@ -154,6 +160,13 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
         Philosopher p = new Philosopher(server,server.getTablePiece(), index, hungry, eatCount);
         server.getPhilosophers().put(index, p);
         server.getClientAPI().registerPhilosopher(index, server.getInstanceNumber());
+
+        for(Map.Entry<Integer, Philosopher> entry : server.getPhilosophers().entrySet())
+        {
+            server.getClientAPI().log(LogLevel.INIT, toString(),"respawn key val from map" + entry.getKey() + " " + entry.getValue());
+        }
+
+
         return true;
     }
 
