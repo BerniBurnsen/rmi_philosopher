@@ -19,9 +19,9 @@ public interface IServerToServer extends Remote, Serializable
 
     boolean testConnection() throws RemoteException;
 
-    boolean tryToGetFork() throws RemoteException;
+    boolean tryToGetFork() throws RemoteException, InterruptedException;
 
-    void waitForFork() throws RemoteException;
+    void waitForFork() throws RemoteException, InterruptedException;
 
     void releaseFork() throws RemoteException;
 }

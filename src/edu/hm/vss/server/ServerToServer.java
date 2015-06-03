@@ -49,13 +49,13 @@ public class ServerToServer extends UnicastRemoteObject implements IServerToServ
     }
 
     @Override
-    public boolean tryToGetFork() throws RemoteException
+    public boolean tryToGetFork() throws RemoteException, InterruptedException
     {
         return server.getPlates().get(server.getPlates().size()-1).getRightFork().tryToGet();
     }
 
     @Override
-    public void waitForFork() throws RemoteException
+    public void waitForFork() throws RemoteException, InterruptedException
     {
         server.getPlates().get(server.getPlates().size()-1).getRightFork().waitFor();
     }
