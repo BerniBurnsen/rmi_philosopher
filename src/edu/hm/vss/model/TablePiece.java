@@ -60,13 +60,21 @@ public class TablePiece implements Serializable, Remote
 
             if(server.getClientAPI().getNumberOfInstances() == 1)
             {
-                plate = (i + 1 < plates.size()) ? plates.get(0) : plates.get(i+1);
+                if(i + 1 < plates.size())
+                {
+                    plate = plates.get(0);
+                    i=0;
+                    p.setIsFirstRound(false);
+                }
+                else
+                {
+                    plate = plates.get(i+1);
+                }
             }
             else
             {
                 plate = (i + 1 < plates.size()) ? plates.get((i + 1)) : null;
             }
-
             if(plate == null)
             {
                 p.setIsFirstRound(false);
