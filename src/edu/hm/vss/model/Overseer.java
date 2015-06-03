@@ -68,6 +68,13 @@ public class Overseer extends Thread
                     }
                 }
             }
+            try
+            {
+                Thread.sleep(5);
+            } catch (InterruptedException e)
+            {
+                run = false;
+            }
         }
         client.getLogger().printLog(LogLevel.OVERSEER, toString(), "Overseer stopped");
     }

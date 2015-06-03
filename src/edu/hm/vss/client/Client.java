@@ -240,7 +240,6 @@ public class Client implements Serializable
         //find out the missing server
         int missingPort = -1;
         Set<Integer> activePorts = activeServers.keySet();
-        overseer.interrupt();
 
         for(int port : activePorts)
         {
@@ -254,6 +253,7 @@ public class Client implements Serializable
                 missingPort = port;
             }
         }
+        overseer.interrupt();
         if(missingPort > -1)
         {
             activeServers.remove(missingPort);
