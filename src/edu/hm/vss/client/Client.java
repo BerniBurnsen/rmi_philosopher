@@ -234,7 +234,7 @@ public class Client implements Serializable
         new Client(numberOfPhilosophers,numberOfHungryPhilosophers,numberOfPlaces).init(false);
     }
 
-    public void startFallback(String ip)
+    public void startFallback()
     {
         //find out the missing server
         int missingPort = -1;

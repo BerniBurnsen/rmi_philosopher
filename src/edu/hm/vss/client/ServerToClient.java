@@ -43,20 +43,23 @@ public class ServerToClient extends UnicastRemoteObject implements IServerToClie
     @Override
     public void neighbourUnreachable(String IPMessage) throws RemoteException
     {
-        if(!connectionError)
+        synchronized (this)
         {
-            Pattern pattern = Pattern.compile(IPADDRESS_PATTERN);
-            Matcher matcher = pattern.matcher(IPMessage);
-            if (matcher.find())
+            if (!connectionError)
             {
-                connectionError = true;
-                String IPAdress = matcher.group(0);
-                log(LogLevel.ERROR, ServerToClient.class.getSimpleName(), "neighbourUnreachable - " + IPAdress);
-                client.startFallback(IPAdress);
+                Pattern pattern = Pattern.compile(IPADDRESS_PATTERN);
+                Matcher matcher = pattern.matcher(IPMessage);
+                if (matcher.find())
+                {
+                    connectionError = true;
+                    String IPAdress = matcher.group(0);
+                    log(LogLevel.ERROR, ServerToClient.class.getSimpleName(), "neighbourUnreachable - " + IPAdress);
+                    client.startFallback();
 
-            } else
-            {
-                log(LogLevel.ERROR, ServerToClient.class.getSimpleName(), "neighbourUnreachable - No IP could be found!");
+                } else
+                {
+                    log(LogLevel.ERROR, ServerToClient.class.getSimpleName(), "neighbourUnreachable - No IP could be found!");
+                }
             }
         }
     }
