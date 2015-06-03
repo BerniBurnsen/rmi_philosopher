@@ -5,18 +5,22 @@ import edu.hm.vss.helper.LogLevel;
 import edu.hm.vss.interfaces.IClientToServer;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Overseer extends Thread
 {
     private Client client;
     private int maxDifferenz;
+    private List<IClientToServer> servers;
 
     private boolean run = false;
 
     public Overseer(Client client, int maxDifferenz)
     {
         this.client = client;
+        servers = new ArrayList<>(client.getServers());
         this.maxDifferenz = maxDifferenz;
     }
 
@@ -50,7 +54,7 @@ public class Overseer extends Thread
                 {
                     try
                     {
-                        for(IClientToServer server : client.getServers())
+                        for(IClientToServer server : servers)
                         {
                             client.getLogger().printLog(LogLevel.OVERSEER, toString(), "Punisch Philosoper " + i);
                             server.punishPhilosopher(i);
@@ -67,6 +71,7 @@ public class Overseer extends Thread
                 Thread.sleep(5);
             } catch (InterruptedException e)
             {
+                System.err.println(e);
                 run = false;
             }
         }
