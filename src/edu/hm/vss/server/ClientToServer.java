@@ -208,11 +208,11 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     @Override
     public void punishPhilosopher(int index) throws RemoteException
     {
-        server.getClientAPI().log(LogLevel.SERVER, toString(), "punishPhil " + index);
         Philosopher p =  server.getPhilosophers().get(index);
-        if(p != null)
+        if(p != null && p.isAllowedToEat())
         {
             p.setAllowedToEat(false);
+            server.getClientAPI().log(LogLevel.SERVER, toString(), "punishPhil " + index);
         }
     }
 
