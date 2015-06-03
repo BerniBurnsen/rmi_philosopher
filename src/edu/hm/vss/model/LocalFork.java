@@ -26,45 +26,34 @@ public class LocalFork extends Fork
     }
 
     @Override
-    public boolean tryToGet()
+    public synchronized boolean tryToGet() throws InterruptedException
     {
-        synchronized (this)
+        if(isReserved)
         {
-            if(isReserved)
-            {
-                return false;
-            }
+            this.wait(2);
+            return false;
+        }
+        else
+        {
             isReserved = true;
             return true;
         }
     }
 
     @Override
-    public void waitFor()
+    public synchronized void waitFor() throws InterruptedException
     {
-        synchronized (this)
+        while(isReserved)
         {
-            if(isReserved)
-            {
-                try
-                {
-                    this.wait();
-                } catch (InterruptedException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-            isReserved = true;
+            this.wait(1);
         }
+        isReserved = true;
     }
 
     @Override
-    public void release()
+    public synchronized void release()
     {
-        synchronized (this)
-        {
-            isReserved = false;
-            this.notify();
-        }
+        isReserved = false;
+        this.notify();
     }
 }

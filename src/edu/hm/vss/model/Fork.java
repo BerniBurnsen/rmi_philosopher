@@ -41,9 +41,9 @@ public abstract class Fork implements Serializable, Remote
         this.p = p;
     }
 
-    public abstract boolean tryToGet() throws RemoteException;
+    public abstract boolean tryToGet() throws RemoteException, InterruptedException;
 
-    public abstract void waitFor() throws RemoteException;
+    public abstract void waitFor() throws RemoteException, InterruptedException;
 
     public abstract void release() throws RemoteException;
 }
