@@ -18,6 +18,7 @@ public class Philosopher extends Thread implements Serializable
     private final int MEDITATIONTIME = 5;
     private final int SLEEPTIME = 10;
     private final int EATTIME = 1;
+    private final int PENALTYTIME = 50;
 
     private  TablePiece tablePiece;
     private  int index;
@@ -128,7 +129,7 @@ public class Philosopher extends Thread implements Serializable
                     }
                     else
                     {
-                        goSleeping();
+                        takePenalty();
                         setAllowedToEat(true);
                     }
                 }
@@ -197,6 +198,14 @@ public class Philosopher extends Thread implements Serializable
         server.getClientAPI().log(LogLevel.PHIL, toString(), index + " sleeping");
         //Main.writeInDebugmode(this + " sleeping");
         Thread.sleep(SLEEPTIME);
+    }
+
+    private void takePenalty() throws InterruptedException, RemoteException
+    {
+        server.getClientAPI().log(LogLevel.PHIL, toString(), index + " sleeping");
+        System.err.println("PUNISHED " + toString());
+        //Main.writeInDebugmode(this + " sleeping");
+        Thread.sleep(PENALTYTIME);
     }
 
     @Override
