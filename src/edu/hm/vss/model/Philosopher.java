@@ -97,6 +97,7 @@ public class Philosopher extends Thread implements Serializable
                 {
                     if(isAllowedToEat())
                     {
+                        isFirstRound = true;
                         state = "waiting for place";
                         plate = tablePiece.getPlate(this);
                         if(plate == null)
