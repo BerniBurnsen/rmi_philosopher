@@ -20,9 +20,8 @@ public interface IServerToClient extends Remote, Serializable
     /**
      * tells the client that a neighbour is unreachable
      *
-     * @param IP
      */
-    void neighbourUnreachable(String IP) throws RemoteException;
+    void neighbourUnreachable() throws RemoteException;
 
     /**
      * tells the client which philosopher is there

@@ -59,7 +59,7 @@ public class Overseer extends Thread
                     {
                         try
                         {
-                            client.getServerToClient().neighbourUnreachable(e.getMessage());
+                            client.getServerToClient().neighbourUnreachable();
                         } catch (RemoteException e1)
                         {
                             //client unreachable, nothing to do

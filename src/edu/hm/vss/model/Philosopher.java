@@ -152,7 +152,7 @@ public class Philosopher extends Thread implements Serializable
             try
             {
                 server.getClientAPI().log(LogLevel.ERROR, toString(), "!!! --- Error reaching neighbour --- !!!");
-                server.getClientAPI().neighbourUnreachable(e.getMessage());
+                server.getClientAPI().neighbourUnreachable();
             } catch (RemoteException e1)
             {
                 e.printStackTrace();
