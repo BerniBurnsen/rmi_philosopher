@@ -24,13 +24,13 @@ public class Client implements Serializable
     private final LogLevel[] logLevels =
             {
 //                    LogLevel.PHIL,
-//                    LogLevel.CLIENT,
-//                    LogLevel.SERVER,
-                    LogLevel.OVERSEER,
+                    LogLevel.CLIENT,
+                    LogLevel.SERVER,
+//                    LogLevel.OVERSEER,
 //                    LogLevel.REMOTE,
-//                    LogLevel.INIT,
-//                    LogLevel.ERROR,
-//                    LogLevel.FALLBACK,
+                    LogLevel.INIT,
+                    LogLevel.ERROR,
+                    LogLevel.FALLBACK,
 //                    LogLevel.TABLE
             };
 
@@ -112,11 +112,6 @@ public class Client implements Serializable
             IClientToServer serverAPI = (IClientToServer)registry.lookup(Settings.CLIENT_TO_SERVER + (connection.getKey() - Settings.PORT_SERVER_BASE));
             servers.add(serverAPI);
             serverAPI.initClientConnection(Settings.CLIENT_IP, Settings.PORT_CLIENT);
-
-            /*registry = LocateRegistry.getRegistry(Settings.SERVERS[i %Settings.SERVERS.length], Settings.PORT_SERVER_BASE +i);
-            IClientToServer serverAPI = (IClientToServer)registry.lookup(Settings.CLIENT_TO_SERVER + i);
-            servers.add(serverAPI);
-            serverAPI.initClientConnection(Settings.CLIENT_IP, Settings.PORT_CLIENT);*/
         }
 
         List<Integer> activePorts = new LinkedList<>(activeServers.keySet());
@@ -130,13 +125,7 @@ public class Client implements Serializable
 
             String leftNeighbour = activeServers.get(leftPort);
             String rightNeighbour = activeServers.get(rightPort);
-/*
-            String leftNeighbour = (i-1) < 0 ? Settings.SERVERS[Settings.SERVERS.length -1] : Settings.SERVERS[(i-1) % Settings.SERVERS.length];
-            String rightNeighbour = (i+1) <= instanceCount ? Settings.SERVERS[(i+1) %Settings.SERVERS.length] :Settings.SERVERS[instanceCount -1] ;
 
-            int rightPort = (i+1) < instanceCount ? Settings.PORT_SERVER_BASE + i + 1 : Settings.PORT_SERVER_BASE;
-            int leftPort = (i-1) < 0 ? Settings.PORT_SERVER_BASE + (instanceCount-1) : Settings.PORT_SERVER_BASE  + i - 1;
-*/
             logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - Instancenumber " + count + " leftNeighbour: " + leftNeighbour + " leftPort: " + leftPort);
             logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - Instancenumber " + count + " rightNeighbour: " + rightNeighbour + " rightPort " + rightPort);
 

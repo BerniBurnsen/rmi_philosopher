@@ -114,6 +114,7 @@ public class Philosopher extends Thread implements Serializable
                         state = "got forks";
                         server.getClientAPI().log(LogLevel.PHIL, toString(), index + " got Forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
                         state = "start eating";
+                        if(index != 0)
                         eat();
                         state = "releasing forks";
                         plate.releaseForks();
@@ -157,10 +158,6 @@ public class Philosopher extends Thread implements Serializable
             {
                 e.printStackTrace();
             }
-        }
-        finally
-        {
-            System.out.println("PHIL END " + index);
         }
     }
 

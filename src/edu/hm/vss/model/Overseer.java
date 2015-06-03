@@ -71,7 +71,6 @@ public class Overseer extends Thread
                 Thread.sleep(5);
             } catch (InterruptedException e)
             {
-                System.err.println(e);
                 run = false;
             }
         }
