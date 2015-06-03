@@ -95,7 +95,7 @@ public class Client implements Serializable
     public void init(boolean isFallback) throws RemoteException, AlreadyBoundException, NotBoundException
     {
         logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - #phil" + numberOfPhilosophers + " #hungry " + numberOfHungryPhilosophers + " #places " + numberOfPlaces);
-
+        servers.clear();
         if(!isFallback)
         {
             startRegistry();
