@@ -107,28 +107,20 @@ public class Philosopher extends Thread implements Serializable
                         state = "got place";
                         leftFork = plate.getLeftFork();
                         rightFork = plate.getRightFork();
-                        if(server.getClientAPI() == null)
-                        {
-                            System.out.println("ClientAPI is NULL");
-                        }
                         server.getClientAPI().log(LogLevel.PHIL, toString(), index + " leftForkindex: " + leftFork.getIndex() + " and " + rightFork.getIndex());
-                        //Main.writeInDebugmode(this + " waiting for forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
                         state = "waiting for Forks";
                         plate.waitForForks(this);
                         state = "got forks";
                         server.getClientAPI().log(LogLevel.PHIL, toString(), index + " got Forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
-                        //Main.writeInDebugmode(this + " got forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
                         state = "start eating";
                         eat();
                         state = "releasing forks";
                         plate.releaseForks();
                         state = "releasing plate";
                         server.getClientAPI().log(LogLevel.PHIL, toString(), index + " release forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
-                                //Main.writeInDebugmode(this + " releases forks " + leftFork.getIndex() + " and " + rightFork.getIndex());
                         tablePiece.releasePlate(plate, this);
                         state = "plate released";
                         server.getClientAPI().log(LogLevel.PHIL, toString(), index + " released place " + plate.getIndex());
-                        //Main.writeInDebugmode(this + " releases place " + plate.getIndex());
                         state = "meditating";
                         meditate();
                     }
@@ -145,18 +137,14 @@ public class Philosopher extends Thread implements Serializable
             }
             if(run)
             {
-                if(server.getRightServerAPI() == null)
+                if(server.getRightServerAPI().pushPhilosopher(index, isVeryHungry, eatCounter, startIndex, isFirstRound))
                 {
-                    System.out.println("RightServerAPI is NULL");
+                    server.getPhilosophers().remove(index);
+                    run = false;
                 }
-                    if(server.getRightServerAPI().pushPhilosopher(index, isVeryHungry, eatCounter, startIndex, isFirstRound))
-                    {
-                        server.getPhilosophers().remove(index);
-                        run = false;
-                    }
-                    server.getClientAPI().log(LogLevel.PHIL, toString(), index + " terminated on server " + tablePiece.getIndex());
-                }
+                server.getClientAPI().log(LogLevel.PHIL, toString(), index + " terminated on server " + tablePiece.getIndex());
             }
+        }
         catch (RemoteException e)
         {
             try

@@ -23,7 +23,7 @@ public class Client implements Serializable
 {
     private final LogLevel[] logLevels =
             {
-//                    LogLevel.PHIL,
+                    LogLevel.PHIL,
                     LogLevel.CLIENT,
                     LogLevel.SERVER,
                     LogLevel.OVERSEER,
