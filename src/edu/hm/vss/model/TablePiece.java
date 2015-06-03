@@ -34,7 +34,7 @@ public class TablePiece implements Serializable, Remote
 
     public Plate getPlate(Philosopher p) throws InterruptedException, RemoteException
     {
-        int startIndex = nextIndexToUse % plates.size();
+        int startIndex = p.getIndex() % plates.size();
         if(p.getStartIndex() == -1)
         {
             p.setStartIndex(plates.get(startIndex).getIndex());
