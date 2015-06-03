@@ -97,6 +97,9 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
     public boolean initServer(int seats, int maxSeats, int startIndex) throws RemoteException
     {
         server.getPhilosophers().clear();
+        server.getPlates().clear();
+        server.setTablePiece(null);
+
         server.getClientAPI().log(LogLevel.INIT, toString(), " initServer - Seats: " + seats + " maxSeats " + maxSeats + " startIndex " + startIndex);
         for(int i = 0 ; i < seats ;i++)
         {
