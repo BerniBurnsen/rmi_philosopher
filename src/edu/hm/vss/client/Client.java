@@ -165,6 +165,10 @@ public class Client implements Serializable
             }
             else
             {
+                if(allEatCounts.get(i) == null)
+                {
+                    allEatCounts.put(i, allEatCounts.get(i-1));
+                }
                 servers.get(nextServerIndex).respawnPhilosopher(i, i >= numberOfPhilosophers - numberOfHungryPhilosophers ? true : false, allEatCounts.get(i));
             }
         }
@@ -199,7 +203,7 @@ public class Client implements Serializable
                      }
                  }
              }
-        , 30*1000);
+        , 60*1000);
     }
 
 
