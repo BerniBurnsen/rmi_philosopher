@@ -26,14 +26,14 @@ public class Overseer extends Thread
     public void run()
     {
         run = true;
-        int[] pCount = new int[client.getNumberOfPhilosophers()];
         client.getLogger().printLog(LogLevel.OVERSEER, toString(), "Overseer started");
         runLoop:
         while(run)
         {
             int minCount = Integer.MAX_VALUE;
 
-            Set<Map.Entry<Integer, Integer>> eatCounts = new TreeSet<>(client.getAllEatCounts().entrySet());
+            Set<Map.Entry<Integer, Integer>> eatCounts = new HashSet<>(client.getAllEatCounts().entrySet());
+            int[] pCount = new int[eatCounts.size()];
             for(Map.Entry<Integer, Integer> e : eatCounts)
             {
                 pCount[e.getKey()] = e.getValue();

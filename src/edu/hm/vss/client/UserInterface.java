@@ -4,6 +4,8 @@ import edu.hm.vss.userInterface.IUserInterface;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Joncn on 03.06.2015.
@@ -28,37 +30,52 @@ public class UserInterface extends UnicastRemoteObject implements IUserInterface
     @Override
     public void removePhilosopher(boolean hungry) throws RemoteException
     {
+        client.stopAll();
         if(hungry)
         {
             client.setNumberOfHungryPhilosophers(client.getNumberOfHungryPhilosophers() > 0 ? client.getNumberOfHungryPhilosophers()-1 : 0);
-
+            client.getAllEatCounts().remove(client.getAllEatCounts().size()-1);
+        }
+        else
+        {
+            client.getAllEatCounts().remove(0);
+            int i = 0;
+            Map<Integer, Integer> newEatcounts = new ConcurrentHashMap<>();
+            for(Map.Entry<Integer, Integer> eCount : client.getAllEatCounts().entrySet())
+            {
+                newEatcounts.put(eCount.getKey()-1, eCount.getValue());
+            }
+            client.setAllEatCounts(newEatcounts);
         }
         client.setNumberOfPhilosophers(client.getNumberOfPhilosophers() > 0 ? client.getNumberOfPhilosophers()-1 : 0);
-        client.startFallback();
+        client.startAgain();
     }
 
     @Override
     public void addPhilosopher(boolean hungry) throws RemoteException
     {
+        client.stopAll();
         if(hungry)
         {
             client.setNumberOfHungryPhilosophers(client.getNumberOfHungryPhilosophers()+1);
         }
         client.setNumberOfPhilosophers(client.getNumberOfPhilosophers()+1);
-        client.startFallback();
+        client.startAgain();
     }
 
     @Override
     public void removePlate() throws RemoteException
     {
-        client.setNumberOfPlaces(client.getNumberOfPlaces() > 2 ? client.getNumberOfPlaces()-1 : 2);
-        client.startFallback();
+        client.stopAll();
+        client.setNumberOfPlaces(client.getNumberOfPlaces() > 2 ? client.getNumberOfPlaces() - 1 : 2);
+        client.startAgain();
     }
 
     @Override
     public void addPlate() throws RemoteException
     {
+        client.stopAll();
         client.setNumberOfPlaces(client.getNumberOfPlaces()+1);
-        client.startFallback();
+        client.startAgain();
     }
 }

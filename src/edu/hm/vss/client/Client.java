@@ -230,6 +230,48 @@ public class Client implements Serializable
         new Client(numberOfPhilosophers,numberOfHungryPhilosophers,numberOfPlaces).init(false);
     }
 
+    public void stopAll()
+    {
+        Set<Integer> activePorts = activeServers.keySet();
+
+        for(int port : activePorts)
+        {
+            try
+            {
+                logger.printLog(LogLevel.ERROR, Client.class.getSimpleName(), "Stop: " + activeServers.get(port) + " - " + port);
+                servers.get(port - Settings.PORT_SERVER_BASE).stopServer();
+            } catch (RemoteException e)
+            {
+                //e.printStackTrace();
+            }
+        }
+        overseer.interrupt();
+        try
+        {
+            overseer.join(100);
+        } catch (InterruptedException e)
+        {
+            //e.printStackTrace();
+        }
+    }
+
+    public void startAgain()
+    {
+        try
+        {
+            init(true);
+        } catch (RemoteException e)
+        {
+            e.printStackTrace();
+        } catch (AlreadyBoundException e)
+        {
+            e.printStackTrace();
+        } catch (NotBoundException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public void startFallback()
     {
         //find out the missing server
@@ -268,19 +310,7 @@ public class Client implements Serializable
             logger.printLog(LogLevel.ERROR, Client.class.getSimpleName(), "!!! --- NO SERVERS FOUND --- !!!");
             return;
         }
-        try
-        {
-            init(true);
-        } catch (RemoteException e)
-        {
-            e.printStackTrace();
-        } catch (AlreadyBoundException e)
-        {
-            e.printStackTrace();
-        } catch (NotBoundException e)
-        {
-            e.printStackTrace();
-        }
+        startAgain();
     }
 
 
