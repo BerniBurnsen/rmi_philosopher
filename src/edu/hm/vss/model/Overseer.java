@@ -25,6 +25,7 @@ public class Overseer extends Thread
     {
         run = true;
         int[] pCount = new int[client.getNumberOfPhilosophers()];
+        client.getLogger().printLog(LogLevel.OVERSEER, toString(), "Overseer started");
         runLoop:
         while(run)
         {
@@ -68,13 +69,14 @@ public class Overseer extends Thread
                 }
             }
         }
+        client.getLogger().printLog(LogLevel.OVERSEER, toString(), "Overseer stopped");
     }
 
     @Override
     public void interrupt()
     {
         super.interrupt();
-        run = false;run = false;
+        run = false;
     }
 
     @Override
