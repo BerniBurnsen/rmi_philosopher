@@ -173,7 +173,7 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
         {
             try
             {
-                p.join();
+                p.join(200);
                 System.out.println("joined on " + p);
             } catch (InterruptedException e)
             {
