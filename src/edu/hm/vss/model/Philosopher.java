@@ -158,7 +158,10 @@ public class Philosopher extends Thread implements Serializable
                 e.printStackTrace();
             }
         }
-        System.out.println("PHIL END " + index);
+        finally
+        {
+            System.out.println("PHIL END " + index);
+        }
     }
 
     private void meditate() throws InterruptedException, RemoteException
