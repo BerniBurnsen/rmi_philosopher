@@ -19,7 +19,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * Created by B3rni on 13.05.2015.
+ * Represents the Server instance which does the work.
+ * After the complete initialization process it has connections to its neighbour server
+ * and to the client (Master)
+ * Its holds the tablepiece.
+ *
  */
 public class RMIServer implements Serializable
 {

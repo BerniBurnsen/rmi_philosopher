@@ -9,7 +9,7 @@ import java.rmi.registry.Registry;
 import java.util.Scanner;
 
 /**
- * Created by Joncn on 03.06.2015.
+ * Command Line to control the server.
  */
 public class User
 {

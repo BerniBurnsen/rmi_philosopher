@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by B3rni on 20.05.2015.
+ * implementation of the IServerToClient interface
  */
 public class ServerToClient extends UnicastRemoteObject implements IServerToClient
 {

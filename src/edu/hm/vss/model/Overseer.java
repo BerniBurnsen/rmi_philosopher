@@ -7,6 +7,10 @@ import edu.hm.vss.interfaces.IClientToServer;
 import java.rmi.RemoteException;
 import java.util.*;
 
+/**
+ * the overseer represents a master which stops greedy philosophers
+ * It broadcasts the punishment to all servers.
+ */
 public class Overseer extends Thread
 {
     private Client client;

@@ -1,7 +1,7 @@
 package edu.hm.vss.helper;
 
 /**
- * Created by Joncn on 02.06.2015.
+ * Different LogLevels / categories.
  */
 public enum LogLevel
 {

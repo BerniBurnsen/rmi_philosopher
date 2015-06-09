@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by B3rni on 27.05.2015.
+ * Logging System.
  */
 public class Logger implements Serializable
 {

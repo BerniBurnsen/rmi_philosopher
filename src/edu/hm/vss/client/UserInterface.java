@@ -8,7 +8,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Created by Joncn on 03.06.2015.
+ * implementation of the userinterface.
+ * Adds, remove philosohpers and plates, after that a setup rebuilt is started.
  */
 public class UserInterface extends UnicastRemoteObject implements IUserInterface
 {

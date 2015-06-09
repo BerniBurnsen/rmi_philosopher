@@ -5,7 +5,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
- * Created by Joncn on 13.05.2015.
+ * represents a place with plate on the tablepiece
  */
 public class Plate implements Serializable, Remote
 {

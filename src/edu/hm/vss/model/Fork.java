@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-/**
- * Created by Joncn on 13.05.2015.
- */
+
 public abstract class Fork implements Serializable, Remote
 {
     protected int index;

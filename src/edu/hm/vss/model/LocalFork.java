@@ -3,7 +3,7 @@ package edu.hm.vss.model;
 import java.rmi.RemoteException;
 
 /**
- * Created by B3rni on 20.05.2015.
+ * LocalFork is a fork which is available on the local server.
  */
 public class LocalFork extends Fork
 {

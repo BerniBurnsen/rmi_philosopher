@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 /**
- * Created by Joncn on 13.05.2015.
+ * Tablepieces are usually distributed across several servers
  */
 public class TablePiece implements Serializable, Remote
 {

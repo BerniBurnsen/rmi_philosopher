@@ -108,7 +108,10 @@ public class Client implements Serializable
 
         logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - build up connections");
 
-        //build up connections
+        /**
+         * Get the Client to Server registry (Client to server communication)
+         * tells ALL servers to init the connection from the server to the client. (Server to client communication)
+         */
         for(Map.Entry<Integer, String> connection : activeServers.entrySet())
         {
             registry = LocateRegistry.getRegistry(connection.getValue(), connection.getKey());
@@ -119,8 +122,13 @@ public class Client implements Serializable
 
         List<Integer> activePorts = new LinkedList<>(activeServers.keySet());
         Collections.sort(activePorts);
-
         int count = 0;
+
+        /**
+         * Init connection for the server to server communication,
+         * the communication is like a ring, server only talk to their neighbour.
+         * In case there are only two servers, the right and left neighbour are the same.
+         */
         for(Integer currentPort : activePorts)
         {
             int leftPort = activePorts.contains(currentPort - 1) ? (currentPort -1) : activePorts.get(activePorts.size()-1);
@@ -135,12 +143,23 @@ public class Client implements Serializable
             servers.get(count++).initServerConnections(rightNeighbour, rightPort, leftNeighbour,leftPort);
         }
 
-        //build plates
+        /**
+         * Calculate how many places are going to be on each server
+         *
+         */
         int[] counterArray = new int[activeServers.size()];
         for(int i = 0 ; i < numberOfPlaces ; i++)
         {
             counterArray[i % activeServers.size()]++;
         }
+
+
+        /**
+         * Tell the server to initialize their table pieces
+         * @param1: # of seats
+         * @param2: # of all seats
+         * @param3: startindex
+         */
         int currentIndex = 0;
         for(int i = 0 ; i < activeServers.size() ; i++)
         {
@@ -148,23 +167,35 @@ public class Client implements Serializable
             currentIndex+= counterArray[i];
         }
 
-        //spawn Overseer
+        /**
+            Create the overseer
+         */
         overseer = null;
         overseer = new Overseer(this, 10);
         overseer.start();
 
-        //spawn philosophers
+        /**
+            Tell the Server to spawn Philosophers on the Server
+         */
         for (int i = 0; i < numberOfPhilosophers; i++)
         {
+            //distribute the philosophers on the server
             int nextServerIndex = i % activeServers.size();
             logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "main - spawning Phil - " + i);
+
             if(!isFallback)
             {
+                /*
+                    in case of a fresh start, create new philosophers from scratch
+                 */
                 servers.get(nextServerIndex).createNewPhilosopher(i, i >= numberOfPhilosophers - numberOfHungryPhilosophers ? true : false);
                 allEatCounts.put(i, 0);
             }
             else
             {
+                /*
+                    in case of a fallback respawn the philosophers with the most current eatcounts.
+                 */
                 if(allEatCounts.get(i) == null)
                 {
                     allEatCounts.put(i, allEatCounts.get(i-1));
@@ -180,12 +211,17 @@ public class Client implements Serializable
         {
             e.printStackTrace();
         }
-        //start philosophers
+        /**
+            Tell the server to start the philosophers
+         */
         for(int i = 0 ; i < instanceCount ; i++)
         {
             servers.get(i).startPhilosophers();
         }
 
+        /**
+         * timer to stop the complete setup after X seconds
+         */
         new Timer().schedule(new TimerTask() {
                  @Override
                  public void run()
@@ -207,13 +243,13 @@ public class Client implements Serializable
     }
 
 
-    public void startRegistry() throws RemoteException
+    private void startRegistry() throws RemoteException
     {
         logger.printLog(LogLevel.INIT, Client.class.getName(), "StartRegistry");
         registry = LocateRegistry.createRegistry(Settings.PORT_CLIENT);
     }
 
-    public void registerObject(String name, Remote remoteObject) throws RemoteException, AlreadyBoundException
+    private void registerObject(String name, Remote remoteObject) throws RemoteException, AlreadyBoundException
     {
         logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "registerObject " + name + " " + remoteObject.getClass().getName());
         registry.bind(name, remoteObject);

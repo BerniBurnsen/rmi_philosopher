@@ -8,7 +8,8 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
- * Created by B3rni on 20.05.2015.
+ * interface for the client to server communication
+ * It is used to control and initialize the server to get them ready to work.
  */
 public interface IClientToServer extends Remote, Serializable
 {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Joncn on 13.05.2015.
+ * Holds Constants across all components
  */
 public class Settings
 {

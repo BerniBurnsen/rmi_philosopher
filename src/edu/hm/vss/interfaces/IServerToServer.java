@@ -5,7 +5,8 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
- * Created by B3rni on 20.05.2015.
+ * interface for the server to server communication.
+ * Used to move philosophers across the server and to request/release forks which are located remotely.
  */
 public interface IServerToServer extends Remote, Serializable
 {
@@ -19,9 +20,24 @@ public interface IServerToServer extends Remote, Serializable
 
     boolean testConnection() throws RemoteException;
 
+    /**
+     * requests a fork on the neighbour server
+     * @return
+     * @throws RemoteException
+     * @throws InterruptedException
+     */
     boolean tryToGetFork() throws RemoteException, InterruptedException;
 
+    /**
+     * wait for fork on the neighbour server
+     * @throws RemoteException
+     * @throws InterruptedException
+     */
     void waitForFork() throws RemoteException, InterruptedException;
 
+    /**
+     * release fork on the neighbour server.
+     * @throws RemoteException
+     */
     void releaseFork() throws RemoteException;
 }

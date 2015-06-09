@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
- * Created by B3rni on 20.05.2015.
+ * Implementation of the IServerToServer interface
  */
 public class ServerToServer extends UnicastRemoteObject implements IServerToServer
 {

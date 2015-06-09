@@ -6,7 +6,7 @@ import edu.hm.vss.server.RMIServer;
 import java.rmi.RemoteException;
 
 /**
- * Created by B3rni on 20.05.2015.
+ * Remote fork is a fork which resides on a neighbour server.
  */
 public class RemoteFork extends Fork
 {

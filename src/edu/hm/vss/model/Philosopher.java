@@ -9,7 +9,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
- * Created by B3rni on 13.05.2015.
+ * A Philosopher which meditates, eats, sleeps, ...
  */
 public class Philosopher extends Thread implements Serializable
 {

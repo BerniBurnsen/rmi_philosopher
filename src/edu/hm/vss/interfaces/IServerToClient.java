@@ -7,7 +7,8 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
- * Created by B3rni on 20.05.2015.
+ * interface for the server to client communication
+ * Is used for status updates
  */
 public interface IServerToClient extends Remote, Serializable
 {
@@ -29,7 +30,20 @@ public interface IServerToClient extends Remote, Serializable
      */
     void registerPhilosopher(int index, int server) throws RemoteException;
 
+    /**
+     * helper to get the number of active instances
+     * for the initialization process
+     * @return the number of active instances
+     * @throws RemoteException
+     */
     int getNumberOfInstances() throws RemoteException;
 
+    /**
+     * Logging
+     * @param level, the loglevel / category
+     * @param type, the class/source of the message
+     * @param message, the message itself
+     * @throws RemoteException
+     */
     void log(LogLevel level, String type, String message) throws RemoteException;
 }

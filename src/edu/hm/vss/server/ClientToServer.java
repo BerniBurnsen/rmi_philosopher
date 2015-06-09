@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by B3rni on 20.05.2015.
+ * implementation of the IClientToServer interface
  */
 public class ClientToServer extends UnicastRemoteObject implements IClientToServer
 {
