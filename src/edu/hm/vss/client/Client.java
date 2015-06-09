@@ -313,7 +313,9 @@ public class Client implements Serializable
 
     public void startFallback()
     {
-        //find out the missing server
+        /*
+            find the missing server
+         */
         int missingPort = -1;
         Set<Integer> activePorts = activeServers.keySet();
 
