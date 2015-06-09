@@ -109,28 +109,28 @@ public class Plate implements Serializable, Remote
         this.leftFork = leftFork;
     }
 
-    public void setRightFork(Fork rightFork)
-    {
-        this.rightFork = rightFork;
-    }
+//    public void setRightFork(Fork rightFork)
+//    {
+//        this.rightFork = rightFork;
+//    }
 
     public void setIndex(int index)
     {
         this.index = index;
     }
-
-    public void setIsReserved(boolean isReserved)
-    {
-        this.isReserved = isReserved;
-    }
+//
+//    public void setIsReserved(boolean isReserved)
+//    {
+//        this.isReserved = isReserved;
+//    }
 
     public Philosopher getP()
     {
         return p;
     }
 
-    public void setP(Philosopher p)
-    {
-        this.p = p;
-    }
+//    public void setP(Philosopher p)
+//    {
+//        this.p = p;
+//    }
 }

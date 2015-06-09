@@ -29,15 +29,15 @@ public abstract class Fork implements Serializable, Remote
         this.index = index;
     }
 
-    public Philosopher getP()
-    {
-        return p;
-    }
-
-    public void setP(Philosopher p)
-    {
-        this.p = p;
-    }
+//    public Philosopher getP()
+//    {
+//        return p;
+//    }
+//
+//    public void setP(Philosopher p)
+//    {
+//        this.p = p;
+//    }
 
     public abstract boolean tryToGet() throws RemoteException, InterruptedException;
 

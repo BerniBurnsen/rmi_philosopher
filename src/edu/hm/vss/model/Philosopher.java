@@ -234,10 +234,10 @@ public class Philosopher extends Thread implements Serializable
         return allowedToEat;
     }
 
-    public String getStateOfPhilosopher()
-    {
-        return state;
-    }
+//    public String getStateOfPhilosopher()
+//    {
+//        return state;
+//    }
 
     public int getStartIndex() { return startIndex;}
 
@@ -252,75 +252,75 @@ public class Philosopher extends Thread implements Serializable
         return "Philosopher " + getIndex() + " " + server.getInstanceNumber();
     }
 
-    public static long getSerialVersionUID()
-    {
-        return serialVersionUID;
-    }
-
-    public int getMEDITATIONTIME()
-    {
-        return MEDITATIONTIME;
-    }
-
-    public int getSLEEPTIME()
-    {
-        return SLEEPTIME;
-    }
-
-    public int getEATTIME()
-    {
-        return EATTIME;
-    }
-
-    public TablePiece getTablePiece()
-    {
-        return tablePiece;
-    }
-
-    public void setTablePiece(TablePiece tablePiece)
-    {
-        this.tablePiece = tablePiece;
-    }
+//    public static long getSerialVersionUID()
+//    {
+//        return serialVersionUID;
+//    }
+//
+//    public int getMEDITATIONTIME()
+//    {
+//        return MEDITATIONTIME;
+//    }
+//
+//    public int getSLEEPTIME()
+//    {
+//        return SLEEPTIME;
+//    }
+//
+//    public int getEATTIME()
+//    {
+//        return EATTIME;
+//    }
+//
+//    public TablePiece getTablePiece()
+//    {
+//        return tablePiece;
+//    }
+//
+//    public void setTablePiece(TablePiece tablePiece)
+//    {
+//        this.tablePiece = tablePiece;
+//    }
 
     public void setIndex(int index)
     {
         this.index = index;
     }
 
-    public boolean isVeryHungry()
-    {
-        return isVeryHungry;
-    }
-
-    public void setIsVeryHungry(boolean isVeryHungry)
-    {
-        this.isVeryHungry = isVeryHungry;
-    }
-
-    public void setEatCounter(int eatCounter)
-    {
-        this.eatCounter = eatCounter;
-    }
-
-    public boolean isRun()
-    {
-        return run;
-    }
-
-    public void setRun(boolean run)
-    {
-        this.run = run;
-    }
+//    public boolean isVeryHungry()
+//    {
+//        return isVeryHungry;
+//    }
+//
+//    public void setIsVeryHungry(boolean isVeryHungry)
+//    {
+//        this.isVeryHungry = isVeryHungry;
+//    }
+//
+//    public void setEatCounter(int eatCounter)
+//    {
+//        this.eatCounter = eatCounter;
+//    }
+//
+//    public boolean isRun()
+//    {
+//        return run;
+//    }
+//
+//    public void setRun(boolean run)
+//    {
+//        this.run = run;
+//    }
 
     public String getCurrentState()
     {
         return state;
     }
 
-    public void setState(String state)
-    {
-        this.state = state;
-    }
+//    public void setState(String state)
+//    {
+//        this.state = state;
+//    }
 
     public RMIServer getServer()
     {

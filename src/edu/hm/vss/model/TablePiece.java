@@ -128,30 +128,30 @@ public class TablePiece implements Serializable, Remote
         return "TablePiece " + index + " " + server.getInstanceNumber();
     }
 
-    public List<Plate> getPlates()
-    {
-        return plates;
-    }
-
-    public void setPlates(List<Plate> plates)
-    {
-        this.plates = plates;
-    }
+//    public List<Plate> getPlates()
+//    {
+//        return plates;
+//    }
+//
+//    public void setPlates(List<Plate> plates)
+//    {
+//        this.plates = plates;
+//    }
 
     public void setIndex(int index)
     {
         this.index = index;
     }
 
-    public int getNextIndexToUse()
-    {
-        return nextIndexToUse;
-    }
-
-    public void setNextIndexToUse(int nextIndexToUse)
-    {
-        this.nextIndexToUse = nextIndexToUse;
-    }
+//    public int getNextIndexToUse()
+//    {
+//        return nextIndexToUse;
+//    }
+//
+//    public void setNextIndexToUse(int nextIndexToUse)
+//    {
+//        this.nextIndexToUse = nextIndexToUse;
+//    }
 
     public RMIServer getServer()
     {

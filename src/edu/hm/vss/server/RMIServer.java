@@ -139,36 +139,36 @@ public class RMIServer implements Serializable
         return instanceNumber;
     }
 
-    public void setPlates(List<Plate> plates)
-    {
-        this.plates = plates;
-    }
+//    public void setPlates(List<Plate> plates)
+//    {
+//        this.plates = plates;
+//    }
 
-    public Registry getRegistry()
-    {
-        return registry;
-    }
-
-    public void setRegistry(Registry registry)
-    {
-        this.registry = registry;
-    }
-
-    public void setInstanceNumber(int instanceNumber)
-    {
-
-        this.instanceNumber = instanceNumber;
-    }
+//    public Registry getRegistry()
+//    {
+//        return registry;
+//    }
+//
+//    public void setRegistry(Registry registry)
+//    {
+//        this.registry = registry;
+//    }
+//
+//    public void setInstanceNumber(int instanceNumber)
+//    {
+//
+//        this.instanceNumber = instanceNumber;
+//    }
 
     public ConcurrentMap<Integer, Philosopher> getPhilosophers()
     {
         return philosophers;
     }
-
-    public void setPhilosophers(ConcurrentMap<Integer, Philosopher> philosophers)
-    {
-        this.philosophers = philosophers;
-    }
+//
+//    public void setPhilosophers(ConcurrentMap<Integer, Philosopher> philosophers)
+//    {
+//        this.philosophers = philosophers;
+//    }
 
     public boolean isRun()
     {

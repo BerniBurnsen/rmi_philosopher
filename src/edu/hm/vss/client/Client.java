@@ -259,11 +259,14 @@ public class Client implements Serializable
 
     public static void main(String[] args) throws Exception
     {
-        int numberOfPhilosophers = Integer.parseInt(args[0]);
-        int numberOfHungryPhilosophers = Integer.parseInt(args[1]);
-        int numberOfPlaces = Integer.parseInt(args[2]);
+        if(args.length == 3)
+        {
+            int numberOfPhilosophers = Integer.parseInt(args[0]);
+            int numberOfHungryPhilosophers = Integer.parseInt(args[1]);
+            int numberOfPlaces = Integer.parseInt(args[2]);
 
-        new Client(numberOfPhilosophers,numberOfHungryPhilosophers,numberOfPlaces).init(false);
+            new Client(numberOfPhilosophers, numberOfHungryPhilosophers, numberOfPlaces).init(false);
+        }
     }
 
     public void stopAll()
