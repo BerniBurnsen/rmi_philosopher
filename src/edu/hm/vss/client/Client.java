@@ -17,7 +17,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Created by B3rni on 13.05.2015.
+ * This is the client (Master) which controls the "surrounding" servers.
  */
 public class Client implements Serializable
 {
@@ -51,10 +51,10 @@ public class Client implements Serializable
     private Map<Integer, String> activeServers = new TreeMap<>();
     private UserInterface userInterface;
 
-    public Client()
-    {
-
-    }
+//    public Client()
+//    {
+//
+//    }
 
     public Client(int numberPhil, int numberHungyPhil, int numberPlaces)
     {
@@ -167,14 +167,14 @@ public class Client implements Serializable
             currentIndex+= counterArray[i];
         }
 
-        /**
+        /*
             Create the overseer
          */
         overseer = null;
         overseer = new Overseer(this, 10);
         overseer.start();
 
-        /**
+        /*
             Tell the Server to spawn Philosophers on the Server
          */
         for (int i = 0; i < numberOfPhilosophers; i++)
@@ -211,7 +211,7 @@ public class Client implements Serializable
         {
             e.printStackTrace();
         }
-        /**
+        /*
             Tell the server to start the philosophers
          */
         for(int i = 0 ; i < instanceCount ; i++)
@@ -219,7 +219,7 @@ public class Client implements Serializable
             servers.get(i).startPhilosophers();
         }
 
-        /**
+        /*
          * timer to stop the complete setup after X seconds
          */
         new Timer().schedule(new TimerTask() {
@@ -353,35 +353,35 @@ public class Client implements Serializable
     }
 
 
-    public Registry getRegistry()
-    {
-        return registry;
-    }
-
-    public void setRegistry(Registry registry)
-    {
-        this.registry = registry;
-    }
+//    public Registry getRegistry()
+//    {
+//        return registry;
+//    }
+//
+//    public void setRegistry(Registry registry)
+//    {
+//        this.registry = registry;
+//    }
 
     public List<IClientToServer> getServers()
     {
         return servers;
     }
 
-    public void setServers(List<IClientToServer> servers)
-    {
-        this.servers = servers;
-    }
-
-    public void setInstanceCount(int instanceCount)
-    {
-        this.instanceCount = instanceCount;
-    }
-
-    public void setLogger(Logger logger)
-    {
-        this.logger = logger;
-    }
+//    public void setServers(List<IClientToServer> servers)
+//    {
+//        this.servers = servers;
+//    }
+//
+//    public void setInstanceCount(int instanceCount)
+//    {
+//        this.instanceCount = instanceCount;
+//    }
+//
+//    public void setLogger(Logger logger)
+//    {
+//        this.logger = logger;
+//    }
 
     public int getNumberOfPhilosophers()
     {
@@ -418,13 +418,13 @@ public class Client implements Serializable
         this.allEatCounts = allEatCounts;
     }
 
-    public void setLocationMap(Map<Integer, Integer> locationMap)
-    {
-        this.locationMap = locationMap;
-    }
-
-    public ServerToClient getServerToClient()
-    {
-        return serverToClient;
-    }
+//    public void setLocationMap(Map<Integer, Integer> locationMap)
+//    {
+//        this.locationMap = locationMap;
+//    }
+//
+//    public ServerToClient getServerToClient()
+//    {
+//        return serverToClient;
+//    }
 }
