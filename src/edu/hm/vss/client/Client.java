@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Client implements Serializable
 {
-    private static final int RUNTIME = 70;
+    private static final int RUNTIME = 60;
 
     private final LogLevel[] logLevels =
             {
