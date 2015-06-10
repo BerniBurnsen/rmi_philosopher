@@ -1,9 +1,6 @@
 package edu.hm.vss.helper;
 
-import edu.hm.vss.server.RMIServer;
-
 import java.io.Serializable;
-import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

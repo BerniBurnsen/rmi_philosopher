@@ -1,7 +1,5 @@
 package edu.hm.vss.interfaces;
 
-import edu.hm.vss.model.TablePiece;
-
 import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;

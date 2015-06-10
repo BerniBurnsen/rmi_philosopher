@@ -1,18 +1,17 @@
 package edu.hm.vss.server;
 
-import edu.hm.vss.helper.Logger;
-import edu.hm.vss.interfaces.*;
+import edu.hm.vss.interfaces.IServerToClient;
+import edu.hm.vss.interfaces.IServerToServer;
+import edu.hm.vss.interfaces.Settings;
 import edu.hm.vss.model.Philosopher;
 import edu.hm.vss.model.Plate;
 import edu.hm.vss.model.TablePiece;
 
-import java.io.Serializable;
 import java.rmi.AlreadyBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,7 +24,7 @@ import java.util.concurrent.ConcurrentMap;
  * Its holds the tablepiece.
  *
  */
-public class RMIServer implements Serializable
+public class RMIServer
 {
     private Registry registry;
 
@@ -42,11 +41,6 @@ public class RMIServer implements Serializable
     private ConcurrentMap<Integer, Philosopher> philosophers = new ConcurrentHashMap<>();
 
     private boolean run = false;
-
-    public RMIServer()
-    {
-
-    }
 
     RMIServer(int instanceNumber)
     {
@@ -70,8 +64,6 @@ public class RMIServer implements Serializable
     public void registerObject(String name, Remote remoteObject) throws RemoteException, AlreadyBoundException
     {
         registry.bind(name, remoteObject);
-        //logger.printLog(RMIServer.class.getSimpleName(), "registerObject - registered " + name + " " + remoteObject.getClass().getName());
-
     }
 
     public static void main(String[] args) throws Exception
@@ -82,7 +74,6 @@ public class RMIServer implements Serializable
             while(true)
             {
                 Thread.sleep(60*5*1000);
-                //logger.printLog(RMIServer.class.getName(),"sleeping again!");
             }
         }
     }
@@ -109,7 +100,6 @@ public class RMIServer implements Serializable
 
     public IServerToClient getClientAPI()
     {
-
         return clientAPI;
     }
 
@@ -135,40 +125,13 @@ public class RMIServer implements Serializable
 
     public int getInstanceNumber()
     {
-
         return instanceNumber;
     }
-
-//    public void setPlates(List<Plate> plates)
-//    {
-//        this.plates = plates;
-//    }
-
-//    public Registry getRegistry()
-//    {
-//        return registry;
-//    }
-//
-//    public void setRegistry(Registry registry)
-//    {
-//        this.registry = registry;
-//    }
-//
-//    public void setInstanceNumber(int instanceNumber)
-//    {
-//
-//        this.instanceNumber = instanceNumber;
-//    }
 
     public ConcurrentMap<Integer, Philosopher> getPhilosophers()
     {
         return philosophers;
     }
-//
-//    public void setPhilosophers(ConcurrentMap<Integer, Philosopher> philosophers)
-//    {
-//        this.philosophers = philosophers;
-//    }
 
     public boolean isRun()
     {

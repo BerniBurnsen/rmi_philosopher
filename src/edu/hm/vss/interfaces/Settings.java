@@ -1,8 +1,5 @@
 package edu.hm.vss.interfaces;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Holds Constants across all components
  */

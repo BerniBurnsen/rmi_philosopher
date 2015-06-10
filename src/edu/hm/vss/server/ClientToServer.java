@@ -1,24 +1,17 @@
 package edu.hm.vss.server;
 
-import edu.hm.vss.client.ServerToClient;
 import edu.hm.vss.helper.LogLevel;
-import edu.hm.vss.helper.Logger;
 import edu.hm.vss.interfaces.IClientToServer;
 import edu.hm.vss.interfaces.IServerToClient;
 import edu.hm.vss.interfaces.IServerToServer;
 import edu.hm.vss.interfaces.Settings;
 import edu.hm.vss.model.*;
 
-import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * implementation of the IClientToServer interface

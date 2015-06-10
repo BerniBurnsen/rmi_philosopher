@@ -1,20 +1,16 @@
 package edu.hm.vss.model;
 
 import edu.hm.vss.helper.LogLevel;
-import edu.hm.vss.helper.Logger;
 import edu.hm.vss.server.RMIServer;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 
 /**
  * A Philosopher which meditates, eats, sleeps, ...
  */
-public class Philosopher extends Thread implements Serializable
+public class Philosopher extends Thread
 {
-    private static final long serialVersionUID = 1L;
-
     private final int MEDITATIONTIME = 5;
     private final int SLEEPTIME = 10;
     private final int EATTIME = 1;
@@ -32,11 +28,6 @@ public class Philosopher extends Thread implements Serializable
     private boolean isFirstRound = true;
 
     private RMIServer server;
-
-    public Philosopher()
-    {
-
-    }
 
     public Philosopher(RMIServer server, TablePiece tablePiece, int index, boolean hungry) throws RemoteException
     {
@@ -173,14 +164,12 @@ public class Philosopher extends Thread implements Serializable
             meditationTime = MEDITATIONTIME;
         }
         server.getClientAPI().log(LogLevel.PHIL, toString(), index + " " + this + (isVeryHungry ? " meditate short" : " meditate") + " (" + meditationTime + ")");
-        //Main.writeInDebugmode(this + (isVeryHungry ? " meditate short" : " meditate") + " (" + meditationTime + ")");
         Thread. sleep(meditationTime);
     }
 
     private void eat() throws InterruptedException, RemoteException
     {
         server.getClientAPI().log(LogLevel.PHIL, toString(), index + " eating");
-        //Main.writeInDebugmode(this + " eating");
         Thread.sleep(EATTIME);
         synchronized (this)
         {
@@ -195,7 +184,6 @@ public class Philosopher extends Thread implements Serializable
     private void goSleeping() throws InterruptedException, RemoteException
     {
         server.getClientAPI().log(LogLevel.PHIL, toString(), index + " sleeping");
-        //Main.writeInDebugmode(this + " sleeping");
         Thread.sleep(SLEEPTIME);
     }
 
@@ -203,7 +191,6 @@ public class Philosopher extends Thread implements Serializable
     {
         server.getClientAPI().log(LogLevel.PHIL, toString(), index + " sleeping");
         System.err.println("PUNISHED " + toString());
-        //Main.writeInDebugmode(this + " sleeping");
         Thread.sleep(PENALTYTIME);
     }
 
@@ -234,11 +221,6 @@ public class Philosopher extends Thread implements Serializable
         return allowedToEat;
     }
 
-//    public String getStateOfPhilosopher()
-//    {
-//        return state;
-//    }
-
     public int getStartIndex() { return startIndex;}
 
     public void setStartIndex(int startIndex) { this.startIndex = startIndex;}
@@ -252,75 +234,15 @@ public class Philosopher extends Thread implements Serializable
         return "Philosopher " + getIndex() + " " + server.getInstanceNumber();
     }
 
-//    public static long getSerialVersionUID()
-//    {
-//        return serialVersionUID;
-//    }
-//
-//    public int getMEDITATIONTIME()
-//    {
-//        return MEDITATIONTIME;
-//    }
-//
-//    public int getSLEEPTIME()
-//    {
-//        return SLEEPTIME;
-//    }
-//
-//    public int getEATTIME()
-//    {
-//        return EATTIME;
-//    }
-//
-//    public TablePiece getTablePiece()
-//    {
-//        return tablePiece;
-//    }
-//
-//    public void setTablePiece(TablePiece tablePiece)
-//    {
-//        this.tablePiece = tablePiece;
-//    }
-
     public void setIndex(int index)
     {
         this.index = index;
     }
 
-//    public boolean isVeryHungry()
-//    {
-//        return isVeryHungry;
-//    }
-//
-//    public void setIsVeryHungry(boolean isVeryHungry)
-//    {
-//        this.isVeryHungry = isVeryHungry;
-//    }
-//
-//    public void setEatCounter(int eatCounter)
-//    {
-//        this.eatCounter = eatCounter;
-//    }
-//
-//    public boolean isRun()
-//    {
-//        return run;
-//    }
-//
-//    public void setRun(boolean run)
-//    {
-//        this.run = run;
-//    }
-
     public String getCurrentState()
     {
         return state;
     }
-
-//    public void setState(String state)
-//    {
-//        this.state = state;
-//    }
 
     public RMIServer getServer()
     {
@@ -331,5 +253,4 @@ public class Philosopher extends Thread implements Serializable
     {
         this.server = server;
     }
-
 }

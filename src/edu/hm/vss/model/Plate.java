@@ -1,13 +1,11 @@
 package edu.hm.vss.model;
 
-import java.io.Serializable;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
  * represents a place with plate on the tablepiece
  */
-public class Plate implements Serializable, Remote
+public class Plate
 {
     private Fork leftFork;
     private Fork rightFork;
@@ -22,10 +20,6 @@ public class Plate implements Serializable, Remote
         this.leftFork = leftFork;
         this.rightFork = rightFork;
         this.index = index;
-    }
-
-    public Plate()
-    {
     }
 
     public boolean isReserved()
@@ -75,7 +69,6 @@ public class Plate implements Serializable, Remote
             }
             firstFork.release();
         }
-        //Main.writeInDebugmode(p + " obtained both" + leftFork + " " + rightFork);
     }
 
     public void releaseForks() throws RemoteException
@@ -109,28 +102,8 @@ public class Plate implements Serializable, Remote
         this.leftFork = leftFork;
     }
 
-//    public void setRightFork(Fork rightFork)
-//    {
-//        this.rightFork = rightFork;
-//    }
-
     public void setIndex(int index)
     {
         this.index = index;
     }
-//
-//    public void setIsReserved(boolean isReserved)
-//    {
-//        this.isReserved = isReserved;
-//    }
-
-    public Philosopher getP()
-    {
-        return p;
-    }
-
-//    public void setP(Philosopher p)
-//    {
-//        this.p = p;
-//    }
 }

@@ -21,23 +21,26 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Client implements Serializable
 {
+    private static final int RUNTIME = 70;
+
     private final LogLevel[] logLevels =
             {
 //                    LogLevel.PHIL,
 //                    LogLevel.CLIENT,
 //                    LogLevel.SERVER,
-                    LogLevel.OVERSEER,
+//                    LogLevel.OVERSEER,
 //                    LogLevel.REMOTE,
                     LogLevel.INIT,
-//                    LogLevel.ERROR,
-//                    LogLevel.FALLBACK,
+                    LogLevel.ERROR,
+                    LogLevel.FALLBACK,
 //                    LogLevel.TABLE
             };
 
+    private int instanceCount = 4;
+
     private Registry registry;
     private List<IClientToServer> servers = new ArrayList<>();
-    private int instanceCount = 4;
-    private Logger logger;
+    private Map<Integer, String> activeServers = new TreeMap<>();
 
     private int numberOfPhilosophers;
     private int numberOfHungryPhilosophers;
@@ -47,14 +50,12 @@ public class Client implements Serializable
 
     private Map<Integer, Integer> allEatCounts = new ConcurrentHashMap<>();
     private Map<Integer, Integer> locationMap = new ConcurrentHashMap<>();
+
     private ServerToClient serverToClient;
-    private Map<Integer, String> activeServers = new TreeMap<>();
     private UserInterface userInterface;
 
-//    public Client()
-//    {
-//
-//    }
+    private Logger logger;
+
 
     public Client(int numberPhil, int numberHungyPhil, int numberPlaces)
     {
@@ -239,7 +240,7 @@ public class Client implements Serializable
                      }
                  }
              }
-        , 45*1000);
+        , RUNTIME * 1000);
     }
 
 
@@ -254,7 +255,6 @@ public class Client implements Serializable
         logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "registerObject " + name + " " + remoteObject.getClass().getName());
         registry.bind(name, remoteObject);
         logger.printLog(LogLevel.INIT, Client.class.getSimpleName(), "registered" + name);
-
     }
 
     public static void main(String[] args) throws Exception
@@ -354,36 +354,10 @@ public class Client implements Serializable
         startAgain();
     }
 
-
-//    public Registry getRegistry()
-//    {
-//        return registry;
-//    }
-//
-//    public void setRegistry(Registry registry)
-//    {
-//        this.registry = registry;
-//    }
-
     public List<IClientToServer> getServers()
     {
         return servers;
     }
-
-//    public void setServers(List<IClientToServer> servers)
-//    {
-//        this.servers = servers;
-//    }
-//
-//    public void setInstanceCount(int instanceCount)
-//    {
-//        this.instanceCount = instanceCount;
-//    }
-//
-//    public void setLogger(Logger logger)
-//    {
-//        this.logger = logger;
-//    }
 
     public int getNumberOfPhilosophers()
     {
@@ -419,14 +393,4 @@ public class Client implements Serializable
     {
         this.allEatCounts = allEatCounts;
     }
-
-//    public void setLocationMap(Map<Integer, Integer> locationMap)
-//    {
-//        this.locationMap = locationMap;
-//    }
-//
-//    public ServerToClient getServerToClient()
-//    {
-//        return serverToClient;
-//    }
 }

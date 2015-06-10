@@ -14,7 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class UserInterface extends UnicastRemoteObject implements IUserInterface
 {
     private Client client;
-    private boolean connectionError = false;
 
     public UserInterface() throws RemoteException
     {

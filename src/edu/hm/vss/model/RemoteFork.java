@@ -1,6 +1,5 @@
 package edu.hm.vss.model;
 
-import edu.hm.vss.helper.Logger;
 import edu.hm.vss.server.RMIServer;
 
 import java.rmi.RemoteException;

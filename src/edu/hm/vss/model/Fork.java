@@ -1,19 +1,11 @@
 package edu.hm.vss.model;
 
-import java.io.Serializable;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-
-public abstract class Fork implements Serializable, Remote
+public abstract class Fork
 {
     protected int index;
     protected Philosopher p = null;
-
-    public Fork()
-    {
-
-    }
 
     Fork(int index)
     {
@@ -28,16 +20,6 @@ public abstract class Fork implements Serializable, Remote
     {
         this.index = index;
     }
-
-//    public Philosopher getP()
-//    {
-//        return p;
-//    }
-//
-//    public void setP(Philosopher p)
-//    {
-//        this.p = p;
-//    }
 
     public abstract boolean tryToGet() throws RemoteException, InterruptedException;
 

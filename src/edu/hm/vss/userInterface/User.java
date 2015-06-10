@@ -1,7 +1,5 @@
 package edu.hm.vss.userInterface;
 
-import edu.hm.vss.helper.LogLevel;
-import edu.hm.vss.interfaces.IServerToClient;
 import edu.hm.vss.interfaces.Settings;
 
 import java.rmi.registry.LocateRegistry;

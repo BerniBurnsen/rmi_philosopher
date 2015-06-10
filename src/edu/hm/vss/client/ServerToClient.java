@@ -1,15 +1,10 @@
 package edu.hm.vss.client;
 
-import com.sun.corba.se.spi.activation.Server;
 import edu.hm.vss.helper.LogLevel;
-import edu.hm.vss.helper.Logger;
 import edu.hm.vss.interfaces.IServerToClient;
-import edu.hm.vss.interfaces.IServerToServer;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * implementation of the IServerToClient interface
@@ -34,7 +29,6 @@ public class ServerToClient extends UnicastRemoteObject implements IServerToClie
     @Override
     public void updateEatCount(int philosopherIndex, int eatCount) throws RemoteException
     {
-        //log(ServerToClient.class.getSimpleName(), "updateEatCount - PhilIndex" + philosopherIndex + " eatCount" + eatCount);
         client.getAllEatCounts().put(philosopherIndex, eatCount);
     }
 
