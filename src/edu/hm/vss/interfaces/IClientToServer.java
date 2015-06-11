@@ -60,10 +60,4 @@ public interface IClientToServer extends Remote, Serializable
      * punish philosopher
      */
     void punishPhilosopher(int index) throws RemoteException;
-
-    /**
-     * check if server is reachable
-     * @return
-     */
-    boolean isReachable() throws RemoteException;
 }

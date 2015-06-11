@@ -223,12 +223,6 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
         }
     }
 
-    @Override
-    public boolean isReachable()
-    {
-        return false;
-    }
-
     public String toString()
     {
         return "ClientToServer "+ server.getInstanceNumber();
@@ -236,7 +230,6 @@ public class ClientToServer extends UnicastRemoteObject implements IClientToServ
 
     public RMIServer getServer()
     {
-
         return server;
     }
 
